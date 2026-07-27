@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUINavegacion.NewPage1"
+             Title="Detalle"
+             BackgroundColor="#121212">
+
+    <ScrollView>
+
+        <VerticalStackLayout Spacing="0">
+
+            <!-- Imagen principal -->
+
+            <Grid HeightRequest="420">
+
+                <Image Source="{Binding ImagenCompleta}"
+                       Aspect="AspectFill"
+                       Opacity="0.25" />
+
+                <BoxView BackgroundColor="#121212"
+                         Opacity="0.35" />
+
+                <Image Source="{Binding ImagenCompleta}"
+                       Aspect="AspectFit"
+                       Margin="35,20" />
+
+            </Grid>
+
+            <!-- Información -->
+
+            <VerticalStackLayout Padding="24,22,24,40"
+                                 Spacing="18">
+
+                <Label Text="{Binding Titulo}"
+                       TextColor="White"
+                       FontSize="32"
+                       FontAttributes="Bold" />
+
+                <HorizontalStackLayout Spacing="10">
+
+                    <Border BackgroundColor="#332B49"
+                            StrokeThickness="0"
+                            Padding="12,7">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Label Text="{Binding PuntuacionTexto}"
+                               TextColor="#D9C9FF"
+                               FontSize="15"
+                               FontAttributes="Bold" />
+
+                    </Border>
+
+                    <Border BackgroundColor="#292929"
+                            StrokeThickness="0"
+                            Padding="12,7">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Label Text="{Binding FechaTexto}"
+                               TextColor="#DDDDDD"
+                               FontSize="15" />
+
+                    </Border>
+
+                </HorizontalStackLayout>
+
+                <BoxView HeightRequest="1"
+                         BackgroundColor="#363636" />
+
+                <Label Text="Sinopsis"
+                       TextColor="#A98BFF"
+                       FontSize="19"
+                       FontAttributes="Bold" />
+
+                <Label Text="{Binding DescripcionCompleta}"
+                       TextColor="#DDDDDD"
+                       FontSize="16"
+                       LineHeight="1.4" />
+
+                <Button Text="← Volver a las películas"
+                        Clicked="OnVolverClicked"
+                        BackgroundColor="#8B5CF6"
+                        TextColor="White"
+                        FontAttributes="Bold"
+                        FontSize="16"
+                        HeightRequest="52"
+                        CornerRadius="15"
+                        Margin="0,10,0,0" />
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>
