@@ -7,13 +7,25 @@
              Title="Películas"
              BackgroundColor="#121212">
 
+    <!-- Botón de preferencias arriba a la derecha -->
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="⚙"
+                     Order="Primary"
+                     Priority="0"
+                     Clicked="OnPreferenciasClicked" />
+
+    </ContentPage.ToolbarItems>
+
     <Grid Padding="20"
           RowDefinitions="Auto,*"
           RowSpacing="20">
 
         <!-- Encabezado -->
 
-        <VerticalStackLayout Spacing="3">
+        <VerticalStackLayout Grid.Row="0"
+                             Spacing="3">
 
             <Label Text="MOVIE APP"
                    TextColor="#A98BFF"
@@ -53,8 +65,10 @@
                         EmptyView="No se encontraron películas">
 
             <CollectionView.ItemsLayout>
+
                 <LinearItemsLayout Orientation="Vertical"
                                    ItemSpacing="14" />
+
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
@@ -67,24 +81,33 @@
                             Padding="12">
 
                         <Border.StrokeShape>
+
                             <RoundRectangle CornerRadius="18" />
+
                         </Border.StrokeShape>
 
                         <Grid ColumnDefinitions="110,*"
                               ColumnSpacing="16">
 
-                            <Border WidthRequest="110"
+                            <!-- Imagen de la película -->
+
+                            <Border Grid.Column="0"
+                                    WidthRequest="110"
                                     HeightRequest="165"
                                     StrokeThickness="0">
 
                                 <Border.StrokeShape>
+
                                     <RoundRectangle CornerRadius="12" />
+
                                 </Border.StrokeShape>
 
                                 <Image Source="{Binding ImagenCompleta}"
                                        Aspect="AspectFill" />
 
                             </Border>
+
+                            <!-- Información de la película -->
 
                             <VerticalStackLayout Grid.Column="1"
                                                  VerticalOptions="Center"
@@ -99,12 +122,16 @@
 
                                 <HorizontalStackLayout Spacing="8">
 
+                                    <!-- Puntuación -->
+
                                     <Border BackgroundColor="#332B49"
                                             StrokeThickness="0"
                                             Padding="10,5">
 
                                         <Border.StrokeShape>
+
                                             <RoundRectangle CornerRadius="10" />
+
                                         </Border.StrokeShape>
 
                                         <Label Text="{Binding PuntuacionTexto}"
@@ -114,12 +141,16 @@
 
                                     </Border>
 
+                                    <!-- Fecha -->
+
                                     <Border BackgroundColor="#292929"
                                             StrokeThickness="0"
                                             Padding="10,5">
 
                                         <Border.StrokeShape>
+
                                             <RoundRectangle CornerRadius="10" />
+
                                         </Border.StrokeShape>
 
                                         <Label Text="{Binding FechaTexto}"
@@ -129,6 +160,8 @@
                                     </Border>
 
                                 </HorizontalStackLayout>
+
+                                <!-- Descripción -->
 
                                 <Label Text="{Binding DescripcionCompleta}"
                                        TextColor="#BEBEBE"
