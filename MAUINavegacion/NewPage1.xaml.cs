@@ -1,17 +1,109 @@
 using MAUINavegacion.Models;
+using MAUINavegacion.Services;
 
 namespace MAUINavegacion
 {
     public partial class NewPage1 : ContentPage
     {
+        private Pelicula? _pelicula;
+        private readonly MovieService _movieService;
+        private bool _trailerCargado;
+
         public NewPage1()
         {
             InitializeComponent();
+
+            _movieService = new MovieService();
         }
 
         public NewPage1(Pelicula pelicula) : this()
         {
+            _pelicula = pelicula;
             BindingContext = pelicula;
+        }
+
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (_trailerCargado || _pelicula == null)
+                return;
+
+            _trailerCargado = true;
+
+            await CargarTrailerAsync();
+        }
+
+        private async Task CargarTrailerAsync()
+        {
+            try
+            {
+                Trailer? trailer =
+                    await _movieService.ObtenerTrailerAsync(_pelicula!.Id);
+
+                if (trailer == null ||
+                    string.IsNullOrWhiteSpace(trailer.Key))
+                {
+                    MensajeSinTrailer.Text =
+                        "No hay un tráiler disponible para esta película.";
+
+                    MensajeSinTrailer.IsVisible = true;
+                    SeccionTrailer.IsVisible = false;
+
+                    return;
+                }
+
+                string html = $@"
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name=""viewport""
+          content=""width=device-width, initial-scale=1.0"">
+
+    <style>
+        html, body {{
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            overflow: hidden;
+        }}
+
+        iframe {{
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }}
+    </style>
+</head>
+
+<body>
+    <iframe
+        src=""https://www.youtube.com/embed/{trailer.Key}""
+        allow=""accelerometer; autoplay; clipboard-write;
+               encrypted-media; gyroscope; picture-in-picture""
+        allowfullscreen>
+    </iframe>
+</body>
+</html>";
+
+                TrailerWebView.Source = new HtmlWebViewSource
+                {
+                    Html = html
+                };
+
+                MensajeSinTrailer.IsVisible = false;
+                SeccionTrailer.IsVisible = true;
+            }
+            catch (Exception error)
+            {
+                MensajeSinTrailer.Text =
+                    $"No se pudo cargar el tráiler: {error.Message}";
+
+                MensajeSinTrailer.IsVisible = true;
+                SeccionTrailer.IsVisible = false;
+            }
         }
 
         private async void OnVolverClicked(

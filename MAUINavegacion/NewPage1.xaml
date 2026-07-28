@@ -83,6 +83,44 @@
                        FontSize="16"
                        LineHeight="1.4" />
 
+                <!-- TRÁILER -->
+
+                <BoxView HeightRequest="1"
+                         BackgroundColor="#363636"
+                         Margin="0,5" />
+
+                <VerticalStackLayout x:Name="SeccionTrailer"
+                                     IsVisible="False"
+                                     Spacing="12">
+
+                    <Label Text="Tráiler"
+                           TextColor="#A98BFF"
+                           FontSize="19"
+                           FontAttributes="Bold" />
+
+                    <Border BackgroundColor="Black"
+                            Stroke="#363636"
+                            StrokeThickness="1">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="15" />
+                        </Border.StrokeShape>
+
+                        <WebView x:Name="TrailerWebView"
+                                 HeightRequest="230" />
+
+                    </Border>
+
+                </VerticalStackLayout>
+
+                <Label x:Name="MensajeSinTrailer"
+                       Text="No hay un tráiler disponible para esta película."
+                       TextColor="#AAAAAA"
+                       FontSize="14"
+                       IsVisible="False" />
+
+                <!-- BOTÓN VOLVER -->
+
                 <Button Text="← Volver a las películas"
                         Clicked="OnVolverClicked"
                         BackgroundColor="#8B5CF6"
