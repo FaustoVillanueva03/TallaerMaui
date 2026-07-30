@@ -1,59 +1,59 @@
 using MAUINavegacion.Models;
 using MAUINavegacion.Services;
 
-namespace MAUINavegacion
+namespace MAUINavegacion;
+
+public partial class DetallePeliculaPage : ContentPage
 {
-    public partial class DetallePeliculaPage : ContentPage
+    private readonly MovieService _movieService;
+    private Pelicula? _pelicula;
+    private bool _trailerCargado;
+
+    public DetallePeliculaPage()
     {
-        private Pelicula? _pelicula;
-        private readonly MovieService _movieService;
-        private bool _trailerCargado;
+        InitializeComponent();
 
-        public DetallePeliculaPage()
+        _movieService = new MovieService();
+    }
+
+    public DetallePeliculaPage(Pelicula pelicula) : this()
+    {
+        _pelicula = pelicula;
+        BindingContext = pelicula;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (_trailerCargado || _pelicula == null)
+            return;
+
+        _trailerCargado = true;
+
+        await CargarTrailerAsync();
+    }
+
+    private async Task CargarTrailerAsync()
+    {
+        try
         {
-            InitializeComponent();
+            Trailer? trailer =
+                await _movieService.ObtenerTrailerAsync(_pelicula!.Id);
 
-            _movieService = new MovieService();
-        }
-
-        public DetallePeliculaPage(Pelicula pelicula) : this()
-        {
-            _pelicula = pelicula;
-            BindingContext = pelicula;
-        }
-
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-
-            if (_trailerCargado || _pelicula == null)
-                return;
-
-            _trailerCargado = true;
-
-            await CargarTrailerAsync();
-        }
-
-        private async Task CargarTrailerAsync()
-        {
-            try
+            if (trailer == null ||
+                string.IsNullOrWhiteSpace(trailer.Key))
             {
-                Trailer? trailer =
-                    await _movieService.ObtenerTrailerAsync(_pelicula!.Id);
+                MensajeSinTrailer.Text =
+                    "No hay un tráiler disponible para esta película.";
 
-                if (trailer == null ||
-                    string.IsNullOrWhiteSpace(trailer.Key))
-                {
-                    MensajeSinTrailer.Text =
-                        "No hay un tráiler disponible para esta película.";
+                MensajeSinTrailer.IsVisible = true;
+                SeccionTrailer.IsVisible = false;
 
-                    MensajeSinTrailer.IsVisible = true;
-                    SeccionTrailer.IsVisible = false;
+                return;
+            }
 
-                    return;
-                }
-
-                string html = $@"
+            string html = $@"
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,29 +88,28 @@ namespace MAUINavegacion
 </body>
 </html>";
 
-                TrailerWebView.Source = new HtmlWebViewSource
-                {
-                    Html = html
-                };
-
-                MensajeSinTrailer.IsVisible = false;
-                SeccionTrailer.IsVisible = true;
-            }
-            catch (Exception error)
+            TrailerWebView.Source = new HtmlWebViewSource
             {
-                MensajeSinTrailer.Text =
-                    $"No se pudo cargar el tráiler: {error.Message}";
+                Html = html
+            };
 
-                MensajeSinTrailer.IsVisible = true;
-                SeccionTrailer.IsVisible = false;
-            }
+            MensajeSinTrailer.IsVisible = false;
+            SeccionTrailer.IsVisible = true;
         }
-
-        private async void OnVolverClicked(
-            object sender,
-            EventArgs e)
+        catch (Exception)
         {
-            await Shell.Current.Navigation.PopAsync();
+            MensajeSinTrailer.Text =
+                "No se pudo cargar el tráiler.";
+
+            MensajeSinTrailer.IsVisible = true;
+            SeccionTrailer.IsVisible = false;
         }
+    }
+
+    private async void OnVolverClicked(
+        object sender,
+        EventArgs e)
+    {
+        await Shell.Current.Navigation.PopAsync();
     }
 }
