@@ -80,7 +80,7 @@ namespace MAUINavegacion
             ((CollectionView)sender).SelectedItem = null;
 
             await Shell.Current.Navigation.PushAsync(
-                new NewPage1(peliculaSeleccionada));
+                new DetallePeliculaPage(peliculaSeleccionada));
         }
 
     }

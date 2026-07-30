@@ -3,20 +3,20 @@ using MAUINavegacion.Services;
 
 namespace MAUINavegacion
 {
-    public partial class NewPage1 : ContentPage
+    public partial class DetallePeliculaPage : ContentPage
     {
         private Pelicula? _pelicula;
         private readonly MovieService _movieService;
         private bool _trailerCargado;
 
-        public NewPage1()
+        public DetallePeliculaPage()
         {
             InitializeComponent();
 
             _movieService = new MovieService();
         }
 
-        public NewPage1(Pelicula pelicula) : this()
+        public DetallePeliculaPage(Pelicula pelicula) : this()
         {
             _pelicula = pelicula;
             BindingContext = pelicula;
