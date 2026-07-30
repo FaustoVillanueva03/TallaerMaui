@@ -6,10 +6,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:MAUINavegacion"
     Shell.FlyoutBehavior="Disabled"
-    Title="MAUINavegacion">
+    Title="RedFlix">
 
     <ShellContent
-        Title="Películas"
+        Title="Inicio"
         ContentTemplate="{DataTemplate local:MainPage}"
         Route="MainPage" />
 

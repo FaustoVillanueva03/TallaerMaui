@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.LoginPage"
+    Title="Iniciar sesión"
+    BackgroundColor="#0D0D0D"
+    Shell.NavBarIsVisible="False">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="35"
+            Spacing="20"
+            VerticalOptions="Center">
+
+            <Label
+                Text="REDFLIX"
+                TextColor="#8B5CF6"
+                FontSize="22"
+                FontAttributes="Bold"
+                CharacterSpacing="5"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Bienvenido"
+                TextColor="White"
+                FontSize="34"
+                FontAttributes="Bold"
+                HorizontalOptions="Center" />
+
+            <Label
+                Text="Ingresá con tu cuenta o utilizá la huella digital"
+                TextColor="#B8B8B8"
+                FontSize="15"
+                HorizontalTextAlignment="Center"
+                Margin="0,0,0,15" />
+
+            <Border
+                BackgroundColor="#1F1F1F"
+                Stroke="#343434"
+                StrokeThickness="1"
+                Padding="15">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+
+                <Entry
+                    x:Name="UsuarioEntry"
+                    Placeholder="Usuario"
+                    PlaceholderColor="#888888"
+                    TextColor="White"
+                    BackgroundColor="Transparent" />
+
+            </Border>
+
+            <Border
+                BackgroundColor="#1F1F1F"
+                Stroke="#343434"
+                StrokeThickness="1"
+                Padding="15">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="15" />
+                </Border.StrokeShape>
+
+                <Entry
+                    x:Name="ContrasenaEntry"
+                    Placeholder="Contraseña"
+                    PlaceholderColor="#888888"
+                    TextColor="White"
+                    IsPassword="True"
+                    BackgroundColor="Transparent" />
+
+            </Border>
+
+            <Button
+                Text="Iniciar sesión"
+                HeightRequest="55"
+                BackgroundColor="#8B5CF6"
+                TextColor="White"
+                FontSize="17"
+                FontAttributes="Bold"
+                CornerRadius="15"
+                Clicked="OnIniciarSesionClicked" />
+
+            <Grid
+                ColumnDefinitions="*,Auto,*"
+                ColumnSpacing="12"
+                Margin="0,10">
+
+                <BoxView
+                    Grid.Column="0"
+                    HeightRequest="1"
+                    BackgroundColor="#343434"
+                    VerticalOptions="Center" />
+
+                <Label
+                    Grid.Column="1"
+                    Text="o"
+                    TextColor="#888888" />
+
+                <BoxView
+                    Grid.Column="2"
+                    HeightRequest="1"
+                    BackgroundColor="#343434"
+                    VerticalOptions="Center" />
+
+            </Grid>
+
+            <Button
+                Text="🔐 Ingresar con huella"
+                HeightRequest="55"
+                BackgroundColor="#1F1F1F"
+                BorderColor="#8B5CF6"
+                BorderWidth="1"
+                TextColor="White"
+                FontSize="17"
+                CornerRadius="15"
+                Clicked="OnHuellaClicked" />
+
+            <Label
+                x:Name="MensajeLabel"
+                TextColor="#FF8A8A"
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                IsVisible="False" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

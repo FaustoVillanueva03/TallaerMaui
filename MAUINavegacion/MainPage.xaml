@@ -1,191 +1,376 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:MAUINavegacion.Models"
-             x:Class="MAUINavegacion.MainPage"
-             Title="Películas"
-             BackgroundColor="#121212">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.MainPage"
+    Title="Inicio"
+    BackgroundColor="#0D0D0D">
 
-    <!-- Botón de preferencias arriba a la derecha -->
+    <ScrollView>
 
-    <ContentPage.ToolbarItems>
+        <VerticalStackLayout Spacing="0">
 
-        <ToolbarItem Text="⚙"
-                     Order="Primary"
-                     Priority="0"
-                     Clicked="OnPreferenciasClicked" />
+            <!-- CABECERA -->
 
-    </ContentPage.ToolbarItems>
+            <Grid
+                Padding="28,35,28,30"
+                RowDefinitions="Auto,Auto,Auto"
+                BackgroundColor="#151515">
 
-    <Grid Padding="20"
-          RowDefinitions="Auto,*"
-          RowSpacing="20">
+                <Label
+                    Grid.Row="0"
+                    Text="REDFLIX"
+                    TextColor="#8B5CF6"
+                    FontSize="17"
+                    FontAttributes="Bold"
+                    CharacterSpacing="5" />
 
-        <!-- Encabezado -->
+                <Label
+                    Grid.Row="1"
+                    Margin="0,14,0,0"
+                    Text="Todo tu entretenimiento"
+                    TextColor="White"
+                    FontSize="32"
+                    FontAttributes="Bold" />
 
-        <VerticalStackLayout Grid.Row="0"
-                             Spacing="3">
+                <Label
+                    Grid.Row="2"
+                    Margin="0,8,0,0"
+                    Text="Películas, series, clima y mucho más"
+                    TextColor="#B8B8B8"
+                    FontSize="15" />
 
-            <Label Text="MOVIE APP"
-                   TextColor="#A98BFF"
-                   FontSize="14"
-                   FontAttributes="Bold"
-                   CharacterSpacing="3" />
+            </Grid>
 
-            <Label Text="Películas populares"
-                   TextColor="White"
-                   FontSize="30"
-                   FontAttributes="Bold" />
+            <!-- CONTENIDO -->
 
-            <Label Text="Seleccioná una película para ver sus detalles"
-                   TextColor="#AAAAAA"
-                   FontSize="14" />
+            <VerticalStackLayout
+                Padding="22"
+                Spacing="18">
 
-        </VerticalStackLayout>
+                <Label
+                    Text="Explorar"
+                    TextColor="White"
+                    FontSize="24"
+                    FontAttributes="Bold" />
 
-        <!-- Indicador de carga -->
+                <!-- CINE -->
 
-        <ActivityIndicator x:Name="Cargando"
-                           Grid.Row="1"
-                           IsVisible="False"
-                           IsRunning="False"
-                           Color="#A98BFF"
-                           WidthRequest="50"
-                           HeightRequest="50"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center" />
+                <Border
+                    BackgroundColor="#1F1F1F"
+                    Stroke="#343434"
+                    StrokeThickness="1"
+                    Padding="0">
 
-        <!-- Lista de películas -->
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="22" />
+                    </Border.StrokeShape>
 
-        <CollectionView x:Name="ListaPeliculas"
-                        Grid.Row="1"
-                        SelectionMode="Single"
-                        SelectionChanged="OnPeliculaSeleccionada"
-                        EmptyView="No se encontraron películas">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnCineClicked" />
+                    </Border.GestureRecognizers>
 
-            <CollectionView.ItemsLayout>
+                    <Grid
+                        HeightRequest="145"
+                        ColumnDefinitions="125,*">
 
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="14" />
+                        <Grid
+                            Grid.Column="0"
+                            BackgroundColor="#2A1F44">
 
-            </CollectionView.ItemsLayout>
-
-            <CollectionView.ItemTemplate>
-
-                <DataTemplate x:DataType="models:Pelicula">
-
-                    <Border BackgroundColor="#1F1F1F"
-                            Stroke="#363636"
-                            StrokeThickness="1"
-                            Padding="12">
-
-                        <Border.StrokeShape>
-
-                            <RoundRectangle CornerRadius="18" />
-
-                        </Border.StrokeShape>
-
-                        <Grid ColumnDefinitions="110,*"
-                              ColumnSpacing="16">
-
-                            <!-- Imagen de la película -->
-
-                            <Border Grid.Column="0"
-                                    WidthRequest="110"
-                                    HeightRequest="165"
-                                    StrokeThickness="0">
-
-                                <Border.StrokeShape>
-
-                                    <RoundRectangle CornerRadius="12" />
-
-                                </Border.StrokeShape>
-
-                                <Image Source="{Binding ImagenCompleta}"
-                                       Aspect="AspectFill" />
-
-                            </Border>
-
-                            <!-- Información de la película -->
-
-                            <VerticalStackLayout Grid.Column="1"
-                                                 VerticalOptions="Center"
-                                                 Spacing="10">
-
-                                <Label Text="{Binding Titulo}"
-                                       TextColor="White"
-                                       FontSize="21"
-                                       FontAttributes="Bold"
-                                       LineBreakMode="TailTruncation"
-                                       MaxLines="2" />
-
-                                <HorizontalStackLayout Spacing="8">
-
-                                    <!-- Puntuación -->
-
-                                    <Border BackgroundColor="#332B49"
-                                            StrokeThickness="0"
-                                            Padding="10,5">
-
-                                        <Border.StrokeShape>
-
-                                            <RoundRectangle CornerRadius="10" />
-
-                                        </Border.StrokeShape>
-
-                                        <Label Text="{Binding PuntuacionTexto}"
-                                               TextColor="#D9C9FF"
-                                               FontAttributes="Bold"
-                                               FontSize="13" />
-
-                                    </Border>
-
-                                    <!-- Fecha -->
-
-                                    <Border BackgroundColor="#292929"
-                                            StrokeThickness="0"
-                                            Padding="10,5">
-
-                                        <Border.StrokeShape>
-
-                                            <RoundRectangle CornerRadius="10" />
-
-                                        </Border.StrokeShape>
-
-                                        <Label Text="{Binding FechaTexto}"
-                                               TextColor="#CCCCCC"
-                                               FontSize="13" />
-
-                                    </Border>
-
-                                </HorizontalStackLayout>
-
-                                <!-- Descripción -->
-
-                                <Label Text="{Binding DescripcionCompleta}"
-                                       TextColor="#BEBEBE"
-                                       FontSize="14"
-                                       MaxLines="3"
-                                       LineBreakMode="TailTruncation" />
-
-                                <Label Text="Ver detalles  →"
-                                       TextColor="#A98BFF"
-                                       FontSize="14"
-                                       FontAttributes="Bold" />
-
-                            </VerticalStackLayout>
+                            <Label
+                                Text="🎬"
+                                FontSize="58"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
 
                         </Grid>
 
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Padding="20"
+                            Spacing="7"
+                            VerticalOptions="Center">
+
+                            <Label
+                                Text="Cine"
+                                TextColor="White"
+                                FontSize="25"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="Películas populares, estrenos y tráilers"
+                                TextColor="#B8B8B8"
+                                FontSize="14"
+                                MaxLines="2" />
+
+                            <Label
+                                Text="Explorar  →"
+                                TextColor="#8B5CF6"
+                                FontSize="14"
+                                FontAttributes="Bold" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                </Border>
+
+                <!-- SERIES -->
+
+                <Border
+                    BackgroundColor="#1F1F1F"
+                    Stroke="#343434"
+                    StrokeThickness="1"
+                    Padding="0">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="22" />
+                    </Border.StrokeShape>
+
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnSeriesClicked" />
+                    </Border.GestureRecognizers>
+
+                    <Grid
+                        HeightRequest="145"
+                        ColumnDefinitions="125,*">
+
+                        <Grid
+                            Grid.Column="0"
+                            BackgroundColor="#2A1F44">
+
+                            <Label
+                                Text="📺"
+                                FontSize="58"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                        </Grid>
+
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            Padding="20"
+                            Spacing="7"
+                            VerticalOptions="Center">
+
+                            <Label
+                                Text="Series"
+                                TextColor="White"
+                                FontSize="25"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="Series populares y mejor puntuadas"
+                                TextColor="#B8B8B8"
+                                FontSize="14"
+                                MaxLines="2" />
+
+                            <Label
+                                Text="Explorar  →"
+                                TextColor="#8B5CF6"
+                                FontSize="14"
+                                FontAttributes="Bold" />
+
+                        </VerticalStackLayout>
+
+                    </Grid>
+
+                </Border>
+
+                <!-- CLIMA Y COTIZACIONES -->
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="14">
+
+                    <Border
+                        Grid.Column="0"
+                        BackgroundColor="#1F1F1F"
+                        Stroke="#343434"
+                        StrokeThickness="1"
+                        Padding="18">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnClimaClicked" />
+                        </Border.GestureRecognizers>
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                Text="🌤️"
+                                FontSize="42" />
+
+                            <Label
+                                Text="Clima"
+                                TextColor="White"
+                                FontSize="21"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="Pronóstico de Punta del Este"
+                                TextColor="#B8B8B8"
+                                FontSize="13"
+                                MaxLines="2" />
+
+                            <Label
+                                Text="Ver más  →"
+                                TextColor="#8B5CF6"
+                                FontSize="13"
+                                FontAttributes="Bold" />
+
+                        </VerticalStackLayout>
+
                     </Border>
 
-                </DataTemplate>
+                    <Border
+                        Grid.Column="1"
+                        BackgroundColor="#1F1F1F"
+                        Stroke="#343434"
+                        StrokeThickness="1"
+                        Padding="18">
 
-            </CollectionView.ItemTemplate>
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
 
-        </CollectionView>
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnCotizacionesClicked" />
+                        </Border.GestureRecognizers>
 
-    </Grid>
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                Text="💵"
+                                FontSize="42" />
+
+                            <Label
+                                Text="Cotizaciones"
+                                TextColor="White"
+                                FontSize="21"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="Dólar, euro y real"
+                                TextColor="#B8B8B8"
+                                FontSize="13"
+                                MaxLines="2" />
+
+                            <Label
+                                Text="Ver más  →"
+                                TextColor="#8B5CF6"
+                                FontSize="13"
+                                FontAttributes="Bold" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                </Grid>
+
+                <!-- MAPA Y PERFIL -->
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    ColumnSpacing="14">
+
+                    <Border
+                        Grid.Column="0"
+                        BackgroundColor="#1F1F1F"
+                        Stroke="#343434"
+                        StrokeThickness="1"
+                        Padding="18">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnMapaClicked" />
+                        </Border.GestureRecognizers>
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                Text="📍"
+                                FontSize="42" />
+
+                            <Label
+                                Text="Mapa"
+                                TextColor="White"
+                                FontSize="21"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="Ubicaciones guardadas"
+                                TextColor="#B8B8B8"
+                                FontSize="13"
+                                MaxLines="2" />
+
+                            <Label
+                                Text="Ver más  →"
+                                TextColor="#8B5CF6"
+                                FontSize="13"
+                                FontAttributes="Bold" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <Border
+                        Grid.Column="1"
+                        BackgroundColor="#1F1F1F"
+                        Stroke="#343434"
+                        StrokeThickness="1"
+                        Padding="18">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20" />
+                        </Border.StrokeShape>
+
+                        <Border.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnPerfilClicked" />
+                        </Border.GestureRecognizers>
+
+                        <VerticalStackLayout Spacing="10">
+
+                            <Label
+                                Text="👤"
+                                FontSize="42" />
+
+                            <Label
+                                Text="Perfil"
+                                TextColor="White"
+                                FontSize="21"
+                                FontAttributes="Bold" />
+
+                            <Label
+                                Text="Datos y preferencias"
+                                TextColor="#B8B8B8"
+                                FontSize="13"
+                                MaxLines="2" />
+
+                            <Label
+                                Text="Ver más  →"
+                                TextColor="#8B5CF6"
+                                FontSize="13"
+                                FontAttributes="Bold" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                </Grid>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
 
 </ContentPage>

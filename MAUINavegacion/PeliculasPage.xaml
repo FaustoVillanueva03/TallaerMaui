@@ -1,0 +1,191 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:MAUINavegacion.Models"
+             x:Class="MAUINavegacion.PeliculasPage"
+             Title="Películas"
+             BackgroundColor="#121212">
+
+    <!-- Botón de preferencias arriba a la derecha -->
+
+    <ContentPage.ToolbarItems>
+
+        <ToolbarItem Text="⚙"
+                     Order="Primary"
+                     Priority="0"
+                     Clicked="OnPreferenciasClicked" />
+
+    </ContentPage.ToolbarItems>
+
+    <Grid Padding="20"
+          RowDefinitions="Auto,*"
+          RowSpacing="20">
+
+        <!-- Encabezado -->
+
+        <VerticalStackLayout Grid.Row="0"
+                             Spacing="3">
+
+            <Label Text="MOVIE APP"
+                   TextColor="#A98BFF"
+                   FontSize="14"
+                   FontAttributes="Bold"
+                   CharacterSpacing="3" />
+
+            <Label Text="Películas populares"
+                   TextColor="White"
+                   FontSize="30"
+                   FontAttributes="Bold" />
+
+            <Label Text="Seleccioná una película para ver sus detalles"
+                   TextColor="#AAAAAA"
+                   FontSize="14" />
+
+        </VerticalStackLayout>
+
+        <!-- Indicador de carga -->
+
+        <ActivityIndicator x:Name="Cargando"
+                           Grid.Row="1"
+                           IsVisible="False"
+                           IsRunning="False"
+                           Color="#A98BFF"
+                           WidthRequest="50"
+                           HeightRequest="50"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center" />
+
+        <!-- Lista de películas -->
+
+        <CollectionView x:Name="ListaPeliculas"
+                        Grid.Row="1"
+                        SelectionMode="Single"
+                        SelectionChanged="OnPeliculaSeleccionada"
+                        EmptyView="No se encontraron películas">
+
+            <CollectionView.ItemsLayout>
+
+                <LinearItemsLayout Orientation="Vertical"
+                                   ItemSpacing="14" />
+
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="models:Pelicula">
+
+                    <Border BackgroundColor="#1F1F1F"
+                            Stroke="#363636"
+                            StrokeThickness="1"
+                            Padding="12">
+
+                        <Border.StrokeShape>
+
+                            <RoundRectangle CornerRadius="18" />
+
+                        </Border.StrokeShape>
+
+                        <Grid ColumnDefinitions="110,*"
+                              ColumnSpacing="16">
+
+                            <!-- Imagen de la película -->
+
+                            <Border Grid.Column="0"
+                                    WidthRequest="110"
+                                    HeightRequest="165"
+                                    StrokeThickness="0">
+
+                                <Border.StrokeShape>
+
+                                    <RoundRectangle CornerRadius="12" />
+
+                                </Border.StrokeShape>
+
+                                <Image Source="{Binding ImagenCompleta}"
+                                       Aspect="AspectFill" />
+
+                            </Border>
+
+                            <!-- Información de la película -->
+
+                            <VerticalStackLayout Grid.Column="1"
+                                                 VerticalOptions="Center"
+                                                 Spacing="10">
+
+                                <Label Text="{Binding Titulo}"
+                                       TextColor="White"
+                                       FontSize="21"
+                                       FontAttributes="Bold"
+                                       LineBreakMode="TailTruncation"
+                                       MaxLines="2" />
+
+                                <HorizontalStackLayout Spacing="8">
+
+                                    <!-- Puntuación -->
+
+                                    <Border BackgroundColor="#332B49"
+                                            StrokeThickness="0"
+                                            Padding="10,5">
+
+                                        <Border.StrokeShape>
+
+                                            <RoundRectangle CornerRadius="10" />
+
+                                        </Border.StrokeShape>
+
+                                        <Label Text="{Binding PuntuacionTexto}"
+                                               TextColor="#D9C9FF"
+                                               FontAttributes="Bold"
+                                               FontSize="13" />
+
+                                    </Border>
+
+                                    <!-- Fecha -->
+
+                                    <Border BackgroundColor="#292929"
+                                            StrokeThickness="0"
+                                            Padding="10,5">
+
+                                        <Border.StrokeShape>
+
+                                            <RoundRectangle CornerRadius="10" />
+
+                                        </Border.StrokeShape>
+
+                                        <Label Text="{Binding FechaTexto}"
+                                               TextColor="#CCCCCC"
+                                               FontSize="13" />
+
+                                    </Border>
+
+                                </HorizontalStackLayout>
+
+                                <!-- Descripción -->
+
+                                <Label Text="{Binding DescripcionCompleta}"
+                                       TextColor="#BEBEBE"
+                                       FontSize="14"
+                                       MaxLines="3"
+                                       LineBreakMode="TailTruncation" />
+
+                                <Label Text="Ver detalles  →"
+                                       TextColor="#A98BFF"
+                                       FontSize="14"
+                                       FontAttributes="Bold" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

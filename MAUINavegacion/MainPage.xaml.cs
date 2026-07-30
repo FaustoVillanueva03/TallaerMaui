@@ -1,129 +1,54 @@
-ï»¿using MAUINavegacion.Models;
-using MAUINavegacion.Services;
-using Plugin.Fingerprint;
-using Plugin.Fingerprint.Abstractions;
+namespace MAUINavegacion;
 
-namespace MAUINavegacion
+public partial class MainPage : ContentPage
 {
-    public partial class MainPage : ContentPage
+    public MainPage()
     {
-        private readonly MovieService _movieService;
-        private bool _peliculasCargadas;
+        InitializeComponent();
+    }
 
-        public MainPage()
-        {
-            InitializeComponent();
+    private async void OnCineClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new PeliculasPage());
+    }
 
-            _movieService = new MovieService();
+    private async void OnSeriesClicked(object sender, EventArgs e)
+    {
+        await DisplayAlert(
+            "Series",
+            "La sección de series todavía no está creada.",
+            "Aceptar");
+    }
 
-            // Solamente guarda la edad si todavÃ­a no existe.
-            if (!Preferences.Default.ContainsKey("Edad"))
-            {
-                Preferences.Default.Set("Edad", 20);
-            }
-        }
+    private async void OnClimaClicked(object sender, EventArgs e)
+    {
+        await DisplayAlert(
+            "Clima",
+            "La sección de clima todavía no está creada.",
+            "Aceptar");
+    }
 
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
+    private async void OnCotizacionesClicked(object sender, EventArgs e)
+    {
+        await DisplayAlert(
+            "Cotizaciones",
+            "La sección de cotizaciones todavía no está creada.",
+            "Aceptar");
+    }
 
-            if (_peliculasCargadas)
-                return;
+    private async void OnMapaClicked(object sender, EventArgs e)
+    {
+        await DisplayAlert(
+            "Mapa",
+            "La sección de mapa todavía no está creada.",
+            "Aceptar");
+    }
 
-            try
-            {
-                Cargando.IsVisible = true;
-                Cargando.IsRunning = true;
-                ListaPeliculas.IsVisible = false;
-
-                List<Pelicula> peliculas =
-                    await _movieService.ObtenerPeliculasAsync();
-
-                ListaPeliculas.ItemsSource = peliculas;
-                _peliculasCargadas = true;
-            }
-            catch (Exception error)
-            {
-                await DisplayAlert(
-                    "Error",
-                    $"No se pudieron cargar las pelÃ­culas.\n\n{error.Message}",
-                    "Aceptar");
-            }
-            finally
-            {
-                Cargando.IsVisible = false;
-                Cargando.IsRunning = false;
-                ListaPeliculas.IsVisible = true;
-            }
-        }
-
-        private async void OnPreferenciasClicked(
-            object sender,
-            EventArgs e)
-        {
-            int edad = Preferences.Default.Get("Edad", 0);
-
-            await DisplayAlert(
-                "InformaciÃ³n",
-                $"La edad guardada es: {edad}",
-                "Aceptar");
-        }
-
-        private async void OnPeliculaSeleccionada(
-            object sender,
-            SelectionChangedEventArgs e)
-        {
-            Pelicula? peliculaSeleccionada =
-                e.CurrentSelection.FirstOrDefault() as Pelicula;
-
-            if (peliculaSeleccionada == null)
-                return;
-
-            ((CollectionView)sender).SelectedItem = null;
-
-            await Shell.Current.Navigation.PushAsync(
-                new NewPage1(peliculaSeleccionada));
-        }
-
-        public async Task<bool> AutenticarConHuella()
-        {
-            var disponible = await CrossFingerprint.Current.IsAvailableAsync(true);
-
-            if (!disponible)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Huella",
-                    "El dispositivo no tiene biometrÃ­a disponible.",
-                    "Aceptar");
-
-                return false;
-            }
-
-            var solicitud = new AuthenticationRequestConfiguration(
-                "AutenticaciÃ³n",
-                "Coloque su huella digital")
-            {
-                CancelTitle = "Cancelar"
-            };
-
-            var resultado = await CrossFingerprint.Current.AuthenticateAsync(solicitud);
-
-            if (resultado.Authenticated)
-            {
-                await Application.Current.MainPage.DisplayAlert(
-                    "Correcto",
-                    "AutenticaciÃ³n exitosa.",
-                    "Aceptar");
-
-                return true;
-            }
-
-            await Application.Current.MainPage.DisplayAlert(
-                "Error",
-                "No fue posible autenticar.",
-                "Aceptar");
-
-            return false;
-        }
+    private async void OnPerfilClicked(object sender, EventArgs e)
+    {
+        await DisplayAlert(
+            "Perfil",
+            "La sección de perfil todavía no está creada.",
+            "Aceptar");
     }
 }
