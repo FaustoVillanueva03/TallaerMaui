@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MAUINavegacion.Models"
+    x:Class="MAUINavegacion.SeriesPage"
+    Title="Series"
+    BackgroundColor="#121212">
+
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,*"
+        RowSpacing="20">
+
+        <VerticalStackLayout
+            Grid.Row="0"
+            Spacing="3">
+
+            <Label
+                Text="REDFLIX"
+                TextColor="#8B5CF6"
+                FontSize="14"
+                FontAttributes="Bold"
+                CharacterSpacing="3" />
+
+            <Label
+                Text="Series"
+                TextColor="White"
+                FontSize="30"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="Seleccioná una serie para ver sus detalles"
+                TextColor="#AAAAAA"
+                FontSize="14" />
+
+        </VerticalStackLayout>
+
+        <ActivityIndicator
+            x:Name="Cargando"
+            Grid.Row="1"
+            IsVisible="False"
+            IsRunning="False"
+            Color="#8B5CF6"
+            WidthRequest="50"
+            HeightRequest="50"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+
+        <CollectionView
+            x:Name="ListaSeries"
+            Grid.Row="1"
+            SelectionMode="Single"
+            SelectionChanged="OnSerieSeleccionada"
+            EmptyView="No se encontraron series">
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout
+                    Orientation="Vertical"
+                    ItemSpacing="14" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+
+                <DataTemplate x:DataType="models:Serie">
+
+                    <Border
+                        BackgroundColor="#1F1F1F"
+                        Stroke="#363636"
+                        StrokeThickness="1"
+                        Padding="12">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="18" />
+                        </Border.StrokeShape>
+
+                        <Grid
+                            ColumnDefinitions="110,*"
+                            ColumnSpacing="16">
+
+                            <Border
+                                Grid.Column="0"
+                                WidthRequest="110"
+                                HeightRequest="165"
+                                StrokeThickness="0">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="12" />
+                                </Border.StrokeShape>
+
+                                <Image
+                                    Source="{Binding ImagenCompleta}"
+                                    Aspect="AspectFill" />
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                VerticalOptions="Center"
+                                Spacing="10">
+
+                                <Label
+                                    Text="{Binding Nombre}"
+                                    TextColor="White"
+                                    FontSize="21"
+                                    FontAttributes="Bold"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="2" />
+
+                                <HorizontalStackLayout Spacing="8">
+
+                                    <Border
+                                        BackgroundColor="#332B49"
+                                        StrokeThickness="0"
+                                        Padding="10,5">
+
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+
+                                        <Label
+                                            Text="{Binding PuntuacionTexto}"
+                                            TextColor="#D9C9FF"
+                                            FontAttributes="Bold"
+                                            FontSize="13" />
+
+                                    </Border>
+
+                                    <Border
+                                        BackgroundColor="#292929"
+                                        StrokeThickness="0"
+                                        Padding="10,5">
+
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+
+                                        <Label
+                                            Text="{Binding FechaTexto}"
+                                            TextColor="#CCCCCC"
+                                            FontSize="13" />
+
+                                    </Border>
+
+                                </HorizontalStackLayout>
+
+                                <Label
+                                    Text="{Binding DescripcionCompleta}"
+                                    TextColor="#BEBEBE"
+                                    FontSize="14"
+                                    MaxLines="3"
+                                    LineBreakMode="TailTruncation" />
+
+                                <Label
+                                    Text="Ver detalles  →"
+                                    TextColor="#8B5CF6"
+                                    FontSize="14"
+                                    FontAttributes="Bold" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                    </Border>
+
+                </DataTemplate>
+
+            </CollectionView.ItemTemplate>
+
+        </CollectionView>
+
+    </Grid>
+
+</ContentPage>

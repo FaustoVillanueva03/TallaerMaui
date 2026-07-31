@@ -3,36 +3,34 @@ using MAUINavegacion.Models;
 
 namespace MAUINavegacion.Services;
 
-public class MovieService
+public class SerieService
 {
     private readonly HttpClient _httpClient;
 
-    // API Key v3 de TMDB.
     private const string ApiKey =
         "d11a00025e66dbb1f44ffcc5aef97948";
 
-    public MovieService()
+    public SerieService()
     {
         _httpClient = new HttpClient();
     }
 
-    public async Task<List<Pelicula>> ObtenerPeliculasAsync()
+    public async Task<List<Serie>> ObtenerSeriesAsync()
     {
-        List<Pelicula> todasLasPeliculas = new();
+        List<Serie> todasLasSeries = new();
 
-        // Cada página devuelve aproximadamente 20 películas.
         const int cantidadPaginas = 5;
 
-        for (int pagina = 1; pagina <= cantidadPaginas; pagina++)
+        for (int pagina = 1;
+             pagina <= cantidadPaginas;
+             pagina++)
         {
             string url =
-                $"https://api.themoviedb.org/3/discover/movie" +
+                $"https://api.themoviedb.org/3/discover/tv" +
                 $"?api_key={ApiKey}" +
                 $"&language=es-ES" +
-                $"&region=UY" +
                 $"&include_adult=false" +
-                $"&include_video=false" +
-                $"&sort_by=primary_release_date.desc" +
+                $"&sort_by=first_air_date.desc" +
                 $"&vote_count.gte=10" +
                 $"&page={pagina}";
 
@@ -45,58 +43,65 @@ public class MovieService
             if (!respuestaHttp.IsSuccessStatusCode)
             {
                 throw new Exception(
-                    $"Error TMDB {(int)respuestaHttp.StatusCode}: {contenido}");
+                    $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
+                    contenido);
             }
 
-            RespuestaPeliculas? respuesta =
+            RespuestaSeries? respuesta =
                 await respuestaHttp.Content
-                    .ReadFromJsonAsync<RespuestaPeliculas>();
+                    .ReadFromJsonAsync<RespuestaSeries>();
 
-            if (respuesta?.Peliculas != null)
+            if (respuesta?.Series != null)
             {
-                todasLasPeliculas.AddRange(respuesta.Peliculas);
+                todasLasSeries.AddRange(respuesta.Series);
             }
         }
 
-        // Elimina posibles películas repetidas.
-        return todasLasPeliculas
-            .GroupBy(pelicula => pelicula.Id)
+        return todasLasSeries
+            .GroupBy(serie => serie.Id)
             .Select(grupo => grupo.First())
             .ToList();
     }
 
-    public async Task<Trailer?> ObtenerTrailerAsync(int peliculaId)
+    public async Task<Trailer?> ObtenerTrailerAsync(
+        int serieId)
     {
         string urlEspanol =
-            $"https://api.themoviedb.org/3/movie/{peliculaId}/videos" +
+            $"https://api.themoviedb.org/3/tv/{serieId}/videos" +
             $"?api_key={ApiKey}&language=es-ES";
 
         RespuestaTrailers? respuesta =
             await _httpClient
-                .GetFromJsonAsync<RespuestaTrailers>(urlEspanol);
+                .GetFromJsonAsync<RespuestaTrailers>(
+                    urlEspanol);
 
         Trailer? trailer =
             ElegirTrailer(respuesta?.Trailers);
 
         if (trailer != null)
+        {
             return trailer;
+        }
 
-        // Si no encuentra un tráiler en español, busca en inglés.
         string urlIngles =
-            $"https://api.themoviedb.org/3/movie/{peliculaId}/videos" +
+            $"https://api.themoviedb.org/3/tv/{serieId}/videos" +
             $"?api_key={ApiKey}&language=en-US";
 
         respuesta =
             await _httpClient
-                .GetFromJsonAsync<RespuestaTrailers>(urlIngles);
+                .GetFromJsonAsync<RespuestaTrailers>(
+                    urlIngles);
 
         return ElegirTrailer(respuesta?.Trailers);
     }
 
-    private static Trailer? ElegirTrailer(List<Trailer>? videos)
+    private static Trailer? ElegirTrailer(
+        List<Trailer>? videos)
     {
         if (videos == null)
+        {
             return null;
+        }
 
         List<Trailer> videosYoutube = videos
             .Where(video =>

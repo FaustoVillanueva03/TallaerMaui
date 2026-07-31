@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.DetalleSeriePage"
+    Title="Detalle de serie"
+    BackgroundColor="#121212">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="18">
+
+            <Button
+                Text="← Volver"
+                HorizontalOptions="Start"
+                BackgroundColor="#1F1F1F"
+                TextColor="White"
+                CornerRadius="12"
+                Clicked="OnVolverClicked" />
+
+            <Border
+                Stroke="#363636"
+                StrokeThickness="1"
+                BackgroundColor="#1F1F1F"
+                Padding="0">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
+
+                <Image
+                    Source="{Binding ImagenCompleta}"
+                    HeightRequest="420"
+                    Aspect="AspectFill" />
+
+            </Border>
+
+            <Label
+                Text="{Binding Nombre}"
+                TextColor="White"
+                FontSize="30"
+                FontAttributes="Bold"
+                LineBreakMode="WordWrap" />
+
+            <HorizontalStackLayout Spacing="10">
+
+                <Border
+                    BackgroundColor="#332B49"
+                    StrokeThickness="0"
+                    Padding="12,6">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+
+                    <Label
+                        Text="{Binding PuntuacionTexto}"
+                        TextColor="#D9C9FF"
+                        FontSize="14"
+                        FontAttributes="Bold" />
+
+                </Border>
+
+                <Border
+                    BackgroundColor="#292929"
+                    StrokeThickness="0"
+                    Padding="12,6">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="10" />
+                    </Border.StrokeShape>
+
+                    <Label
+                        Text="{Binding FechaTexto}"
+                        TextColor="#CCCCCC"
+                        FontSize="14" />
+
+                </Border>
+
+            </HorizontalStackLayout>
+
+            <Label
+                Text="Descripción"
+                TextColor="White"
+                FontSize="22"
+                FontAttributes="Bold"
+                Margin="0,10,0,0" />
+
+            <Label
+                Text="{Binding DescripcionCompleta}"
+                TextColor="#BEBEBE"
+                FontSize="16"
+                LineHeight="1.3" />
+
+            <VerticalStackLayout
+                x:Name="SeccionTrailer"
+                Spacing="12"
+                IsVisible="False">
+
+                <Label
+                    Text="Tráiler"
+                    TextColor="White"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    Margin="0,10,0,0" />
+
+                <Border
+                    BackgroundColor="Black"
+                    Stroke="#363636"
+                    StrokeThickness="1"
+                    HeightRequest="230">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="16" />
+                    </Border.StrokeShape>
+
+                    <WebView
+                        x:Name="TrailerWebView"
+                        HeightRequest="230" />
+
+                </Border>
+
+            </VerticalStackLayout>
+
+            <Label
+                x:Name="MensajeSinTrailer"
+                Text="Cargando tráiler..."
+                TextColor="#AAAAAA"
+                FontSize="15"
+                HorizontalTextAlignment="Center"
+                IsVisible="True"
+                Margin="0,10,0,20" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

@@ -1,59 +1,59 @@
 using MAUINavegacion.Models;
 using MAUINavegacion.Services;
 
-namespace MAUINavegacion;
-
-public partial class DetallePeliculaPage : ContentPage
+namespace MAUINavegacion
 {
-    private readonly MovieService _movieService;
-    private Pelicula? _pelicula;
-    private bool _trailerCargado;
-
-    public DetallePeliculaPage()
+    public partial class DetallePeliculaPage : ContentPage
     {
-        InitializeComponent();
+        private Pelicula? _pelicula;
+        private readonly MovieService _movieService;
+        private bool _trailerCargado;
 
-        _movieService = new MovieService();
-    }
-
-    public DetallePeliculaPage(Pelicula pelicula) : this()
-    {
-        _pelicula = pelicula;
-        BindingContext = pelicula;
-    }
-
-    protected override async void OnAppearing()
-    {
-        base.OnAppearing();
-
-        if (_trailerCargado || _pelicula == null)
-            return;
-
-        _trailerCargado = true;
-
-        await CargarTrailerAsync();
-    }
-
-    private async Task CargarTrailerAsync()
-    {
-        try
+        public DetallePeliculaPage()
         {
-            Trailer? trailer =
-                await _movieService.ObtenerTrailerAsync(_pelicula!.Id);
+            InitializeComponent();
 
-            if (trailer == null ||
-                string.IsNullOrWhiteSpace(trailer.Key))
-            {
-                MensajeSinTrailer.Text =
-                    "No hay un tráiler disponible para esta película.";
+            _movieService = new MovieService();
+        }
 
-                MensajeSinTrailer.IsVisible = true;
-                SeccionTrailer.IsVisible = false;
+        public DetallePeliculaPage(Pelicula pelicula) : this()
+        {
+            _pelicula = pelicula;
+            BindingContext = pelicula;
+        }
 
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+
+            if (_trailerCargado || _pelicula == null)
                 return;
-            }
 
-            string html = $@"
+            _trailerCargado = true;
+
+            await CargarTrailerAsync();
+        }
+
+        private async Task CargarTrailerAsync()
+        {
+            try
+            {
+                Trailer? trailer =
+                    await _movieService.ObtenerTrailerAsync(_pelicula!.Id);
+
+                if (trailer == null ||
+                    string.IsNullOrWhiteSpace(trailer.Key))
+                {
+                    MensajeSinTrailer.Text =
+                        "No hay un tráiler disponible para esta película.";
+
+                    MensajeSinTrailer.IsVisible = true;
+                    SeccionTrailer.IsVisible = false;
+
+                    return;
+                }
+
+                string html = $@"
 <!DOCTYPE html>
 <html>
 <head>
@@ -88,28 +88,29 @@ public partial class DetallePeliculaPage : ContentPage
 </body>
 </html>";
 
-            TrailerWebView.Source = new HtmlWebViewSource
+                TrailerWebView.Source = new HtmlWebViewSource
+                {
+                    Html = html
+                };
+
+                MensajeSinTrailer.IsVisible = false;
+                SeccionTrailer.IsVisible = true;
+            }
+            catch (Exception error)
             {
-                Html = html
-            };
+                MensajeSinTrailer.Text =
+                    $"No se pudo cargar el tráiler: {error.Message}";
 
-            MensajeSinTrailer.IsVisible = false;
-            SeccionTrailer.IsVisible = true;
+                MensajeSinTrailer.IsVisible = true;
+                SeccionTrailer.IsVisible = false;
+            }
         }
-        catch (Exception)
+
+        private async void OnVolverClicked(
+            object sender,
+            EventArgs e)
         {
-            MensajeSinTrailer.Text =
-                "No se pudo cargar el tráiler.";
-
-            MensajeSinTrailer.IsVisible = true;
-            SeccionTrailer.IsVisible = false;
+            await Shell.Current.Navigation.PopAsync();
         }
-    }
-
-    private async void OnVolverClicked(
-        object sender,
-        EventArgs e)
-    {
-        await Shell.Current.Navigation.PopAsync();
     }
 }
