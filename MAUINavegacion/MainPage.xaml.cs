@@ -12,12 +12,11 @@ public partial class MainPage : ContentPage
         await Navigation.PushAsync(new PeliculasPage());
     }
 
-    private async void OnSeriesClicked(object sender, EventArgs e)
+    private async void OnSeriesClicked(
+    object sender,
+    EventArgs e)
     {
-        await DisplayAlert(
-            "Series",
-            "La sección de series todavía no está creada.",
-            "Aceptar");
+        await Navigation.PushAsync(new SeriesPage());
     }
 
     private async void OnClimaClicked(object sender, EventArgs e)

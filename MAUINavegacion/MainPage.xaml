@@ -94,13 +94,13 @@
                             VerticalOptions="Center">
 
                             <Label
-                                Text="Cine"
+                                Text="Películas"
                                 TextColor="White"
                                 FontSize="25"
                                 FontAttributes="Bold" />
 
                             <Label
-                                Text="Películas populares, estrenos y tráilers"
+                                Text="Películas, estrenos y tráilers"
                                 TextColor="#B8B8B8"
                                 FontSize="14"
                                 MaxLines="2" />
