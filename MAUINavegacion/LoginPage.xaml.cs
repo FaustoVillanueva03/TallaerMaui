@@ -93,9 +93,11 @@ public partial class LoginPage : ContentPage
     }
 
     private async void OnIniciarSesionClicked(
-        object sender,
-        EventArgs e)
+    object sender,
+    EventArgs e)
     {
+        MensajeLabel.IsVisible = false;
+
         string nombreUsuario =
             UsuarioEntry.Text?.Trim() ?? string.Empty;
 
@@ -123,7 +125,7 @@ public partial class LoginPage : ContentPage
             if (usuario == null)
             {
                 MostrarMensaje(
-                    "El usuario o la contraseña son incorrectos.");
+                    "Usuario o contraseña incorrectos.");
 
                 return;
             }

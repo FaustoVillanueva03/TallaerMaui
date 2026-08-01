@@ -61,7 +61,13 @@ public partial class SeriesPage : ContentPage
 
         ((CollectionView)sender).SelectedItem = null;
 
-        await Shell.Current.Navigation.PushAsync(
+        await Navigation.PushAsync(
             new DetalleSeriePage(serieSeleccionada));
+    }
+    private async void OnVolverClicked(
+    object sender,
+    EventArgs e)
+    {
+        await Navigation.PopAsync();
     }
 }

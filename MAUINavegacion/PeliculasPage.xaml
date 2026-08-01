@@ -1,73 +1,94 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:models="clr-namespace:MAUINavegacion.Models"
-             x:Class="MAUINavegacion.PeliculasPage"
-             Title="Películas"
-             BackgroundColor="#121212">
-
-    <!-- Botón de preferencias arriba a la derecha -->
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MAUINavegacion.Models"
+    x:Class="MAUINavegacion.PeliculasPage"
+    Title="Películas"
+    BackgroundColor="{StaticResource ColorFondo}">
 
     <ContentPage.ToolbarItems>
 
-        <ToolbarItem Text="⚙"
-                     Order="Primary"
-                     Priority="0"
-                     Clicked="OnPreferenciasClicked" />
+        <ToolbarItem
+            Text="⚙"
+            Order="Primary"
+            Priority="0"
+            Clicked="OnPreferenciasClicked" />
 
     </ContentPage.ToolbarItems>
 
-    <Grid Padding="20"
-          RowDefinitions="Auto,*"
-          RowSpacing="20">
+    <Grid
+        Padding="20"
+        RowDefinitions="Auto,Auto,*"
+        RowSpacing="20">
 
-        <!-- Encabezado -->
+        <!-- BOTÓN VOLVER -->
 
-        <VerticalStackLayout Grid.Row="0"
-                             Spacing="3">
+        <Button
+            Grid.Row="0"
+            Text="← Volver"
+            HorizontalOptions="Start"
+            BackgroundColor="{StaticResource ColorSuperficie}"
+            TextColor="{StaticResource ColorTextoPrincipal}"
+            BorderColor="{StaticResource ColorPrimario}"
+            BorderWidth="1"
+            CornerRadius="12"
+            Clicked="OnVolverClicked" />
 
-            <Label Text="MOVIE APP"
-                   TextColor="#A98BFF"
-                   FontSize="14"
-                   FontAttributes="Bold"
-                   CharacterSpacing="3" />
+        <!-- ENCABEZADO -->
 
-            <Label Text="Películas populares"
-                   TextColor="White"
-                   FontSize="30"
-                   FontAttributes="Bold" />
+        <VerticalStackLayout
+            Grid.Row="1"
+            Spacing="3">
 
-            <Label Text="Seleccioná una película para ver sus detalles"
-                   TextColor="#AAAAAA"
-                   FontSize="14" />
+            <Label
+                Text="MOVIE APP"
+                TextColor="{StaticResource ColorPrimario}"
+                FontSize="14"
+                FontAttributes="Bold"
+                CharacterSpacing="3" />
+
+            <Label
+                Text="Películas populares"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                FontSize="30"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="Seleccioná una película para ver sus detalles"
+                TextColor="{StaticResource ColorTextoSecundario}"
+                FontSize="14" />
 
         </VerticalStackLayout>
 
-        <!-- Indicador de carga -->
+        <!-- INDICADOR DE CARGA -->
 
-        <ActivityIndicator x:Name="Cargando"
-                           Grid.Row="1"
-                           IsVisible="False"
-                           IsRunning="False"
-                           Color="#A98BFF"
-                           WidthRequest="50"
-                           HeightRequest="50"
-                           HorizontalOptions="Center"
-                           VerticalOptions="Center" />
+        <ActivityIndicator
+            x:Name="Cargando"
+            Grid.Row="2"
+            IsVisible="False"
+            IsRunning="False"
+            Color="{StaticResource ColorPrimario}"
+            WidthRequest="50"
+            HeightRequest="50"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
 
-        <!-- Lista de películas -->
+        <!-- LISTA DE PELÍCULAS -->
 
-        <CollectionView x:Name="ListaPeliculas"
-                        Grid.Row="1"
-                        SelectionMode="Single"
-                        SelectionChanged="OnPeliculaSeleccionada"
-                        EmptyView="No se encontraron películas">
+        <CollectionView
+            x:Name="ListaPeliculas"
+            Grid.Row="2"
+            SelectionMode="Single"
+            SelectionChanged="OnPeliculaSeleccionada"
+            EmptyView="No se encontraron películas">
 
             <CollectionView.ItemsLayout>
 
-                <LinearItemsLayout Orientation="Vertical"
-                                   ItemSpacing="14" />
+                <LinearItemsLayout
+                    Orientation="Vertical"
+                    ItemSpacing="14" />
 
             </CollectionView.ItemsLayout>
 
@@ -75,104 +96,107 @@
 
                 <DataTemplate x:DataType="models:Pelicula">
 
-                    <Border BackgroundColor="#1F1F1F"
-                            Stroke="#363636"
-                            StrokeThickness="1"
-                            Padding="12">
+                    <Border
+                        BackgroundColor="{StaticResource ColorSuperficie}"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        Padding="12">
 
                         <Border.StrokeShape>
-
                             <RoundRectangle CornerRadius="18" />
-
                         </Border.StrokeShape>
 
-                        <Grid ColumnDefinitions="110,*"
-                              ColumnSpacing="16">
+                        <Grid
+                            ColumnDefinitions="110,*"
+                            ColumnSpacing="16">
 
-                            <!-- Imagen de la película -->
+                            <!-- IMAGEN -->
 
-                            <Border Grid.Column="0"
-                                    WidthRequest="110"
-                                    HeightRequest="165"
-                                    StrokeThickness="0">
+                            <Border
+                                Grid.Column="0"
+                                WidthRequest="110"
+                                HeightRequest="165"
+                                StrokeThickness="0"
+                                Padding="0">
 
                                 <Border.StrokeShape>
-
                                     <RoundRectangle CornerRadius="12" />
-
                                 </Border.StrokeShape>
 
-                                <Image Source="{Binding ImagenCompleta}"
-                                       Aspect="AspectFill" />
+                                <Image
+                                    Source="{Binding ImagenCompleta}"
+                                    Aspect="AspectFill" />
 
                             </Border>
 
-                            <!-- Información de la película -->
+                            <!-- INFORMACIÓN -->
 
-                            <VerticalStackLayout Grid.Column="1"
-                                                 VerticalOptions="Center"
-                                                 Spacing="10">
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                VerticalOptions="Center"
+                                Spacing="10">
 
-                                <Label Text="{Binding Titulo}"
-                                       TextColor="White"
-                                       FontSize="21"
-                                       FontAttributes="Bold"
-                                       LineBreakMode="TailTruncation"
-                                       MaxLines="2" />
+                                <Label
+                                    Text="{Binding Titulo}"
+                                    TextColor="{StaticResource ColorTextoPrincipal}"
+                                    FontSize="21"
+                                    FontAttributes="Bold"
+                                    LineBreakMode="TailTruncation"
+                                    MaxLines="2" />
 
                                 <HorizontalStackLayout Spacing="8">
 
-                                    <!-- Puntuación -->
+                                    <!-- PUNTUACIÓN -->
 
-                                    <Border BackgroundColor="#332B49"
-                                            StrokeThickness="0"
-                                            Padding="10,5">
+                                    <Border
+                                        BackgroundColor="{StaticResource ColorPrimarioOscuro}"
+                                        StrokeThickness="0"
+                                        Padding="10,5">
 
                                         <Border.StrokeShape>
-
                                             <RoundRectangle CornerRadius="10" />
-
                                         </Border.StrokeShape>
 
-                                        <Label Text="{Binding PuntuacionTexto}"
-                                               TextColor="#D9C9FF"
-                                               FontAttributes="Bold"
-                                               FontSize="13" />
+                                        <Label
+                                            Text="{Binding PuntuacionTexto}"
+                                            TextColor="{StaticResource ColorTextoPrincipal}"
+                                            FontAttributes="Bold"
+                                            FontSize="13" />
 
                                     </Border>
 
-                                    <!-- Fecha -->
+                                    <!-- FECHA -->
 
-                                    <Border BackgroundColor="#292929"
-                                            StrokeThickness="0"
-                                            Padding="10,5">
+                                    <Border
+                                        BackgroundColor="{StaticResource ColorSuperficieClara}"
+                                        StrokeThickness="0"
+                                        Padding="10,5">
 
                                         <Border.StrokeShape>
-
                                             <RoundRectangle CornerRadius="10" />
-
                                         </Border.StrokeShape>
 
-                                        <Label Text="{Binding FechaTexto}"
-                                               TextColor="#CCCCCC"
-                                               FontSize="13" />
+                                        <Label
+                                            Text="{Binding FechaTexto}"
+                                            TextColor="{StaticResource ColorTextoSecundario}"
+                                            FontSize="13" />
 
                                     </Border>
 
                                 </HorizontalStackLayout>
 
-                                <!-- Descripción -->
+                                <Label
+                                    Text="{Binding DescripcionCompleta}"
+                                    TextColor="{StaticResource ColorTextoSecundario}"
+                                    FontSize="14"
+                                    MaxLines="3"
+                                    LineBreakMode="TailTruncation" />
 
-                                <Label Text="{Binding DescripcionCompleta}"
-                                       TextColor="#BEBEBE"
-                                       FontSize="14"
-                                       MaxLines="3"
-                                       LineBreakMode="TailTruncation" />
-
-                                <Label Text="Ver detalles  →"
-                                       TextColor="#A98BFF"
-                                       FontSize="14"
-                                       FontAttributes="Bold" />
+                                <Label
+                                    Text="Ver detalles  →"
+                                    TextColor="{StaticResource ColorPrimario}"
+                                    FontSize="14"
+                                    FontAttributes="Bold" />
 
                             </VerticalStackLayout>
 

@@ -5,7 +5,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MAUINavegacion.RegistroPage"
     Title="Registro"
-    BackgroundColor="#0D0D0D">
+    BackgroundColor="{StaticResource ColorFondo}">
 
     <ScrollView>
 
@@ -15,66 +15,66 @@
 
             <Label
                 Text="Crear cuenta"
-                TextColor="White"
+                TextColor="{StaticResource ColorTextoPrincipal}"
                 FontSize="32"
                 FontAttributes="Bold" />
 
             <Label
                 Text="Completá tus datos para registrarte"
-                TextColor="#B8B8B8"
+                TextColor="{StaticResource ColorTextoSecundario}"
                 FontSize="15"
                 Margin="0,0,0,10" />
 
             <Entry
                 x:Name="UsuarioEntry"
                 Placeholder="Usuario"
-                PlaceholderColor="#888888"
-                TextColor="White"
-                BackgroundColor="#1F1F1F" />
+                PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BackgroundColor="{StaticResource ColorSuperficie}" />
 
             <Entry
                 x:Name="ContrasenaEntry"
                 Placeholder="Contraseña"
-                PlaceholderColor="#888888"
-                TextColor="White"
-                BackgroundColor="#1F1F1F"
+                PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BackgroundColor="{StaticResource ColorSuperficie}"
                 IsPassword="True" />
 
             <Entry
                 x:Name="NombreCompletoEntry"
                 Placeholder="Nombre completo"
-                PlaceholderColor="#888888"
-                TextColor="White"
-                BackgroundColor="#1F1F1F" />
+                PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BackgroundColor="{StaticResource ColorSuperficie}" />
 
             <Entry
                 x:Name="DireccionEntry"
                 Placeholder="Dirección"
-                PlaceholderColor="#888888"
-                TextColor="White"
-                BackgroundColor="#1F1F1F" />
+                PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BackgroundColor="{StaticResource ColorSuperficie}" />
 
             <Entry
                 x:Name="TelefonoEntry"
                 Placeholder="Teléfono"
-                PlaceholderColor="#888888"
-                TextColor="White"
-                BackgroundColor="#1F1F1F"
+                PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BackgroundColor="{StaticResource ColorSuperficie}"
                 Keyboard="Telephone" />
 
             <Entry
                 x:Name="EmailEntry"
                 Placeholder="Email"
-                PlaceholderColor="#888888"
-                TextColor="White"
-                BackgroundColor="#1F1F1F"
+                PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BackgroundColor="{StaticResource ColorSuperficie}"
                 Keyboard="Email" />
 
             <Button
                 Text="Seleccionar foto"
-                BackgroundColor="#1F1F1F"
-                TextColor="White"
-                BorderColor="#8B5CF6"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
                 BorderWidth="1"
                 CornerRadius="12"
                 Clicked="OnSeleccionarFotoClicked" />
@@ -90,15 +90,15 @@
             <Button
                 Text="Registrarme"
                 HeightRequest="55"
-                BackgroundColor="#8B5CF6"
-                TextColor="White"
+                BackgroundColor="{StaticResource ColorPrimario}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
                 FontAttributes="Bold"
                 CornerRadius="12"
                 Clicked="OnRegistrarClicked" />
 
             <Label
                 x:Name="MensajeLabel"
-                TextColor="#FF8A8A"
+                TextColor="{StaticResource ColorError}"
                 FontSize="14"
                 HorizontalTextAlignment="Center"
                 IsVisible="False" />
