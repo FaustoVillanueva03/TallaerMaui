@@ -86,6 +86,13 @@
                 CornerRadius="15"
                 Clicked="OnIniciarSesionClicked" />
 
+            <Button
+                Text="Crear una cuenta"
+                BackgroundColor="Transparent"
+                TextColor="#8B5CF6"
+                FontAttributes="Bold"
+                Clicked="OnCrearCuentaClicked" />
+            
             <Grid
                 ColumnDefinitions="*,Auto,*"
                 ColumnSpacing="12"

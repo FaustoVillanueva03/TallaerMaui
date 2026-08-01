@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.RegistroPage"
+    Title="Registro"
+    BackgroundColor="#0D0D0D">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="30"
+            Spacing="16">
+
+            <Label
+                Text="Crear cuenta"
+                TextColor="White"
+                FontSize="32"
+                FontAttributes="Bold" />
+
+            <Label
+                Text="Completá tus datos para registrarte"
+                TextColor="#B8B8B8"
+                FontSize="15"
+                Margin="0,0,0,10" />
+
+            <Entry
+                x:Name="UsuarioEntry"
+                Placeholder="Usuario"
+                PlaceholderColor="#888888"
+                TextColor="White"
+                BackgroundColor="#1F1F1F" />
+
+            <Entry
+                x:Name="ContrasenaEntry"
+                Placeholder="Contraseña"
+                PlaceholderColor="#888888"
+                TextColor="White"
+                BackgroundColor="#1F1F1F"
+                IsPassword="True" />
+
+            <Entry
+                x:Name="NombreCompletoEntry"
+                Placeholder="Nombre completo"
+                PlaceholderColor="#888888"
+                TextColor="White"
+                BackgroundColor="#1F1F1F" />
+
+            <Entry
+                x:Name="DireccionEntry"
+                Placeholder="Dirección"
+                PlaceholderColor="#888888"
+                TextColor="White"
+                BackgroundColor="#1F1F1F" />
+
+            <Entry
+                x:Name="TelefonoEntry"
+                Placeholder="Teléfono"
+                PlaceholderColor="#888888"
+                TextColor="White"
+                BackgroundColor="#1F1F1F"
+                Keyboard="Telephone" />
+
+            <Entry
+                x:Name="EmailEntry"
+                Placeholder="Email"
+                PlaceholderColor="#888888"
+                TextColor="White"
+                BackgroundColor="#1F1F1F"
+                Keyboard="Email" />
+
+            <Button
+                Text="Seleccionar foto"
+                BackgroundColor="#1F1F1F"
+                TextColor="White"
+                BorderColor="#8B5CF6"
+                BorderWidth="1"
+                CornerRadius="12"
+                Clicked="OnSeleccionarFotoClicked" />
+
+            <Image
+                x:Name="FotoPerfilImage"
+                HeightRequest="160"
+                WidthRequest="160"
+                Aspect="AspectFill"
+                HorizontalOptions="Center"
+                IsVisible="False" />
+
+            <Button
+                Text="Registrarme"
+                HeightRequest="55"
+                BackgroundColor="#8B5CF6"
+                TextColor="White"
+                FontAttributes="Bold"
+                CornerRadius="12"
+                Clicked="OnRegistrarClicked" />
+
+            <Label
+                x:Name="MensajeLabel"
+                TextColor="#FF8A8A"
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                IsVisible="False" />
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>
