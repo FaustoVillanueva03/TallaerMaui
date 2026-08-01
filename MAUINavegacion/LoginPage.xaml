@@ -12,7 +12,7 @@
 
         <VerticalStackLayout
             Padding="35"
-            Spacing="20"
+            Spacing="14"
             VerticalOptions="Center">
 
             <Label
@@ -37,6 +37,8 @@
                 HorizontalTextAlignment="Center"
                 Margin="0,0,0,15" />
 
+            <!-- USUARIO -->
+
             <Border
                 BackgroundColor="{StaticResource ColorSuperficie}"
                 Stroke="{StaticResource ColorBorde}"
@@ -55,6 +57,16 @@
                     BackgroundColor="Transparent" />
 
             </Border>
+
+            <Label
+                x:Name="UsuarioErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-8,0,0"
+                IsVisible="False" />
+
+            <!-- CONTRASEÑA -->
 
             <Border
                 BackgroundColor="{StaticResource ColorSuperficie}"
@@ -76,6 +88,16 @@
 
             </Border>
 
+            <Label
+                x:Name="ContrasenaErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-8,0,0"
+                IsVisible="False" />
+
+            <!-- INICIAR SESIÓN -->
+
             <Button
                 Text="Iniciar sesión"
                 HeightRequest="55"
@@ -84,14 +106,98 @@
                 FontSize="17"
                 FontAttributes="Bold"
                 CornerRadius="15"
-                Clicked="OnIniciarSesionClicked" />
+                Clicked="OnIniciarSesionClicked">
+
+                <VisualStateManager.VisualStateGroups>
+
+                    <VisualStateGroupList>
+
+                        <VisualStateGroup x:Name="CommonStates">
+
+                            <VisualState x:Name="Normal">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="1" />
+                                    <Setter
+                                        Property="Opacity"
+                                        Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="1.03" />
+                                    <Setter
+                                        Property="BackgroundColor"
+                                        Value="{StaticResource ColorPrimarioOscuro}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="0.97" />
+                                    <Setter
+                                        Property="Opacity"
+                                        Value="0.85" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+
+                    </VisualStateGroupList>
+
+                </VisualStateManager.VisualStateGroups>
+
+            </Button>
+
+            <!-- CREAR CUENTA -->
 
             <Button
                 Text="Crear una cuenta"
                 BackgroundColor="Transparent"
                 TextColor="{StaticResource ColorPrimario}"
                 FontAttributes="Bold"
-                Clicked="OnCrearCuentaClicked" />
+                Clicked="OnCrearCuentaClicked">
+
+                <VisualStateManager.VisualStateGroups>
+
+                    <VisualStateGroupList>
+
+                        <VisualStateGroup x:Name="CommonStates">
+
+                            <VisualState x:Name="Normal" />
+
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="1.03" />
+                                    <Setter
+                                        Property="TextColor"
+                                        Value="{StaticResource ColorPrimarioOscuro}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="0.97" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+
+                    </VisualStateGroupList>
+
+                </VisualStateManager.VisualStateGroups>
+
+            </Button>
 
             <Grid
                 ColumnDefinitions="*,Auto,*"
@@ -117,6 +223,8 @@
 
             </Grid>
 
+            <!-- HUELLA -->
+
             <Button
                 Text="🔐 Ingresar con huella"
                 HeightRequest="55"
@@ -126,12 +234,53 @@
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 FontSize="17"
                 CornerRadius="15"
-                Clicked="OnHuellaClicked" />
+                Clicked="OnHuellaClicked">
+
+                <VisualStateManager.VisualStateGroups>
+
+                    <VisualStateGroupList>
+
+                        <VisualStateGroup x:Name="CommonStates">
+
+                            <VisualState x:Name="Normal" />
+
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="1.03" />
+                                    <Setter
+                                        Property="BackgroundColor"
+                                        Value="{StaticResource ColorSuperficieClara}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="0.97" />
+                                    <Setter
+                                        Property="Opacity"
+                                        Value="0.85" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+
+                    </VisualStateGroupList>
+
+                </VisualStateManager.VisualStateGroups>
+
+            </Button>
+
+            <!-- MENSAJE GENERAL PARA HUELLA -->
 
             <Label
                 x:Name="MensajeLabel"
                 TextColor="{StaticResource ColorError}"
                 FontSize="14"
+                FontAttributes="Bold"
                 HorizontalTextAlignment="Center"
                 IsVisible="False" />
 

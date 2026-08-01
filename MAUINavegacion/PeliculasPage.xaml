@@ -8,6 +8,112 @@
     Title="Películas"
     BackgroundColor="{StaticResource ColorFondo}">
 
+    <ContentPage.Resources>
+
+        <Style
+            x:Key="TarjetaContenidoStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="{StaticResource ColorSuperficie}" />
+
+            <Setter
+                Property="Stroke"
+                Value="{StaticResource ColorBorde}" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="Scale"
+                Value="1" />
+
+            <Setter
+                Property="Opacity"
+                Value="1" />
+
+            <Setter Property="VisualStateManager.VisualStateGroups">
+
+                <VisualStateGroupList>
+
+                    <VisualStateGroup x:Name="CommonStates">
+
+                        <VisualState x:Name="Normal">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficie}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorBorde}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="PointerOver">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficieClara}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="Pressed">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="0.98" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="0.85" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                    </VisualStateGroup>
+
+                </VisualStateGroupList>
+
+            </Setter>
+
+        </Style>
+
+    </ContentPage.Resources>
+
     <ContentPage.ToolbarItems>
 
         <ToolbarItem
@@ -97,11 +203,10 @@
                 <DataTemplate x:DataType="models:Pelicula">
 
                     <Border
-                        BackgroundColor="{StaticResource ColorSuperficie}"
-                        Stroke="{StaticResource ColorBorde}"
-                        StrokeThickness="1"
-                        Padding="12">
-
+                        Style="{StaticResource TarjetaContenidoStyle}"
+                        Padding="12"
+                        Margin="8,4">
+                        
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="18" />
                         </Border.StrokeShape>

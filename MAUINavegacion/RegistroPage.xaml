@@ -11,7 +11,7 @@
 
         <VerticalStackLayout
             Padding="30"
-            Spacing="16">
+            Spacing="12">
 
             <Label
                 Text="Crear cuenta"
@@ -25,12 +25,24 @@
                 FontSize="15"
                 Margin="0,0,0,10" />
 
+            <!-- USUARIO -->
+
             <Entry
                 x:Name="UsuarioEntry"
                 Placeholder="Usuario"
                 PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 BackgroundColor="{StaticResource ColorSuperficie}" />
+
+            <Label
+                x:Name="UsuarioErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-6,0,0"
+                IsVisible="False" />
+
+            <!-- CONTRASEÑA -->
 
             <Entry
                 x:Name="ContrasenaEntry"
@@ -40,6 +52,16 @@
                 BackgroundColor="{StaticResource ColorSuperficie}"
                 IsPassword="True" />
 
+            <Label
+                x:Name="ContrasenaErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-6,0,0"
+                IsVisible="False" />
+
+            <!-- NOMBRE -->
+
             <Entry
                 x:Name="NombreCompletoEntry"
                 Placeholder="Nombre completo"
@@ -47,12 +69,32 @@
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 BackgroundColor="{StaticResource ColorSuperficie}" />
 
+            <Label
+                x:Name="NombreErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-6,0,0"
+                IsVisible="False" />
+
+            <!-- DIRECCIÓN -->
+
             <Entry
                 x:Name="DireccionEntry"
                 Placeholder="Dirección"
                 PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 BackgroundColor="{StaticResource ColorSuperficie}" />
+
+            <Label
+                x:Name="DireccionErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-6,0,0"
+                IsVisible="False" />
+
+            <!-- TELÉFONO -->
 
             <Entry
                 x:Name="TelefonoEntry"
@@ -62,6 +104,16 @@
                 BackgroundColor="{StaticResource ColorSuperficie}"
                 Keyboard="Telephone" />
 
+            <Label
+                x:Name="TelefonoErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-6,0,0"
+                IsVisible="False" />
+
+            <!-- EMAIL -->
+
             <Entry
                 x:Name="EmailEntry"
                 Placeholder="Email"
@@ -70,6 +122,16 @@
                 BackgroundColor="{StaticResource ColorSuperficie}"
                 Keyboard="Email" />
 
+            <Label
+                x:Name="EmailErrorLabel"
+                TextColor="{StaticResource ColorError}"
+                FontSize="13"
+                FontAttributes="Bold"
+                Margin="5,-6,0,0"
+                IsVisible="False" />
+
+            <!-- FOTO -->
+
             <Button
                 Text="Seleccionar foto"
                 BackgroundColor="{StaticResource ColorSuperficie}"
@@ -77,7 +139,38 @@
                 BorderColor="{StaticResource ColorPrimario}"
                 BorderWidth="1"
                 CornerRadius="12"
-                Clicked="OnSeleccionarFotoClicked" />
+                Clicked="OnSeleccionarFotoClicked">
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+
+                            <VisualState x:Name="Normal" />
+
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="1.03" />
+                                    <Setter
+                                        Property="BackgroundColor"
+                                        Value="{StaticResource ColorSuperficieClara}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="0.97" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+
+            </Button>
 
             <Image
                 x:Name="FotoPerfilImage"
@@ -87,6 +180,8 @@
                 HorizontalOptions="Center"
                 IsVisible="False" />
 
+            <!-- REGISTRAR -->
+
             <Button
                 Text="Registrarme"
                 HeightRequest="55"
@@ -94,12 +189,47 @@
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 FontAttributes="Bold"
                 CornerRadius="12"
-                Clicked="OnRegistrarClicked" />
+                Clicked="OnRegistrarClicked">
+
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CommonStates">
+
+                            <VisualState x:Name="Normal" />
+
+                            <VisualState x:Name="PointerOver">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="1.03" />
+                                    <Setter
+                                        Property="BackgroundColor"
+                                        Value="{StaticResource ColorPrimarioOscuro}" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                            <VisualState x:Name="Pressed">
+                                <VisualState.Setters>
+                                    <Setter
+                                        Property="Scale"
+                                        Value="0.97" />
+                                    <Setter
+                                        Property="Opacity"
+                                        Value="0.85" />
+                                </VisualState.Setters>
+                            </VisualState>
+
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+
+            </Button>
 
             <Label
                 x:Name="MensajeLabel"
                 TextColor="{StaticResource ColorError}"
                 FontSize="14"
+                FontAttributes="Bold"
                 HorizontalTextAlignment="Center"
                 IsVisible="False" />
 

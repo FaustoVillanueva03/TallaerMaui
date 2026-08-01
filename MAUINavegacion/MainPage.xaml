@@ -7,6 +7,114 @@
     Title="Inicio"
     BackgroundColor="{StaticResource ColorFondo}">
 
+    <ContentPage.Resources>
+
+        <!-- Estilo de las tarjetas del menú -->
+
+        <Style
+            x:Key="TarjetaMenuStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="{StaticResource ColorSuperficie}" />
+
+            <Setter
+                Property="Stroke"
+                Value="{StaticResource ColorBorde}" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="Scale"
+                Value="1" />
+
+            <Setter
+                Property="Opacity"
+                Value="1" />
+
+            <Setter Property="VisualStateManager.VisualStateGroups">
+
+                <VisualStateGroupList>
+
+                    <VisualStateGroup x:Name="CommonStates">
+
+                        <VisualState x:Name="Normal">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficie}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorBorde}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="PointerOver">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1.025" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficieClara}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="Pressed">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="0.97" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="0.85" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                    </VisualStateGroup>
+
+                </VisualStateGroupList>
+
+            </Setter>
+
+        </Style>
+
+    </ContentPage.Resources>
+
     <ScrollView>
 
         <VerticalStackLayout Spacing="0">
@@ -55,12 +163,10 @@
                     FontSize="24"
                     FontAttributes="Bold" />
 
-                <!-- CINE -->
+                <!-- PELÍCULAS -->
 
                 <Border
-                    BackgroundColor="{StaticResource ColorSuperficie}"
-                    Stroke="{StaticResource ColorBorde}"
-                    StrokeThickness="1"
+                    Style="{StaticResource TarjetaMenuStyle}"
                     Padding="0">
 
                     <Border.StrokeShape>
@@ -68,7 +174,10 @@
                     </Border.StrokeShape>
 
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnCineClicked" />
+
+                        <TapGestureRecognizer
+                            Tapped="OnCineClicked" />
+
                     </Border.GestureRecognizers>
 
                     <Grid
@@ -120,9 +229,7 @@
                 <!-- SERIES -->
 
                 <Border
-                    BackgroundColor="{StaticResource ColorSuperficie}"
-                    Stroke="{StaticResource ColorBorde}"
-                    StrokeThickness="1"
+                    Style="{StaticResource TarjetaMenuStyle}"
                     Padding="0">
 
                     <Border.StrokeShape>
@@ -130,7 +237,10 @@
                     </Border.StrokeShape>
 
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnSeriesClicked" />
+
+                        <TapGestureRecognizer
+                            Tapped="OnSeriesClicked" />
+
                     </Border.GestureRecognizers>
 
                     <Grid
@@ -185,11 +295,11 @@
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
+                    <!-- CLIMA -->
+
                     <Border
                         Grid.Column="0"
-                        BackgroundColor="{StaticResource ColorSuperficie}"
-                        Stroke="{StaticResource ColorBorde}"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -197,7 +307,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnClimaClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnClimaClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">
@@ -228,11 +341,11 @@
 
                     </Border>
 
+                    <!-- COTIZACIONES -->
+
                     <Border
                         Grid.Column="1"
-                        BackgroundColor="{StaticResource ColorSuperficie}"
-                        Stroke="{StaticResource ColorBorde}"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -240,7 +353,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnCotizacionesClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnCotizacionesClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">
@@ -279,11 +395,11 @@
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
+                    <!-- MAPA -->
+
                     <Border
                         Grid.Column="0"
-                        BackgroundColor="{StaticResource ColorSuperficie}"
-                        Stroke="{StaticResource ColorBorde}"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -291,7 +407,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnMapaClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnMapaClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">
@@ -322,11 +441,11 @@
 
                     </Border>
 
+                    <!-- PERFIL -->
+
                     <Border
                         Grid.Column="1"
-                        BackgroundColor="{StaticResource ColorSuperficie}"
-                        Stroke="{StaticResource ColorBorde}"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -334,7 +453,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPerfilClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnPerfilClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">

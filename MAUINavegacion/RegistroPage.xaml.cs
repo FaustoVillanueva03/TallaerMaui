@@ -17,6 +17,8 @@ public partial class RegistroPage : ContentPage
         object sender,
         EventArgs e)
     {
+        LimpiarMensajeGeneral();
+
         try
         {
             FileResult? foto =
@@ -49,8 +51,9 @@ public partial class RegistroPage : ContentPage
         }
         catch (Exception)
         {
-            MostrarMensaje(
-                "No se pudo seleccionar la foto.");
+            MostrarMensajeGeneral(
+                "No se pudo seleccionar la foto.",
+                esError: true);
         }
     }
 
@@ -58,9 +61,7 @@ public partial class RegistroPage : ContentPage
         object sender,
         EventArgs e)
     {
-        MensajeLabel.IsVisible = false;
-
-        await App.Database.InicializarAsync();
+        LimpiarErrores();
 
         string nombreUsuario =
             UsuarioEntry.Text?.Trim() ?? string.Empty;
@@ -80,57 +81,117 @@ public partial class RegistroPage : ContentPage
         string email =
             EmailEntry.Text?.Trim() ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(nombreUsuario) ||
-            string.IsNullOrWhiteSpace(contrasena) ||
-            string.IsNullOrWhiteSpace(nombreCompleto) ||
-            string.IsNullOrWhiteSpace(direccion) ||
-            string.IsNullOrWhiteSpace(telefono) ||
-            string.IsNullOrWhiteSpace(email))
-        {
-            MostrarMensaje(
-                "Completá todos los datos obligatorios.");
+        bool hayErrores = false;
 
-            return;
+        // Validación del usuario
+
+        if (string.IsNullOrWhiteSpace(nombreUsuario))
+        {
+            MostrarError(
+                UsuarioErrorLabel,
+                "Ingresá un nombre de usuario.");
+
+            hayErrores = true;
         }
-
-        if (nombreUsuario.Length < 3)
+        else if (nombreUsuario.Length < 3)
         {
-            MostrarMensaje(
+            MostrarError(
+                UsuarioErrorLabel,
                 "El usuario debe tener al menos 3 caracteres.");
 
-            return;
+            hayErrores = true;
         }
 
-        if (contrasena.Length < 4)
+        // Validación de la contraseña
+
+        if (string.IsNullOrWhiteSpace(contrasena))
         {
-            MostrarMensaje(
+            MostrarError(
+                ContrasenaErrorLabel,
+                "Ingresá una contraseña.");
+
+            hayErrores = true;
+        }
+        else if (contrasena.Length < 4)
+        {
+            MostrarError(
+                ContrasenaErrorLabel,
                 "La contraseña debe tener al menos 4 caracteres.");
 
-            return;
+            hayErrores = true;
         }
 
-        if (!Regex.IsMatch(
-                email,
-                @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
-        {
-            MostrarMensaje(
-                "Ingresá un email válido.");
+        // Validación del nombre
 
-            return;
+        if (string.IsNullOrWhiteSpace(nombreCompleto))
+        {
+            MostrarError(
+                NombreErrorLabel,
+                "Ingresá tu nombre completo.");
+
+            hayErrores = true;
         }
 
-        if (!Regex.IsMatch(
-                telefono,
-                @"^[0-9+\-\s]{6,20}$"))
+        // Validación de la dirección
+
+        if (string.IsNullOrWhiteSpace(direccion))
         {
-            MostrarMensaje(
+            MostrarError(
+                DireccionErrorLabel,
+                "Ingresá tu dirección.");
+
+            hayErrores = true;
+        }
+
+        // Validación del teléfono
+
+        if (string.IsNullOrWhiteSpace(telefono))
+        {
+            MostrarError(
+                TelefonoErrorLabel,
+                "Ingresá tu teléfono.");
+
+            hayErrores = true;
+        }
+        else if (!Regex.IsMatch(
+                     telefono,
+                     @"^[0-9+\-\s]{6,20}$"))
+        {
+            MostrarError(
+                TelefonoErrorLabel,
                 "Ingresá un teléfono válido.");
 
-            return;
+            hayErrores = true;
         }
+
+        // Validación del email
+
+        if (string.IsNullOrWhiteSpace(email))
+        {
+            MostrarError(
+                EmailErrorLabel,
+                "Ingresá tu email.");
+
+            hayErrores = true;
+        }
+        else if (!Regex.IsMatch(
+                     email,
+                     @"^[^@\s]+@[^@\s]+\.[^@\s]+$"))
+        {
+            MostrarError(
+                EmailErrorLabel,
+                "Ingresá un email válido.");
+
+            hayErrores = true;
+        }
+
+        if (hayErrores)
+            return;
 
         try
         {
+            await App.Database.InicializarAsync();
+
             Usuario? usuarioExistente =
                 await App.Database
                     .ObtenerUsuarioPorNombreAsync(
@@ -138,7 +199,8 @@ public partial class RegistroPage : ContentPage
 
             if (usuarioExistente != null)
             {
-                MostrarMensaje(
+                MostrarError(
+                    UsuarioErrorLabel,
                     "Ese nombre de usuario ya existe.");
 
                 return;
@@ -158,10 +220,11 @@ public partial class RegistroPage : ContentPage
             await App.Database
                 .RegistrarUsuarioAsync(nuevoUsuario);
 
-            await DisplayAlert(
-                "Registro correcto",
-                "El usuario se registró correctamente.",
-                "Aceptar");
+            MostrarMensajeGeneral(
+                "Usuario registrado correctamente.",
+                esError: false);
+
+            await Task.Delay(1200);
 
             await Navigation.PopAsync();
         }
@@ -171,25 +234,67 @@ public partial class RegistroPage : ContentPage
                     "UNIQUE",
                     StringComparison.OrdinalIgnoreCase))
             {
-                MostrarMensaje(
+                MostrarError(
+                    EmailErrorLabel,
                     "El usuario o el email ya están registrados.");
             }
             else
             {
-                MostrarMensaje(
-                    "No se pudo guardar el usuario.");
+                MostrarMensajeGeneral(
+                    "No se pudo guardar el usuario.",
+                    esError: true);
             }
         }
         catch (Exception)
         {
-            MostrarMensaje(
-                "Ocurrió un error al registrar el usuario.");
+            MostrarMensajeGeneral(
+                "Ocurrió un error al registrar el usuario.",
+                esError: true);
         }
     }
 
-    private void MostrarMensaje(string mensaje)
+    private void MostrarError(
+        Label etiqueta,
+        string mensaje)
+    {
+        etiqueta.Text = mensaje;
+        etiqueta.IsVisible = true;
+    }
+
+    private void LimpiarErrores()
+    {
+        LimpiarEtiqueta(UsuarioErrorLabel);
+        LimpiarEtiqueta(ContrasenaErrorLabel);
+        LimpiarEtiqueta(NombreErrorLabel);
+        LimpiarEtiqueta(DireccionErrorLabel);
+        LimpiarEtiqueta(TelefonoErrorLabel);
+        LimpiarEtiqueta(EmailErrorLabel);
+
+        LimpiarMensajeGeneral();
+    }
+
+    private static void LimpiarEtiqueta(Label etiqueta)
+    {
+        etiqueta.Text = string.Empty;
+        etiqueta.IsVisible = false;
+    }
+
+    private void LimpiarMensajeGeneral()
+    {
+        MensajeLabel.Text = string.Empty;
+        MensajeLabel.IsVisible = false;
+    }
+
+    private void MostrarMensajeGeneral(
+        string mensaje,
+        bool esError)
     {
         MensajeLabel.Text = mensaje;
+
+        MensajeLabel.TextColor = esError
+            ? Color.FromArgb("#FF8A8A")
+            : Color.FromArgb("#4CAF50");
+
         MensajeLabel.IsVisible = true;
     }
 }

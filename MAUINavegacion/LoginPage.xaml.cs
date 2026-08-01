@@ -40,6 +40,8 @@ public partial class LoginPage : ContentPage
             return;
 
         _autenticando = true;
+
+        LimpiarErroresLogin();
         MensajeLabel.IsVisible = false;
 
         try
@@ -93,10 +95,10 @@ public partial class LoginPage : ContentPage
     }
 
     private async void OnIniciarSesionClicked(
-    object sender,
-    EventArgs e)
+        object sender,
+        EventArgs e)
     {
-        MensajeLabel.IsVisible = false;
+        LimpiarErroresLogin();
 
         string nombreUsuario =
             UsuarioEntry.Text?.Trim() ?? string.Empty;
@@ -104,14 +106,28 @@ public partial class LoginPage : ContentPage
         string contrasena =
             ContrasenaEntry.Text ?? string.Empty;
 
-        if (string.IsNullOrWhiteSpace(nombreUsuario) ||
-            string.IsNullOrWhiteSpace(contrasena))
-        {
-            MostrarMensaje(
-                "Ingresá el usuario y la contraseña.");
+        bool hayErrores = false;
 
-            return;
+        if (string.IsNullOrWhiteSpace(nombreUsuario))
+        {
+            UsuarioErrorLabel.Text =
+                "Ingresá tu nombre de usuario.";
+
+            UsuarioErrorLabel.IsVisible = true;
+            hayErrores = true;
         }
+
+        if (string.IsNullOrWhiteSpace(contrasena))
+        {
+            ContrasenaErrorLabel.Text =
+                "Ingresá tu contraseña.";
+
+            ContrasenaErrorLabel.IsVisible = true;
+            hayErrores = true;
+        }
+
+        if (hayErrores)
+            return;
 
         try
         {
@@ -124,9 +140,10 @@ public partial class LoginPage : ContentPage
 
             if (usuario == null)
             {
-                MostrarMensaje(
-                    "Usuario o contraseña incorrectos.");
+                ContrasenaErrorLabel.Text =
+                    "El usuario o la contraseña son incorrectos.";
 
+                ContrasenaErrorLabel.IsVisible = true;
                 return;
             }
 
@@ -142,18 +159,27 @@ public partial class LoginPage : ContentPage
                 "NombreCompleto",
                 usuario.NombreCompleto);
 
-            await DisplayAlert(
-                "Bienvenido",
-                $"Hola, {usuario.NombreCompleto}",
-                "Aceptar");
-
             EntrarAlaAplicacion();
         }
-        catch (Exception error)
+        catch (Exception)
         {
-            MostrarMensaje(
-                $"No se pudo iniciar sesión: {error.Message}");
+            ContrasenaErrorLabel.Text =
+                "No se pudo iniciar sesión. Intentá nuevamente.";
+
+            ContrasenaErrorLabel.IsVisible = true;
         }
+    }
+
+    private void LimpiarErroresLogin()
+    {
+        UsuarioErrorLabel.Text = string.Empty;
+        UsuarioErrorLabel.IsVisible = false;
+
+        ContrasenaErrorLabel.Text = string.Empty;
+        ContrasenaErrorLabel.IsVisible = false;
+
+        MensajeLabel.Text = string.Empty;
+        MensajeLabel.IsVisible = false;
     }
 
     private void EntrarAlaAplicacion()
