@@ -80,6 +80,9 @@
 	  <MauiXaml Update="ClimaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="CotizacionesPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="DetalleSeriePage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

@@ -22,6 +22,8 @@ namespace MAUINavegacion.Models
         [JsonPropertyName("vote_average")]
         public double Puntuacion { get; set; }
 
+        public double PrecioUYU { get; set; }
+
         public string ImagenCompleta
         {
             get

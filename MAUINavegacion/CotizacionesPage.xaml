@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.CotizacionesPage"
+    Title="Cotizaciones"
+    BackgroundColor="{StaticResource ColorFondo}">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
+
+            <Button
+                Text="← Volver"
+                HorizontalOptions="Start"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
+                CornerRadius="12"
+                Clicked="OnVolverClicked"/>
+
+            <Label
+                Text="COTIZACIONES"
+                FontSize="30"
+                FontAttributes="Bold"
+                TextColor="{StaticResource ColorTextoPrincipal}"/>
+
+            <Label
+                Text="Valores actualizados respecto al Peso Uruguayo"
+                FontSize="16"
+                TextColor="{StaticResource ColorTextoSecundario}"/>
+
+            <Border
+                Padding="15"
+                Stroke="{StaticResource ColorPrimario}"
+                StrokeThickness="1"
+                BackgroundColor="{StaticResource ColorSuperficie}">
+
+                <VerticalStackLayout>
+
+                    <Label
+                        Text="💵 Dólar"
+                        FontSize="20"
+                        FontAttributes="Bold"/>
+
+                    <Label
+                        x:Name="DolarLabel"
+                        FontSize="24"
+                        TextColor="{StaticResource ColorPrimario}"/>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <Border
+                Padding="15"
+                Stroke="{StaticResource ColorPrimario}"
+                StrokeThickness="1"
+                BackgroundColor="{StaticResource ColorSuperficie}">
+
+                <VerticalStackLayout>
+
+                    <Label
+                        Text="💶 Euro"
+                        FontSize="20"
+                        FontAttributes="Bold"/>
+
+                    <Label
+                        x:Name="EuroLabel"
+                        FontSize="24"
+                        TextColor="{StaticResource ColorPrimario}"/>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <Border
+                Padding="15"
+                Stroke="{StaticResource ColorPrimario}"
+                StrokeThickness="1"
+                BackgroundColor="{StaticResource ColorSuperficie}">
+
+                <VerticalStackLayout>
+
+                    <Label
+                        Text="🇧🇷 Real"
+                        FontSize="20"
+                        FontAttributes="Bold"/>
+
+                    <Label
+                        x:Name="RealLabel"
+                        FontSize="24"
+                        TextColor="{StaticResource ColorPrimario}"/>
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <ActivityIndicator
+                x:Name="Cargando"
+                IsVisible="False"
+                IsRunning="False"
+                Color="{StaticResource ColorPrimario}"/>
+
+            <Label
+    Text="Conversor de Monedas"
+    FontSize="24"
+    FontAttributes="Bold"
+    Margin="0,20,0,10"
+    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+            <Entry
+    x:Name="MontoEntry"
+    Placeholder="Ingresá un monto"
+    Keyboard="Numeric"
+    BackgroundColor="{StaticResource ColorSuperficie}"
+    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+            <Picker
+    x:Name="MonedaPicker"
+    Title="Seleccioná la moneda" />
+
+            <Button
+    Text="Convertir"
+    BackgroundColor="{StaticResource ColorPrimario}"
+    TextColor="White"
+    CornerRadius="12"
+    Clicked="OnConvertirClicked"/>
+
+            <Border
+    Padding="15"
+    Margin="0,10,0,0"
+    Stroke="{StaticResource ColorPrimario}"
+    StrokeThickness="1"
+    BackgroundColor="{StaticResource ColorSuperficie}">
+
+                <VerticalStackLayout Spacing="8">
+
+                    <Label
+            x:Name="ResultadoUYU"
+            FontSize="18"
+            TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                    <Label
+            x:Name="ResultadoUSD"
+            FontSize="18"
+            TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                    <Label
+            x:Name="ResultadoEUR"
+            FontSize="18"
+            TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                    <Label
+            x:Name="ResultadoBRL"
+            FontSize="18"
+            TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>

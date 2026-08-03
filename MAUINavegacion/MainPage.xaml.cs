@@ -26,12 +26,12 @@ public partial class MainPage : ContentPage
         await Navigation.PushAsync(new ClimaPage());
     }
 
-    private async void OnCotizacionesClicked(object sender, EventArgs e)
+    private async void OnCotizacionesClicked(
+     object sender,
+     EventArgs e)
     {
-        await DisplayAlert(
-            "Cotizaciones",
-            "La sección de cotizaciones todavía no está creada.",
-            "Aceptar");
+        await Navigation.PushAsync(
+            new CotizacionesPage());
     }
 
     private async void OnMapaClicked(object sender, EventArgs e)
