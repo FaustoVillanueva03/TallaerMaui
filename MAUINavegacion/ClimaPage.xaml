@@ -70,6 +70,72 @@
                 Color="{StaticResource ColorPrimario}"
                 HorizontalOptions="Center"/>
 
+			<Label
+    Text="Pronóstico de los próximos 5 días"
+    FontSize="22"
+    FontAttributes="Bold"
+    TextColor="{StaticResource ColorTextoPrincipal}"
+    Margin="0,20,0,10"/>
+
+			<CollectionView
+				x:Name="ListaPronostico">
+
+				<CollectionView.ItemTemplate>
+
+					<DataTemplate>
+
+						<Border
+							Margin="0,5"
+							Padding="15"
+							Stroke="{StaticResource ColorPrimario}"
+							StrokeThickness="1"
+							BackgroundColor="{StaticResource ColorSuperficie}">
+
+							<Grid
+								ColumnDefinitions="80,*,80"
+								VerticalOptions="Center">
+
+								<Image
+									Grid.Column="0"
+									WidthRequest="50"
+									HeightRequest="50"
+									Source="{Binding IconoCompleto}" />
+
+								<VerticalStackLayout
+									Grid.Column="1"
+									Spacing="2">
+
+									<Label
+										Text="{Binding Dia}"
+										FontAttributes="Bold"
+										FontSize="18"
+										TextColor="{StaticResource ColorTextoPrincipal}" />
+
+									<Label
+										Text="{Binding Descripcion}"
+										TextColor="{StaticResource ColorTextoSecundario}" />
+
+								</VerticalStackLayout>
+
+								<Label
+									Grid.Column="2"
+									HorizontalOptions="End"
+									VerticalOptions="Center"
+									FontSize="22"
+									FontAttributes="Bold"
+									Text="{Binding TemperaturaTexto}"
+									TextColor="{StaticResource ColorPrimario}" />
+
+							</Grid>
+
+						</Border>
+
+					</DataTemplate>
+
+				</CollectionView.ItemTemplate>
+
+			</CollectionView>
+
         </VerticalStackLayout>
 
     </ScrollView>

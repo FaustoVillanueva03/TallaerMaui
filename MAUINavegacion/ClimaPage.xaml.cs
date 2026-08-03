@@ -45,6 +45,11 @@ public partial class ClimaPage : ContentPage
 
             IconoImage.Source =
                 $"https://openweathermap.org/img/wn/{clima.Weather[0].Icono}@2x.png";
+
+            List<PronosticoDia> pronostico =
+    await _weatherService.ObtenerPronostico5DiasAsync();
+
+            ListaPronostico.ItemsSource = pronostico;
         }
         catch (Exception ex)
         {
