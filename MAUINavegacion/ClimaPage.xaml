@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.ClimaPage"
+    Title="Clima"
+    BackgroundColor="{StaticResource ColorFondo}">
+
+    <ScrollView>
+
+        <VerticalStackLayout
+            Padding="20"
+            Spacing="20">
+
+            <Button
+                Text="← Volver"
+                HorizontalOptions="Start"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
+                CornerRadius="12"
+                Clicked="OnVolverClicked"/>
+
+            <Label
+                Text="CLIMA"
+                FontSize="30"
+                FontAttributes="Bold"
+                TextColor="{StaticResource ColorTextoPrincipal}"/>
+
+            <Label
+                x:Name="CiudadLabel"
+                FontSize="18"
+                TextColor="{StaticResource ColorTextoSecundario}"/>
+
+            <Image
+                x:Name="IconoImage"
+                WidthRequest="120"
+                HeightRequest="120"
+                HorizontalOptions="Center"/>
+
+            <Label
+                x:Name="TemperaturaLabel"
+                FontSize="50"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                TextColor="{StaticResource ColorPrimario}"/>
+
+            <Label
+                x:Name="DescripcionLabel"
+                FontSize="20"
+                HorizontalOptions="Center"
+                TextColor="{StaticResource ColorTextoPrincipal}"/>
+
+            <Label
+                x:Name="SensacionLabel"
+                FontSize="16"
+                TextColor="{StaticResource ColorTextoSecundario}"/>
+
+            <Label
+                x:Name="HumedadLabel"
+                FontSize="16"
+                TextColor="{StaticResource ColorTextoSecundario}"/>
+
+            <ActivityIndicator
+                x:Name="Cargando"
+                IsRunning="False"
+                IsVisible="False"
+                Color="{StaticResource ColorPrimario}"
+                HorizontalOptions="Center"/>
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>
