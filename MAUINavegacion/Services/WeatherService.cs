@@ -80,8 +80,14 @@ public class WeatherService
             return resultado;
 
         var dias = respuesta.Lista
-            .Where(item => item.Fecha.Contains("12:00:00"))
-            .Take(5);
+    .GroupBy(item =>
+        DateTime.Parse(item.Fecha).Date)
+    .Select(grupo =>
+        grupo.OrderBy(item =>
+            Math.Abs(
+                DateTime.Parse(item.Fecha).Hour - 12))
+        .First())
+    .Take(5);
 
         foreach (var item in dias)
         {

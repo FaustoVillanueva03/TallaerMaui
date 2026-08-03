@@ -38,13 +38,13 @@ public class SerieService
                 await _httpClient.GetAsync(url);
 
             string contenido =
-                await respuestaHttp.Content.ReadAsStringAsync();
+                await respuestaHttp.Content
+                    .ReadAsStringAsync();
 
             if (!respuestaHttp.IsSuccessStatusCode)
             {
                 throw new Exception(
-                    $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
-                    contenido);
+                    $"Error TMDB {(int)respuestaHttp.StatusCode}: {contenido}");
             }
 
             RespuestaSeries? respuesta =
@@ -53,7 +53,8 @@ public class SerieService
 
             if (respuesta?.Series != null)
             {
-                todasLasSeries.AddRange(respuesta.Series);
+                todasLasSeries.AddRange(
+                    respuesta.Series);
             }
         }
 
@@ -63,12 +64,57 @@ public class SerieService
             .ToList();
     }
 
+    public async Task<List<Serie>>
+        ObtenerSeriesPorGeneroAsync(
+            int generoId,
+            int cantidad = 10)
+    {
+        string url =
+            $"https://api.themoviedb.org/3/discover/tv" +
+            $"?api_key={ApiKey}" +
+            $"&language=es-ES" +
+            $"&include_adult=false" +
+            $"&sort_by=popularity.desc" +
+            $"&vote_count.gte=50" +
+            $"&with_genres={generoId}" +
+            $"&page=1";
+
+        HttpResponseMessage respuestaHttp =
+            await _httpClient.GetAsync(url);
+
+        string contenido =
+            await respuestaHttp.Content
+                .ReadAsStringAsync();
+
+        if (!respuestaHttp.IsSuccessStatusCode)
+        {
+            throw new Exception(
+                $"Error TMDB {(int)respuestaHttp.StatusCode}: {contenido}");
+        }
+
+        RespuestaSeries? respuesta =
+            await respuestaHttp.Content
+                .ReadFromJsonAsync<RespuestaSeries>();
+
+        if (respuesta?.Series == null)
+        {
+            return new List<Serie>();
+        }
+
+        return respuesta.Series
+            .GroupBy(serie => serie.Id)
+            .Select(grupo => grupo.First())
+            .Take(cantidad)
+            .ToList();
+    }
+
     public async Task<Trailer?> ObtenerTrailerAsync(
         int serieId)
     {
         string urlEspanol =
             $"https://api.themoviedb.org/3/tv/{serieId}/videos" +
-            $"?api_key={ApiKey}&language=es-ES";
+            $"?api_key={ApiKey}" +
+            $"&language=es-ES";
 
         RespuestaTrailers? respuesta =
             await _httpClient
@@ -85,7 +131,8 @@ public class SerieService
 
         string urlIngles =
             $"https://api.themoviedb.org/3/tv/{serieId}/videos" +
-            $"?api_key={ApiKey}&language=en-US";
+            $"?api_key={ApiKey}" +
+            $"&language=en-US";
 
         respuesta =
             await _httpClient

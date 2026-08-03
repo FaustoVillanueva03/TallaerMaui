@@ -10,8 +10,8 @@
     <ScrollView>
 
         <VerticalStackLayout
-            Padding="20"
-            Spacing="20">
+            Padding="24"
+            Spacing="22">
 
             <Button
                 Text="← Volver"
@@ -21,120 +21,398 @@
                 BorderColor="{StaticResource ColorPrimario}"
                 BorderWidth="1"
                 CornerRadius="12"
-                Clicked="OnVolverClicked"/>
+                Clicked="OnVolverClicked" />
 
             <Label
                 Text="CLIMA"
                 FontSize="30"
                 FontAttributes="Bold"
-                TextColor="{StaticResource ColorTextoPrincipal}"/>
+                TextColor="{StaticResource ColorTextoPrincipal}" />
 
             <Label
                 x:Name="CiudadLabel"
                 FontSize="18"
-                TextColor="{StaticResource ColorTextoSecundario}"/>
+                TextColor="{StaticResource ColorTextoSecundario}" />
 
             <Image
                 x:Name="IconoImage"
                 WidthRequest="120"
                 HeightRequest="120"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center" />
 
             <Label
                 x:Name="TemperaturaLabel"
                 FontSize="50"
                 FontAttributes="Bold"
                 HorizontalOptions="Center"
-                TextColor="{StaticResource ColorPrimario}"/>
+                TextColor="{StaticResource ColorPrimario}" />
 
             <Label
                 x:Name="DescripcionLabel"
                 FontSize="20"
                 HorizontalOptions="Center"
-                TextColor="{StaticResource ColorTextoPrincipal}"/>
+                TextColor="{StaticResource ColorTextoPrincipal}" />
 
-            <Label
-                x:Name="SensacionLabel"
-                FontSize="16"
-                TextColor="{StaticResource ColorTextoSecundario}"/>
+            <HorizontalStackLayout
+                HorizontalOptions="Center"
+                Spacing="30">
 
-            <Label
-                x:Name="HumedadLabel"
-                FontSize="16"
-                TextColor="{StaticResource ColorTextoSecundario}"/>
+                <Label
+                    x:Name="SensacionLabel"
+                    FontSize="16"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                <Label
+                    x:Name="HumedadLabel"
+                    FontSize="16"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+            </HorizontalStackLayout>
 
             <ActivityIndicator
                 x:Name="Cargando"
                 IsRunning="False"
                 IsVisible="False"
                 Color="{StaticResource ColorPrimario}"
-                HorizontalOptions="Center"/>
+                HorizontalOptions="Center" />
 
-			<Label
-    Text="Pronóstico de los próximos 5 días"
-    FontSize="22"
-    FontAttributes="Bold"
-    TextColor="{StaticResource ColorTextoPrincipal}"
-    Margin="0,20,0,10"/>
+            <!-- PRONÓSTICO -->
 
-			<CollectionView
-				x:Name="ListaPronostico">
+            <Label
+                Text="Pronóstico de los próximos 5 días"
+                FontSize="22"
+                FontAttributes="Bold"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                Margin="0,20,0,0" />
 
-				<CollectionView.ItemTemplate>
+            <CollectionView
+                x:Name="ListaPronostico"
+                HeightRequest="265"
+                SelectionMode="None">
 
-					<DataTemplate>
+                <CollectionView.ItemsLayout>
 
-						<Border
-							Margin="0,5"
-							Padding="15"
-							Stroke="{StaticResource ColorPrimario}"
-							StrokeThickness="1"
-							BackgroundColor="{StaticResource ColorSuperficie}">
+                    <GridItemsLayout
+                        Orientation="Vertical"
+                        Span="5"
+                        HorizontalItemSpacing="14"
+                        VerticalItemSpacing="0" />
 
-							<Grid
-								ColumnDefinitions="80,*,80"
-								VerticalOptions="Center">
+                </CollectionView.ItemsLayout>
 
-								<Image
-									Grid.Column="0"
-									WidthRequest="50"
-									HeightRequest="50"
-									Source="{Binding IconoCompleto}" />
+                <CollectionView.ItemTemplate>
 
-								<VerticalStackLayout
-									Grid.Column="1"
-									Spacing="2">
+                    <DataTemplate>
 
-									<Label
-										Text="{Binding Dia}"
-										FontAttributes="Bold"
-										FontSize="18"
-										TextColor="{StaticResource ColorTextoPrincipal}" />
+                        <Border
+                            Margin="2"
+                            Padding="18"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficie}">
 
-									<Label
-										Text="{Binding Descripcion}"
-										TextColor="{StaticResource ColorTextoSecundario}" />
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="18" />
+                            </Border.StrokeShape>
 
-								</VerticalStackLayout>
+                            <VerticalStackLayout
+                                Spacing="10"
+                                VerticalOptions="Center">
 
-								<Label
-									Grid.Column="2"
-									HorizontalOptions="End"
-									VerticalOptions="Center"
-									FontSize="22"
-									FontAttributes="Bold"
-									Text="{Binding TemperaturaTexto}"
-									TextColor="{StaticResource ColorPrimario}" />
+                                <Label
+                                    Text="{Binding Dia}"
+                                    FontSize="17"
+                                    FontAttributes="Bold"
+                                    HorizontalTextAlignment="Center"
+                                    TextColor="{StaticResource ColorTextoPrincipal}" />
 
-							</Grid>
+                                <Image
+                                    WidthRequest="70"
+                                    HeightRequest="70"
+                                    HorizontalOptions="Center"
+                                    Source="{Binding IconoCompleto}" />
 
-						</Border>
+                                <Label
+                                    Text="{Binding TemperaturaTexto}"
+                                    FontSize="24"
+                                    FontAttributes="Bold"
+                                    HorizontalTextAlignment="Center"
+                                    TextColor="{StaticResource ColorPrimario}" />
 
-					</DataTemplate>
+                                <Label
+                                    Text="{Binding Descripcion}"
+                                    FontSize="14"
+                                    MaxLines="2"
+                                    HorizontalTextAlignment="Center"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
 
-				</CollectionView.ItemTemplate>
+                            </VerticalStackLayout>
 
-			</CollectionView>
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- RECOMENDACIONES -->
+
+            <Label
+                Text="Recomendado para este clima"
+                FontSize="26"
+                FontAttributes="Bold"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                Margin="0,15,0,0" />
+
+            <Label
+                x:Name="MotivoRecomendacionLabel"
+                FontSize="16"
+                LineBreakMode="WordWrap"
+                TextColor="{StaticResource ColorTextoSecundario}" />
+
+            <!-- PELÍCULAS -->
+
+            <Grid
+                ColumnDefinitions="*,Auto"
+                Margin="0,15,0,0">
+
+                <Label
+                    Grid.Column="0"
+                    Text="Películas recomendadas según el clima"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    VerticalOptions="Center"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Ver todas →"
+                    Padding="15,8"
+                    CornerRadius="12"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorPrimario}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    Clicked="OnVerPeliculasClicked" />
+
+            </Grid>
+
+            <Grid
+                ColumnDefinitions="55,*,55"
+                ColumnSpacing="12">
+
+                <Button
+                    Grid.Column="0"
+                    Text="←"
+                    FontSize="24"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorPrimario}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    CornerRadius="25"
+                    Clicked="OnPeliculasAnteriorClicked" />
+
+                <CollectionView
+                    x:Name="ListaPeliculasClima"
+                    Grid.Column="1"
+                    HeightRequest="340"
+                    SelectionMode="Single"
+                    SelectionChanged="OnPeliculaSeleccionada"
+                    HorizontalScrollBarVisibility="Never">
+
+                    <CollectionView.ItemsLayout>
+
+                        <LinearItemsLayout
+                            Orientation="Horizontal"
+                            ItemSpacing="14" />
+
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+
+                            <Border
+                                WidthRequest="210"
+                                Padding="10"
+                                Stroke="{StaticResource ColorBorde}"
+                                StrokeThickness="1"
+                                BackgroundColor="{StaticResource ColorSuperficie}">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="18" />
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="9">
+
+                                    <Image
+                                        Source="{Binding ImagenCompleta}"
+                                        HeightRequest="245"
+                                        Aspect="AspectFill" />
+
+                                    <Label
+                                        Text="{Binding Titulo}"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        MaxLines="2"
+                                        LineBreakMode="TailTruncation"
+                                        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                </VerticalStackLayout>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <Button
+                    Grid.Column="2"
+                    Text="→"
+                    FontSize="24"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorPrimario}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    CornerRadius="25"
+                    Clicked="OnPeliculasSiguienteClicked" />
+
+            </Grid>
+
+            <!-- SERIES -->
+
+            <Grid
+                ColumnDefinitions="*,Auto"
+                Margin="0,15,0,0">
+
+                <Label
+                    Grid.Column="0"
+                    Text="Series recomendadas según el clima"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    VerticalOptions="Center"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Button
+                    Grid.Column="1"
+                    Text="Ver todas →"
+                    Padding="15,8"
+                    CornerRadius="12"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorPrimario}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    Clicked="OnVerSeriesClicked" />
+
+            </Grid>
+
+            <Grid
+                ColumnDefinitions="55,*,55"
+                ColumnSpacing="12">
+
+                <Button
+                    Grid.Column="0"
+                    Text="←"
+                    FontSize="24"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorPrimario}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    CornerRadius="25"
+                    Clicked="OnSeriesAnteriorClicked" />
+
+                <CollectionView
+                    x:Name="ListaSeriesClima"
+                    Grid.Column="1"
+                    HeightRequest="340"
+                    SelectionMode="Single"
+                    SelectionChanged="OnSerieSeleccionada"
+                    HorizontalScrollBarVisibility="Never">
+
+                    <CollectionView.ItemsLayout>
+
+                        <LinearItemsLayout
+                            Orientation="Horizontal"
+                            ItemSpacing="14" />
+
+                    </CollectionView.ItemsLayout>
+
+                    <CollectionView.ItemTemplate>
+
+                        <DataTemplate>
+
+                            <Border
+                                WidthRequest="210"
+                                Padding="10"
+                                Stroke="{StaticResource ColorBorde}"
+                                StrokeThickness="1"
+                                BackgroundColor="{StaticResource ColorSuperficie}">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="18" />
+                                </Border.StrokeShape>
+
+                                <VerticalStackLayout Spacing="9">
+
+                                    <Image
+                                        Source="{Binding ImagenCompleta}"
+                                        HeightRequest="245"
+                                        Aspect="AspectFill" />
+
+                                    <Label
+                                        Text="{Binding Nombre}"
+                                        FontSize="16"
+                                        FontAttributes="Bold"
+                                        MaxLines="2"
+                                        LineBreakMode="TailTruncation"
+                                        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                </VerticalStackLayout>
+
+                            </Border>
+
+                        </DataTemplate>
+
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+
+                <Button
+                    Grid.Column="2"
+                    Text="→"
+                    FontSize="24"
+                    WidthRequest="50"
+                    HeightRequest="50"
+                    Padding="0"
+                    HorizontalOptions="Center"
+                    VerticalOptions="Center"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorPrimario}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    CornerRadius="25"
+                    Clicked="OnSeriesSiguienteClicked" />
+
+            </Grid>
 
         </VerticalStackLayout>
 
