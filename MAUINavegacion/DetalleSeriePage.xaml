@@ -5,134 +5,160 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MAUINavegacion.DetalleSeriePage"
     Title="Detalle de serie"
-    BackgroundColor="#121212">
+    BackgroundColor="{StaticResource ColorFondo}">
 
     <ScrollView>
 
-        <VerticalStackLayout
-            Padding="20"
-            Spacing="18">
+        <VerticalStackLayout Spacing="0">
+
+            <!-- BOTÓN VOLVER -->
 
             <Button
                 Text="← Volver"
                 HorizontalOptions="Start"
-                BackgroundColor="#1F1F1F"
-                TextColor="White"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
                 CornerRadius="12"
+                Margin="20,15,0,10"
                 Clicked="OnVolverClicked" />
 
-            <Border
-                Stroke="#363636"
-                StrokeThickness="1"
-                BackgroundColor="#1F1F1F"
-                Padding="0">
+            <!-- PORTADA -->
 
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="20" />
-                </Border.StrokeShape>
+            <Grid HeightRequest="420">
+
+                <!-- Fondo ampliado -->
 
                 <Image
                     Source="{Binding ImagenCompleta}"
-                    HeightRequest="420"
-                    Aspect="AspectFill" />
+                    Aspect="AspectFill"
+                    Opacity="0.20" />
 
-            </Border>
+                <BoxView
+                    BackgroundColor="{StaticResource ColorFondo}"
+                    Opacity="0.45" />
 
-            <Label
-                Text="{Binding Nombre}"
-                TextColor="White"
-                FontSize="30"
-                FontAttributes="Bold"
-                LineBreakMode="WordWrap" />
+                <!-- Portada completa -->
 
-            <HorizontalStackLayout Spacing="10">
+                <Image
+                    Source="{Binding ImagenCompleta}"
+                    Aspect="AspectFit"
+                    Margin="35,20" />
 
-                <Border
-                    BackgroundColor="#332B49"
-                    StrokeThickness="0"
-                    Padding="12,6">
+            </Grid>
 
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10" />
-                    </Border.StrokeShape>
-
-                    <Label
-                        Text="{Binding PuntuacionTexto}"
-                        TextColor="#D9C9FF"
-                        FontSize="14"
-                        FontAttributes="Bold" />
-
-                </Border>
-
-                <Border
-                    BackgroundColor="#292929"
-                    StrokeThickness="0"
-                    Padding="12,6">
-
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="10" />
-                    </Border.StrokeShape>
-
-                    <Label
-                        Text="{Binding FechaTexto}"
-                        TextColor="#CCCCCC"
-                        FontSize="14" />
-
-                </Border>
-
-            </HorizontalStackLayout>
-
-            <Label
-                Text="Descripción"
-                TextColor="White"
-                FontSize="22"
-                FontAttributes="Bold"
-                Margin="0,10,0,0" />
-
-            <Label
-                Text="{Binding DescripcionCompleta}"
-                TextColor="#BEBEBE"
-                FontSize="16"
-                LineHeight="1.3" />
+            <!-- INFORMACIÓN -->
 
             <VerticalStackLayout
-                x:Name="SeccionTrailer"
-                Spacing="12"
-                IsVisible="False">
+                Padding="24,22,24,40"
+                Spacing="18">
 
                 <Label
-                    Text="Tráiler"
-                    TextColor="White"
-                    FontSize="22"
+                    Text="{Binding Nombre}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    FontSize="32"
                     FontAttributes="Bold"
-                    Margin="0,10,0,0" />
+                    LineBreakMode="WordWrap" />
 
-                <Border
-                    BackgroundColor="Black"
-                    Stroke="#363636"
-                    StrokeThickness="1"
-                    HeightRequest="230">
+                <HorizontalStackLayout Spacing="10">
 
-                    <Border.StrokeShape>
-                        <RoundRectangle CornerRadius="16" />
-                    </Border.StrokeShape>
+                    <Border
+                        BackgroundColor="{StaticResource ColorPrimarioOscuro}"
+                        StrokeThickness="0"
+                        Padding="12,7">
 
-                    <WebView
-                        x:Name="TrailerWebView"
-                        HeightRequest="230" />
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
 
-                </Border>
+                        <Label
+                            Text="{Binding PuntuacionTexto}"
+                            TextColor="{StaticResource ColorTextoPrincipal}"
+                            FontSize="15"
+                            FontAttributes="Bold" />
+
+                    </Border>
+
+                    <Border
+                        BackgroundColor="{StaticResource ColorSuperficieClara}"
+                        StrokeThickness="0"
+                        Padding="12,7">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Label
+                            Text="{Binding FechaTexto}"
+                            TextColor="{StaticResource ColorTextoSecundario}"
+                            FontSize="15" />
+
+                    </Border>
+
+                </HorizontalStackLayout>
+
+                <BoxView
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource ColorBorde}" />
+
+                <Label
+                    Text="Descripción"
+                    TextColor="{StaticResource ColorPrimario}"
+                    FontSize="20"
+                    FontAttributes="Bold" />
+
+                <Label
+                    Text="{Binding DescripcionCompleta}"
+                    TextColor="{StaticResource ColorTextoSecundario}"
+                    FontSize="16"
+                    LineHeight="1.4" />
+
+                <BoxView
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource ColorBorde}"
+                    Margin="0,5" />
+
+                <!-- TRÁILER -->
+
+                <VerticalStackLayout
+                    x:Name="SeccionTrailer"
+                    Spacing="12"
+                    IsVisible="False">
+
+                    <Label
+                        Text="Tráiler"
+                        TextColor="{StaticResource ColorPrimario}"
+                        FontSize="20"
+                        FontAttributes="Bold" />
+
+                    <Border
+                        BackgroundColor="Black"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        Padding="0">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="16" />
+                        </Border.StrokeShape>
+
+                        <WebView
+                            x:Name="TrailerWebView"
+                            HeightRequest="230" />
+
+                    </Border>
+
+                </VerticalStackLayout>
+
+                <Label
+                    x:Name="MensajeSinTrailer"
+                    Text="Cargando tráiler..."
+                    TextColor="{StaticResource ColorTextoSecundario}"
+                    FontSize="15"
+                    HorizontalTextAlignment="Center"
+                    IsVisible="True" />
 
             </VerticalStackLayout>
-
-            <Label
-                x:Name="MensajeSinTrailer"
-                Text="Cargando tráiler..."
-                TextColor="#AAAAAA"
-                FontSize="15"
-                HorizontalTextAlignment="Center"
-                IsVisible="True"
-                Margin="0,10,0,20" />
 
         </VerticalStackLayout>
 

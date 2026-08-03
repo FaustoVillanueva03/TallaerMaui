@@ -17,7 +17,9 @@ public partial class LoginPage : ContentPage
         base.OnAppearing();
 
         bool usuarioYaIngreso =
-            Preferences.Default.Get("UsuarioYaIngreso", false);
+            Preferences.Default.Get(
+                "UsuarioYaIngreso",
+                false);
 
         if (usuarioYaIngreso)
         {
@@ -25,7 +27,9 @@ public partial class LoginPage : ContentPage
         }
     }
 
-    private async void OnHuellaClicked(object sender, EventArgs e)
+    private async void OnHuellaClicked(
+        object sender,
+        EventArgs e)
     {
         await AutenticarConHuellaAsync();
     }
@@ -36,12 +40,15 @@ public partial class LoginPage : ContentPage
             return;
 
         _autenticando = true;
+
+        LimpiarErroresLogin();
         MensajeLabel.IsVisible = false;
 
         try
         {
             bool disponible =
-                await CrossFingerprint.Current.IsAvailableAsync(true);
+                await CrossFingerprint.Current
+                    .IsAvailableAsync(true);
 
             if (!disponible)
             {
@@ -51,25 +58,28 @@ public partial class LoginPage : ContentPage
                 return;
             }
 
-            var solicitud = new AuthenticationRequestConfiguration(
-                "Ingresar a RedFlix",
-                "Confirmá tu identidad con la huella digital")
-            {
-                CancelTitle = "Cancelar",
-                FallbackTitle = "Usar contraseña"
-            };
+            var solicitud =
+                new AuthenticationRequestConfiguration(
+                    "Ingresar a RedFlix",
+                    "Confirmá tu identidad con la huella digital")
+                {
+                    CancelTitle = "Cancelar",
+                    FallbackTitle = "Usar contraseña"
+                };
 
             FingerprintAuthenticationResult resultado =
-                await CrossFingerprint.Current.AuthenticateAsync(solicitud);
+                await CrossFingerprint.Current
+                    .AuthenticateAsync(solicitud);
 
             if (resultado.Authenticated)
             {
-                await EntrarAlaAplicacionAsync();
+                EntrarAlaAplicacion();
                 return;
             }
 
             MostrarMensaje(
-                resultado.Status == FingerprintAuthenticationResultStatus.Canceled
+                resultado.Status ==
+                FingerprintAuthenticationResultStatus.Canceled
                     ? "Autenticación cancelada."
                     : "No se pudo verificar la identidad.");
         }
@@ -88,48 +98,116 @@ public partial class LoginPage : ContentPage
         object sender,
         EventArgs e)
     {
-        string usuario = UsuarioEntry.Text?.Trim() ?? "";
-        string contrasena = ContrasenaEntry.Text ?? "";
+        LimpiarErroresLogin();
 
-        if (string.IsNullOrWhiteSpace(usuario) ||
-            string.IsNullOrWhiteSpace(contrasena))
+        string nombreUsuario =
+            UsuarioEntry.Text?.Trim() ?? string.Empty;
+
+        string contrasena =
+            ContrasenaEntry.Text ?? string.Empty;
+
+        bool hayErrores = false;
+
+        if (string.IsNullOrWhiteSpace(nombreUsuario))
         {
-            MostrarMensaje(
-                "Ingresá el usuario y la contraseña.");
+            UsuarioErrorLabel.Text =
+                "Ingresá tu nombre de usuario.";
 
-            return;
+            UsuarioErrorLabel.IsVisible = true;
+            hayErrores = true;
         }
 
-        /*
-         * Validación temporal.
-         * Después se reemplaza por la consulta a SQLite.
-         */
-        if (usuario != "admin" || contrasena != "1234")
+        if (string.IsNullOrWhiteSpace(contrasena))
         {
-            MostrarMensaje(
-                "Usuario o contraseña incorrectos.");
+            ContrasenaErrorLabel.Text =
+                "Ingresá tu contraseña.";
 
-            return;
+            ContrasenaErrorLabel.IsVisible = true;
+            hayErrores = true;
         }
 
-        Preferences.Default.Set("UsuarioYaIngreso", true);
+        if (hayErrores)
+            return;
 
-        await EntrarAlaAplicacionAsync();
+        try
+        {
+            await App.Database.InicializarAsync();
+
+            var usuario =
+                await App.Database.ValidarLoginAsync(
+                    nombreUsuario,
+                    contrasena);
+
+            if (usuario == null)
+            {
+                ContrasenaErrorLabel.Text =
+                    "El usuario o la contraseña son incorrectos.";
+
+                ContrasenaErrorLabel.IsVisible = true;
+                return;
+            }
+
+            Preferences.Default.Set(
+                "UsuarioYaIngreso",
+                true);
+
+            Preferences.Default.Set(
+                "UsuarioId",
+                usuario.Id);
+
+            Preferences.Default.Set(
+                "NombreCompleto",
+                usuario.NombreCompleto);
+
+            EntrarAlaAplicacion();
+        }
+        catch (Exception)
+        {
+            ContrasenaErrorLabel.Text =
+                "No se pudo iniciar sesión. Intentá nuevamente.";
+
+            ContrasenaErrorLabel.IsVisible = true;
+        }
     }
 
-    private async Task EntrarAlaAplicacionAsync()
+    private void LimpiarErroresLogin()
     {
-        Preferences.Default.Set("UsuarioYaIngreso", true);
+        UsuarioErrorLabel.Text = string.Empty;
+        UsuarioErrorLabel.IsVisible = false;
 
-        Application.Current!.MainPage =
-            new AppShell();
+        ContrasenaErrorLabel.Text = string.Empty;
+        ContrasenaErrorLabel.IsVisible = false;
 
-        await Task.CompletedTask;
+        MensajeLabel.Text = string.Empty;
+        MensajeLabel.IsVisible = false;
+    }
+
+    private void EntrarAlaAplicacion()
+    {
+        if (Application.Current?.Windows.Count > 0)
+        {
+            Application.Current.Windows[0].Page =
+                new NavigationPage(new MainPage())
+                {
+                    BarBackgroundColor =
+                        Color.FromArgb("#151515"),
+
+                    BarTextColor = Colors.White
+                };
+        }
     }
 
     private void MostrarMensaje(string mensaje)
     {
         MensajeLabel.Text = mensaje;
         MensajeLabel.IsVisible = true;
+    }
+
+    private async void OnCrearCuentaClicked(
+        object sender,
+        EventArgs e)
+    {
+        await Navigation.PushAsync(
+            new RegistroPage());
     }
 }

@@ -73,6 +73,6 @@ public partial class DetalleSeriePage : ContentPage
         object sender,
         EventArgs e)
     {
-        await Shell.Current.Navigation.PopAsync();
+        await Navigation.PopAsync();
     }
 }

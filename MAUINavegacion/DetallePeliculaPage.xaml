@@ -1,135 +1,157 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="MAUINavegacion.DetallePeliculaPage"
-             Title="Detalle"
-             BackgroundColor="#121212">
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.DetallePeliculaPage"
+    Title="Detalle"
+    BackgroundColor="{StaticResource ColorFondo}">
 
     <ScrollView>
 
         <VerticalStackLayout Spacing="0">
 
+            <Button
+                Text="← Volver"
+                HorizontalOptions="Start"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
+                CornerRadius="12"
+                Margin="20,15,0,10"
+                Clicked="OnVolverClicked" />    
             <!-- Imagen principal -->
 
             <Grid HeightRequest="420">
 
-                <Image Source="{Binding ImagenCompleta}"
-                       Aspect="AspectFill"
-                       Opacity="0.25" />
+                <Image
+                    Source="{Binding ImagenCompleta}"
+                    Aspect="AspectFill"
+                    Opacity="0.25" />
 
-                <BoxView BackgroundColor="#121212"
-                         Opacity="0.35" />
+                <BoxView
+                    BackgroundColor="{StaticResource ColorFondo}"
+                    Opacity="0.35" />
 
-                <Image Source="{Binding ImagenCompleta}"
-                       Aspect="AspectFit"
-                       Margin="35,20" />
+                <Image
+                    Source="{Binding ImagenCompleta}"
+                    Aspect="AspectFit"
+                    Margin="35,20" />
 
             </Grid>
 
             <!-- Información -->
 
-            <VerticalStackLayout Padding="24,22,24,40"
-                                 Spacing="18">
+            <VerticalStackLayout
+                Padding="24,22,24,40"
+                Spacing="18">
 
-                <Label Text="{Binding Titulo}"
-                       TextColor="White"
-                       FontSize="32"
-                       FontAttributes="Bold" />
+                <Label
+                    Text="{Binding Titulo}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    FontSize="32"
+                    FontAttributes="Bold" />
 
                 <HorizontalStackLayout Spacing="10">
 
-                    <Border BackgroundColor="#332B49"
-                            StrokeThickness="0"
-                            Padding="12,7">
+                    <Border
+                        BackgroundColor="{StaticResource ColorPrimarioOscuro}"
+                        StrokeThickness="0"
+                        Padding="12,7">
 
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Label Text="{Binding PuntuacionTexto}"
-                               TextColor="#D9C9FF"
-                               FontSize="15"
-                               FontAttributes="Bold" />
+                        <Label
+                            Text="{Binding PuntuacionTexto}"
+                            TextColor="{StaticResource ColorTextoPrincipal}"
+                            FontSize="15"
+                            FontAttributes="Bold" />
 
                     </Border>
 
-                    <Border BackgroundColor="#292929"
-                            StrokeThickness="0"
-                            Padding="12,7">
+                    <Border
+                        BackgroundColor="{StaticResource ColorSuperficieClara}"
+                        StrokeThickness="0"
+                        Padding="12,7">
 
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="12" />
                         </Border.StrokeShape>
 
-                        <Label Text="{Binding FechaTexto}"
-                               TextColor="#DDDDDD"
-                               FontSize="15" />
+                        <Label
+                            Text="{Binding FechaTexto}"
+                            TextColor="{StaticResource ColorTextoSecundario}"
+                            FontSize="15" />
 
                     </Border>
 
                 </HorizontalStackLayout>
 
-                <BoxView HeightRequest="1"
-                         BackgroundColor="#363636" />
+                <BoxView
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource ColorBorde}" />
 
-                <Label Text="Sinopsis"
-                       TextColor="#A98BFF"
-                       FontSize="19"
-                       FontAttributes="Bold" />
+                <Label
+                    Text="Sinopsis"
+                    TextColor="{StaticResource ColorPrimario}"
+                    FontSize="19"
+                    FontAttributes="Bold" />
 
-                <Label Text="{Binding DescripcionCompleta}"
-                       TextColor="#DDDDDD"
-                       FontSize="16"
-                       LineHeight="1.4" />
+                <Label
+                    Text="{Binding DescripcionCompleta}"
+                    TextColor="{StaticResource ColorTextoSecundario}"
+                    FontSize="16"
+                    LineHeight="1.4" />
 
                 <!-- TRÁILER -->
 
-                <BoxView HeightRequest="1"
-                         BackgroundColor="#363636"
-                         Margin="0,5" />
+                <BoxView
+                    HeightRequest="1"
+                    BackgroundColor="{StaticResource ColorBorde}"
+                    Margin="0,5" />
 
-                <VerticalStackLayout x:Name="SeccionTrailer"
-                                     IsVisible="False"
-                                     Spacing="12">
+                <VerticalStackLayout
+                    x:Name="SeccionTrailer"
+                    IsVisible="False"
+                    Spacing="12">
 
-                    <Label Text="Tráiler"
-                           TextColor="#A98BFF"
-                           FontSize="19"
-                           FontAttributes="Bold" />
+                    <Label
+                        Text="Tráiler"
+                        TextColor="{StaticResource ColorPrimario}"
+                        FontSize="19"
+                        FontAttributes="Bold" />
 
-                    <Border BackgroundColor="Black"
-                            Stroke="#363636"
-                            StrokeThickness="1">
+                    <Border
+                        BackgroundColor="Black"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        Padding="0">
 
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="15" />
                         </Border.StrokeShape>
 
-                        <WebView x:Name="TrailerWebView"
-                                 HeightRequest="230" />
+                        <WebView
+                            x:Name="TrailerWebView"
+                            HeightRequest="230" />
 
                     </Border>
 
                 </VerticalStackLayout>
 
-                <Label x:Name="MensajeSinTrailer"
-                       Text="No hay un tráiler disponible para esta película."
-                       TextColor="#AAAAAA"
-                       FontSize="14"
-                       IsVisible="False" />
+                <Label
+                    x:Name="MensajeSinTrailer"
+                    Text="No hay un tráiler disponible para esta película."
+                    TextColor="{StaticResource ColorTextoSecundario}"
+                    FontSize="14"
+                    IsVisible="False" />
 
                 <!-- BOTÓN VOLVER -->
 
-                <Button Text="← Volver a las películas"
-                        Clicked="OnVolverClicked"
-                        BackgroundColor="#8B5CF6"
-                        TextColor="White"
-                        FontAttributes="Bold"
-                        FontSize="16"
-                        HeightRequest="52"
-                        CornerRadius="15"
-                        Margin="0,10,0,0" />
+                
 
             </VerticalStackLayout>
 

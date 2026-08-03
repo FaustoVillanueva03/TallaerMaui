@@ -5,7 +5,115 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MAUINavegacion.MainPage"
     Title="Inicio"
-    BackgroundColor="#0D0D0D">
+    BackgroundColor="{StaticResource ColorFondo}">
+
+    <ContentPage.Resources>
+
+        <!-- Estilo de las tarjetas del menú -->
+
+        <Style
+            x:Key="TarjetaMenuStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="{StaticResource ColorSuperficie}" />
+
+            <Setter
+                Property="Stroke"
+                Value="{StaticResource ColorBorde}" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="Scale"
+                Value="1" />
+
+            <Setter
+                Property="Opacity"
+                Value="1" />
+
+            <Setter Property="VisualStateManager.VisualStateGroups">
+
+                <VisualStateGroupList>
+
+                    <VisualStateGroup x:Name="CommonStates">
+
+                        <VisualState x:Name="Normal">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficie}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorBorde}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="PointerOver">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1.025" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficieClara}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="Pressed">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="0.97" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="0.85" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                    </VisualStateGroup>
+
+                </VisualStateGroupList>
+
+            </Setter>
+
+        </Style>
+
+    </ContentPage.Resources>
 
     <ScrollView>
 
@@ -16,12 +124,12 @@
             <Grid
                 Padding="28,35,28,30"
                 RowDefinitions="Auto,Auto,Auto"
-                BackgroundColor="#151515">
+                BackgroundColor="{StaticResource ColorSuperficie}">
 
                 <Label
                     Grid.Row="0"
                     Text="REDFLIX"
-                    TextColor="#8B5CF6"
+                    TextColor="{StaticResource ColorPrimario}"
                     FontSize="17"
                     FontAttributes="Bold"
                     CharacterSpacing="5" />
@@ -30,7 +138,7 @@
                     Grid.Row="1"
                     Margin="0,14,0,0"
                     Text="Todo tu entretenimiento"
-                    TextColor="White"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
                     FontSize="32"
                     FontAttributes="Bold" />
 
@@ -38,7 +146,7 @@
                     Grid.Row="2"
                     Margin="0,8,0,0"
                     Text="Películas, series, clima y mucho más"
-                    TextColor="#B8B8B8"
+                    TextColor="{StaticResource ColorTextoSecundario}"
                     FontSize="15" />
 
             </Grid>
@@ -51,16 +159,14 @@
 
                 <Label
                     Text="Explorar"
-                    TextColor="White"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
                     FontSize="24"
                     FontAttributes="Bold" />
 
-                <!-- CINE -->
+                <!-- PELÍCULAS -->
 
                 <Border
-                    BackgroundColor="#1F1F1F"
-                    Stroke="#343434"
-                    StrokeThickness="1"
+                    Style="{StaticResource TarjetaMenuStyle}"
                     Padding="0">
 
                     <Border.StrokeShape>
@@ -68,7 +174,10 @@
                     </Border.StrokeShape>
 
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnCineClicked" />
+
+                        <TapGestureRecognizer
+                            Tapped="OnCineClicked" />
+
                     </Border.GestureRecognizers>
 
                     <Grid
@@ -77,7 +186,7 @@
 
                         <Grid
                             Grid.Column="0"
-                            BackgroundColor="#2A1F44">
+                            BackgroundColor="{StaticResource ColorPrimarioOscuro}">
 
                             <Label
                                 Text="🎬"
@@ -95,19 +204,19 @@
 
                             <Label
                                 Text="Películas"
-                                TextColor="White"
+                                TextColor="{StaticResource ColorTextoPrincipal}"
                                 FontSize="25"
                                 FontAttributes="Bold" />
 
                             <Label
                                 Text="Películas, estrenos y tráilers"
-                                TextColor="#B8B8B8"
+                                TextColor="{StaticResource ColorTextoSecundario}"
                                 FontSize="14"
                                 MaxLines="2" />
 
                             <Label
                                 Text="Explorar  →"
-                                TextColor="#8B5CF6"
+                                TextColor="{StaticResource ColorPrimario}"
                                 FontSize="14"
                                 FontAttributes="Bold" />
 
@@ -120,9 +229,7 @@
                 <!-- SERIES -->
 
                 <Border
-                    BackgroundColor="#1F1F1F"
-                    Stroke="#343434"
-                    StrokeThickness="1"
+                    Style="{StaticResource TarjetaMenuStyle}"
                     Padding="0">
 
                     <Border.StrokeShape>
@@ -130,7 +237,10 @@
                     </Border.StrokeShape>
 
                     <Border.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnSeriesClicked" />
+
+                        <TapGestureRecognizer
+                            Tapped="OnSeriesClicked" />
+
                     </Border.GestureRecognizers>
 
                     <Grid
@@ -139,7 +249,7 @@
 
                         <Grid
                             Grid.Column="0"
-                            BackgroundColor="#2A1F44">
+                            BackgroundColor="{StaticResource ColorPrimarioOscuro}">
 
                             <Label
                                 Text="📺"
@@ -157,19 +267,19 @@
 
                             <Label
                                 Text="Series"
-                                TextColor="White"
+                                TextColor="{StaticResource ColorTextoPrincipal}"
                                 FontSize="25"
                                 FontAttributes="Bold" />
 
                             <Label
                                 Text="Series populares y mejor puntuadas"
-                                TextColor="#B8B8B8"
+                                TextColor="{StaticResource ColorTextoSecundario}"
                                 FontSize="14"
                                 MaxLines="2" />
 
                             <Label
                                 Text="Explorar  →"
-                                TextColor="#8B5CF6"
+                                TextColor="{StaticResource ColorPrimario}"
                                 FontSize="14"
                                 FontAttributes="Bold" />
 
@@ -185,11 +295,11 @@
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
+                    <!-- CLIMA -->
+
                     <Border
                         Grid.Column="0"
-                        BackgroundColor="#1F1F1F"
-                        Stroke="#343434"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -197,7 +307,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnClimaClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnClimaClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">
@@ -208,19 +321,19 @@
 
                             <Label
                                 Text="Clima"
-                                TextColor="White"
+                                TextColor="{StaticResource ColorTextoPrincipal}"
                                 FontSize="21"
                                 FontAttributes="Bold" />
 
                             <Label
                                 Text="Pronóstico de Punta del Este"
-                                TextColor="#B8B8B8"
+                                TextColor="{StaticResource ColorTextoSecundario}"
                                 FontSize="13"
                                 MaxLines="2" />
 
                             <Label
                                 Text="Ver más  →"
-                                TextColor="#8B5CF6"
+                                TextColor="{StaticResource ColorPrimario}"
                                 FontSize="13"
                                 FontAttributes="Bold" />
 
@@ -228,11 +341,11 @@
 
                     </Border>
 
+                    <!-- COTIZACIONES -->
+
                     <Border
                         Grid.Column="1"
-                        BackgroundColor="#1F1F1F"
-                        Stroke="#343434"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -240,7 +353,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnCotizacionesClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnCotizacionesClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">
@@ -251,19 +367,19 @@
 
                             <Label
                                 Text="Cotizaciones"
-                                TextColor="White"
+                                TextColor="{StaticResource ColorTextoPrincipal}"
                                 FontSize="21"
                                 FontAttributes="Bold" />
 
                             <Label
                                 Text="Dólar, euro y real"
-                                TextColor="#B8B8B8"
+                                TextColor="{StaticResource ColorTextoSecundario}"
                                 FontSize="13"
                                 MaxLines="2" />
 
                             <Label
                                 Text="Ver más  →"
-                                TextColor="#8B5CF6"
+                                TextColor="{StaticResource ColorPrimario}"
                                 FontSize="13"
                                 FontAttributes="Bold" />
 
@@ -279,11 +395,11 @@
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
+                    <!-- MAPA -->
+
                     <Border
                         Grid.Column="0"
-                        BackgroundColor="#1F1F1F"
-                        Stroke="#343434"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -291,7 +407,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnMapaClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnMapaClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">
@@ -302,19 +421,19 @@
 
                             <Label
                                 Text="Mapa"
-                                TextColor="White"
+                                TextColor="{StaticResource ColorTextoPrincipal}"
                                 FontSize="21"
                                 FontAttributes="Bold" />
 
                             <Label
                                 Text="Ubicaciones guardadas"
-                                TextColor="#B8B8B8"
+                                TextColor="{StaticResource ColorTextoSecundario}"
                                 FontSize="13"
                                 MaxLines="2" />
 
                             <Label
                                 Text="Ver más  →"
-                                TextColor="#8B5CF6"
+                                TextColor="{StaticResource ColorPrimario}"
                                 FontSize="13"
                                 FontAttributes="Bold" />
 
@@ -322,11 +441,11 @@
 
                     </Border>
 
+                    <!-- PERFIL -->
+
                     <Border
                         Grid.Column="1"
-                        BackgroundColor="#1F1F1F"
-                        Stroke="#343434"
-                        StrokeThickness="1"
+                        Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
 
                         <Border.StrokeShape>
@@ -334,7 +453,10 @@
                         </Border.StrokeShape>
 
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer Tapped="OnPerfilClicked" />
+
+                            <TapGestureRecognizer
+                                Tapped="OnPerfilClicked" />
+
                         </Border.GestureRecognizers>
 
                         <VerticalStackLayout Spacing="10">
@@ -345,19 +467,19 @@
 
                             <Label
                                 Text="Perfil"
-                                TextColor="White"
+                                TextColor="{StaticResource ColorTextoPrincipal}"
                                 FontSize="21"
                                 FontAttributes="Bold" />
 
                             <Label
                                 Text="Datos y preferencias"
-                                TextColor="#B8B8B8"
+                                TextColor="{StaticResource ColorTextoSecundario}"
                                 FontSize="13"
                                 MaxLines="2" />
 
                             <Label
                                 Text="Ver más  →"
-                                TextColor="#8B5CF6"
+                                TextColor="{StaticResource ColorPrimario}"
                                 FontSize="13"
                                 FontAttributes="Bold" />
 

@@ -79,9 +79,15 @@ namespace MAUINavegacion
 
             ((CollectionView)sender).SelectedItem = null;
 
-            await Shell.Current.Navigation.PushAsync(
+            await Navigation.PushAsync(
                 new DetallePeliculaPage(peliculaSeleccionada));
         }
-
+        private async void OnVolverClicked(
+    object sender,
+    EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
     }
+
 }

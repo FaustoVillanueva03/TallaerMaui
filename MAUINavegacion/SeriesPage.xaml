@@ -6,59 +6,186 @@
     xmlns:models="clr-namespace:MAUINavegacion.Models"
     x:Class="MAUINavegacion.SeriesPage"
     Title="Series"
-    BackgroundColor="#121212">
+    BackgroundColor="{StaticResource ColorFondo}">
+
+    <ContentPage.Resources>
+
+        <Style
+            x:Key="TarjetaContenidoStyle"
+            TargetType="Border">
+
+            <Setter
+                Property="BackgroundColor"
+                Value="{StaticResource ColorSuperficie}" />
+
+            <Setter
+                Property="Stroke"
+                Value="{StaticResource ColorBorde}" />
+
+            <Setter
+                Property="StrokeThickness"
+                Value="1" />
+
+            <Setter
+                Property="Scale"
+                Value="1" />
+
+            <Setter
+                Property="Opacity"
+                Value="1" />
+
+            <Setter Property="VisualStateManager.VisualStateGroups">
+
+                <VisualStateGroupList>
+
+                    <VisualStateGroup x:Name="CommonStates">
+
+                        <VisualState x:Name="Normal">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficie}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorBorde}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="PointerOver">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="1" />
+
+                                <Setter
+                                    Property="BackgroundColor"
+                                    Value="{StaticResource ColorSuperficieClara}" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                        <VisualState x:Name="Pressed">
+
+                            <VisualState.Setters>
+
+                                <Setter
+                                    Property="Scale"
+                                    Value="0.98" />
+
+                                <Setter
+                                    Property="Opacity"
+                                    Value="0.85" />
+
+                                <Setter
+                                    Property="Stroke"
+                                    Value="{StaticResource ColorPrimario}" />
+
+                            </VisualState.Setters>
+
+                        </VisualState>
+
+                    </VisualStateGroup>
+
+                </VisualStateGroupList>
+
+            </Setter>
+
+        </Style>
+
+    </ContentPage.Resources>
 
     <Grid
         Padding="20"
-        RowDefinitions="Auto,*"
+        RowDefinitions="Auto,Auto,*"
         RowSpacing="20">
 
-        <VerticalStackLayout
+        <!-- BOTÓN VOLVER -->
+
+        <Button
             Grid.Row="0"
+            Text="← Volver"
+            HorizontalOptions="Start"
+            BackgroundColor="{StaticResource ColorSuperficie}"
+            TextColor="{StaticResource ColorTextoPrincipal}"
+            BorderColor="{StaticResource ColorPrimario}"
+            BorderWidth="1"
+            CornerRadius="12"
+            Clicked="OnVolverClicked" />
+
+        <!-- ENCABEZADO -->
+
+        <VerticalStackLayout
+            Grid.Row="1"
             Spacing="3">
 
             <Label
                 Text="REDFLIX"
-                TextColor="#8B5CF6"
+                TextColor="{StaticResource ColorPrimario}"
                 FontSize="14"
                 FontAttributes="Bold"
                 CharacterSpacing="3" />
 
             <Label
                 Text="Series"
-                TextColor="White"
+                TextColor="{StaticResource ColorTextoPrincipal}"
                 FontSize="30"
                 FontAttributes="Bold" />
 
             <Label
                 Text="Seleccioná una serie para ver sus detalles"
-                TextColor="#AAAAAA"
+                TextColor="{StaticResource ColorTextoSecundario}"
                 FontSize="14" />
 
         </VerticalStackLayout>
 
+        <!-- INDICADOR DE CARGA -->
+
         <ActivityIndicator
             x:Name="Cargando"
-            Grid.Row="1"
+            Grid.Row="2"
             IsVisible="False"
             IsRunning="False"
-            Color="#8B5CF6"
+            Color="{StaticResource ColorPrimario}"
             WidthRequest="50"
             HeightRequest="50"
             HorizontalOptions="Center"
             VerticalOptions="Center" />
 
+        <!-- LISTA DE SERIES -->
+
         <CollectionView
             x:Name="ListaSeries"
-            Grid.Row="1"
+            Grid.Row="2"
             SelectionMode="Single"
             SelectionChanged="OnSerieSeleccionada"
             EmptyView="No se encontraron series">
 
             <CollectionView.ItemsLayout>
+
                 <LinearItemsLayout
                     Orientation="Vertical"
                     ItemSpacing="14" />
+
             </CollectionView.ItemsLayout>
 
             <CollectionView.ItemTemplate>
@@ -66,10 +193,9 @@
                 <DataTemplate x:DataType="models:Serie">
 
                     <Border
-                        BackgroundColor="#1F1F1F"
-                        Stroke="#363636"
-                        StrokeThickness="1"
-                        Padding="12">
+                        Style="{StaticResource TarjetaContenidoStyle}"
+                        Padding="12"
+                        Margin="8,4">
 
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="18" />
@@ -83,7 +209,8 @@
                                 Grid.Column="0"
                                 WidthRequest="110"
                                 HeightRequest="165"
-                                StrokeThickness="0">
+                                StrokeThickness="0"
+                                Padding="0">
 
                                 <Border.StrokeShape>
                                     <RoundRectangle CornerRadius="12" />
@@ -102,7 +229,7 @@
 
                                 <Label
                                     Text="{Binding Nombre}"
-                                    TextColor="White"
+                                    TextColor="{StaticResource ColorTextoPrincipal}"
                                     FontSize="21"
                                     FontAttributes="Bold"
                                     LineBreakMode="TailTruncation"
@@ -111,7 +238,7 @@
                                 <HorizontalStackLayout Spacing="8">
 
                                     <Border
-                                        BackgroundColor="#332B49"
+                                        BackgroundColor="{StaticResource ColorPrimarioOscuro}"
                                         StrokeThickness="0"
                                         Padding="10,5">
 
@@ -121,14 +248,14 @@
 
                                         <Label
                                             Text="{Binding PuntuacionTexto}"
-                                            TextColor="#D9C9FF"
+                                            TextColor="{StaticResource ColorTextoPrincipal}"
                                             FontAttributes="Bold"
                                             FontSize="13" />
 
                                     </Border>
 
                                     <Border
-                                        BackgroundColor="#292929"
+                                        BackgroundColor="{StaticResource ColorSuperficieClara}"
                                         StrokeThickness="0"
                                         Padding="10,5">
 
@@ -138,7 +265,7 @@
 
                                         <Label
                                             Text="{Binding FechaTexto}"
-                                            TextColor="#CCCCCC"
+                                            TextColor="{StaticResource ColorTextoSecundario}"
                                             FontSize="13" />
 
                                     </Border>
@@ -147,14 +274,14 @@
 
                                 <Label
                                     Text="{Binding DescripcionCompleta}"
-                                    TextColor="#BEBEBE"
+                                    TextColor="{StaticResource ColorTextoSecundario}"
                                     FontSize="14"
                                     MaxLines="3"
                                     LineBreakMode="TailTruncation" />
 
                                 <Label
                                     Text="Ver detalles  →"
-                                    TextColor="#8B5CF6"
+                                    TextColor="{StaticResource ColorPrimario}"
                                     FontSize="14"
                                     FontAttributes="Bold" />
 

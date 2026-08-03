@@ -113,7 +113,7 @@ namespace MAUINavegacion
             object sender,
             EventArgs e)
         {
-            await Shell.Current.Navigation.PopAsync();
+            await Navigation.PopAsync();
         }
     }
 }
