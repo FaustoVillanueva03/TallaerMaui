@@ -3,7 +3,7 @@ using MAUINavegacion.Services;
 
 namespace MAUINavegacion;
 
-public partial class CotizacionesPage : ContentPage
+public partial class CotizacionesPage : BasePage
 {
     private readonly ExchangeRateService _exchangeRateService;
 
@@ -11,16 +11,26 @@ public partial class CotizacionesPage : ContentPage
     private double _euro;
     private double _real;
 
+    private bool _cotizacionesCargadas;
+
     public CotizacionesPage()
     {
         InitializeComponent();
 
-        _exchangeRateService = new ExchangeRateService();
+        _exchangeRateService =
+            new ExchangeRateService();
 
-        MonedaPicker.Items.Add("Peso Uruguayo");
-        MonedaPicker.Items.Add("Dólar");
-        MonedaPicker.Items.Add("Euro");
-        MonedaPicker.Items.Add("Real");
+        MonedaPicker.Items.Add(
+            "Peso Uruguayo");
+
+        MonedaPicker.Items.Add(
+            "Dólar");
+
+        MonedaPicker.Items.Add(
+            "Euro");
+
+        MonedaPicker.Items.Add(
+            "Real");
 
         MonedaPicker.SelectedIndex = 0;
     }
@@ -29,29 +39,52 @@ public partial class CotizacionesPage : ContentPage
     {
         base.OnAppearing();
 
+        if (_cotizacionesCargadas)
+        {
+            return;
+        }
+
         try
         {
             Cargando.IsVisible = true;
             Cargando.IsRunning = true;
 
             RespuestaCotizacion? cotizacion =
-                await _exchangeRateService.ObtenerCotizacionesAsync();
+                await _exchangeRateService
+                    .ObtenerCotizacionesAsync();
 
             if (cotizacion == null)
-                return;
+            {
+                await DisplayAlert(
+                    "Cotizaciones",
+                    "No se pudieron obtener las cotizaciones.",
+                    "Aceptar");
 
-            _dolar = 1 / cotizacion.ConversionRates.Dolar;
-            _euro = 1 / cotizacion.ConversionRates.Euro;
-            _real = 1 / cotizacion.ConversionRates.Real;
+                return;
+            }
+
+            _dolar =
+                1 /
+                cotizacion.ConversionRates.Dolar;
+
+            _euro =
+                1 /
+                cotizacion.ConversionRates.Euro;
+
+            _real =
+                1 /
+                cotizacion.ConversionRates.Real;
 
             DolarLabel.Text =
-             $"1 USD = {_dolar:0.00} UYU";
+                $"1 USD = {_dolar:0.00} UYU";
 
             EuroLabel.Text =
                 $"1 EUR = {_euro:0.00} UYU";
 
             RealLabel.Text =
                 $"1 BRL = {_real:0.00} UYU";
+
+            _cotizacionesCargadas = true;
         }
         catch (Exception ex)
         {
@@ -67,20 +100,26 @@ public partial class CotizacionesPage : ContentPage
         }
     }
 
-    private async void OnVolverClicked(
+    private async void OnConvertirClicked(
         object sender,
         EventArgs e)
     {
-        await Navigation.PopAsync();
-    }
+        if (_dolar <= 0 ||
+            _euro <= 0 ||
+            _real <= 0)
+        {
+            await DisplayAlert(
+                "Conversor",
+                "Esperá a que se carguen las cotizaciones.",
+                "Aceptar");
 
-    private async void OnConvertirClicked(
-    object sender,
-    EventArgs e)
-    {
+            return;
+        }
+
         if (!double.TryParse(
-            MontoEntry.Text,
-            out double monto))
+                MontoEntry.Text,
+                out double monto) ||
+            monto < 0)
         {
             await DisplayAlert(
                 "Error",
@@ -91,16 +130,13 @@ public partial class CotizacionesPage : ContentPage
         }
 
         string moneda =
-            MonedaPicker.SelectedItem?.ToString() ?? "";
+            MonedaPicker.SelectedItem?
+                .ToString() ?? string.Empty;
 
-        double uyu = 0;
+        double uyu;
 
         switch (moneda)
         {
-            case "Peso Uruguayo":
-                uyu = monto;
-                break;
-
             case "Dólar":
                 uyu = monto * _dolar;
                 break;
@@ -112,11 +148,20 @@ public partial class CotizacionesPage : ContentPage
             case "Real":
                 uyu = monto * _real;
                 break;
+
+            default:
+                uyu = monto;
+                break;
         }
 
-        double usd = uyu / _dolar;
-        double eur = uyu / _euro;
-        double brl = uyu / _real;
+        double usd =
+            uyu / _dolar;
+
+        double eur =
+            uyu / _euro;
+
+        double brl =
+            uyu / _real;
 
         ResultadoUYU.IsVisible = true;
         ResultadoUSD.IsVisible = true;
@@ -143,7 +188,7 @@ public partial class CotizacionesPage : ContentPage
         }
 
         ResultadoUYU.Text =
-     $"UYU: {uyu:0.00}";
+            $"UYU: {uyu:0.00}";
 
         ResultadoUSD.Text =
             $"USD: {usd:0.00}";
@@ -153,5 +198,12 @@ public partial class CotizacionesPage : ContentPage
 
         ResultadoBRL.Text =
             $"BRL: {brl:0.00}";
+    }
+
+    private async void OnVolverClicked(
+        object sender,
+        EventArgs e)
+    {
+        await Navigation.PopAsync();
     }
 }

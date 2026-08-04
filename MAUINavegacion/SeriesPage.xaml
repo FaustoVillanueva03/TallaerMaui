@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage
+<local:BasePage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MAUINavegacion"
     xmlns:models="clr-namespace:MAUINavegacion.Models"
     x:Class="MAUINavegacion.SeriesPage"
     Title="Series"
@@ -146,7 +147,7 @@
                 CharacterSpacing="3" />
 
             <Label
-                Text="Series"
+                Text="Series populares"
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 FontSize="30"
                 FontAttributes="Bold" />
@@ -205,6 +206,8 @@
                             ColumnDefinitions="110,*"
                             ColumnSpacing="16">
 
+                            <!-- IMAGEN -->
+
                             <Border
                                 Grid.Column="0"
                                 WidthRequest="110"
@@ -222,6 +225,8 @@
 
                             </Border>
 
+                            <!-- INFORMACIÓN -->
+
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 VerticalOptions="Center"
@@ -236,6 +241,8 @@
                                     MaxLines="2" />
 
                                 <HorizontalStackLayout Spacing="8">
+
+                                    <!-- PUNTUACIÓN -->
 
                                     <Border
                                         BackgroundColor="{StaticResource ColorPrimarioOscuro}"
@@ -253,6 +260,8 @@
                                             FontSize="13" />
 
                                     </Border>
+
+                                    <!-- FECHA -->
 
                                     <Border
                                         BackgroundColor="{StaticResource ColorSuperficieClara}"
@@ -299,4 +308,4 @@
 
     </Grid>
 
-</ContentPage>
+</local:BasePage>

@@ -1,9 +1,10 @@
 ﻿using MAUINavegacion.Models;
 using MAUINavegacion.Services;
 
+
 namespace MAUINavegacion;
 
-public partial class DetalleSeriePage : ContentPage
+public partial class DetalleSeriePage : BasePage
 {
     private readonly SerieService _serieService;
     private readonly ExchangeRateService _exchangeRateService;

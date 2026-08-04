@@ -3,7 +3,7 @@ using MAUINavegacion.Services;
 
 namespace MAUINavegacion;
 
-public partial class DetallePeliculaPage : ContentPage
+public partial class DetallePeliculaPage : BasePage
 {
     private Pelicula? _pelicula;
 

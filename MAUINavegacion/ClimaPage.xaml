@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage
+<local:BasePage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MAUINavegacion"
     x:Class="MAUINavegacion.ClimaPage"
     Title="Clima"
     BackgroundColor="{StaticResource ColorFondo}">
@@ -75,8 +76,6 @@
                 IsVisible="False"
                 Color="{StaticResource ColorPrimario}"
                 HorizontalOptions="Center" />
-
-            <!-- PRONÓSTICO -->
 
             <Label
                 Text="Pronóstico de los próximos 5 días"
@@ -157,8 +156,6 @@
 
             </CollectionView>
 
-            <!-- RECOMENDACIONES -->
-
             <Label
                 Text="Recomendado para este clima"
                 FontSize="26"
@@ -171,8 +168,6 @@
                 FontSize="16"
                 LineBreakMode="WordWrap"
                 TextColor="{StaticResource ColorTextoSecundario}" />
-
-            <!-- PELÍCULAS -->
 
             <Grid
                 ColumnDefinitions="*,Auto"
@@ -292,8 +287,6 @@
                     Clicked="OnPeliculasSiguienteClicked" />
 
             </Grid>
-
-            <!-- SERIES -->
 
             <Grid
                 ColumnDefinitions="*,Auto"
@@ -418,4 +411,4 @@
 
     </ScrollView>
 
-</ContentPage>
+</local:BasePage>

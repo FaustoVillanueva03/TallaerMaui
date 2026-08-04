@@ -3,9 +3,10 @@ using MAUINavegacion.Services;
 
 namespace MAUINavegacion;
 
-public partial class SeriesPage : ContentPage
+public partial class SeriesPage : BasePage
 {
     private readonly SerieService _serieService;
+
     private bool _seriesCargadas;
 
     public SeriesPage()
@@ -20,7 +21,9 @@ public partial class SeriesPage : ContentPage
         base.OnAppearing();
 
         if (_seriesCargadas)
+        {
             return;
+        }
 
         try
         {
@@ -32,6 +35,7 @@ public partial class SeriesPage : ContentPage
                 await _serieService.ObtenerSeriesAsync();
 
             ListaSeries.ItemsSource = series;
+
             _seriesCargadas = true;
         }
         catch (Exception error)
@@ -57,16 +61,23 @@ public partial class SeriesPage : ContentPage
             e.CurrentSelection.FirstOrDefault() as Serie;
 
         if (serieSeleccionada == null)
+        {
             return;
+        }
 
-        ((CollectionView)sender).SelectedItem = null;
+        if (sender is CollectionView lista)
+        {
+            lista.SelectedItem = null;
+        }
 
         await Navigation.PushAsync(
-            new DetalleSeriePage(serieSeleccionada));
+            new DetalleSeriePage(
+                serieSeleccionada));
     }
+
     private async void OnVolverClicked(
-    object sender,
-    EventArgs e)
+        object sender,
+        EventArgs e)
     {
         await Navigation.PopAsync();
     }

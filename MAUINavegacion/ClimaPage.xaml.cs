@@ -3,7 +3,7 @@ using MAUINavegacion.Services;
 
 namespace MAUINavegacion;
 
-public partial class ClimaPage : ContentPage
+public partial class ClimaPage : BasePage
 {
     private readonly WeatherService _weatherService;
     private readonly MovieService _movieService;
@@ -305,7 +305,10 @@ public partial class ClimaPage : ContentPage
             return;
         }
 
-        ((CollectionView)sender).SelectedItem = null;
+        if (sender is CollectionView lista)
+        {
+            lista.SelectedItem = null;
+        }
 
         await Navigation.PushAsync(
             new DetallePeliculaPage(
@@ -322,7 +325,10 @@ public partial class ClimaPage : ContentPage
             return;
         }
 
-        ((CollectionView)sender).SelectedItem = null;
+        if (sender is CollectionView lista)
+        {
+            lista.SelectedItem = null;
+        }
 
         await Navigation.PushAsync(
             new DetalleSeriePage(
