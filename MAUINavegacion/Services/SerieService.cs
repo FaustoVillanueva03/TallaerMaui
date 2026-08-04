@@ -44,7 +44,8 @@ public class SerieService
             if (!respuestaHttp.IsSuccessStatusCode)
             {
                 throw new Exception(
-                    $"Error TMDB {(int)respuestaHttp.StatusCode}: {contenido}");
+                    $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
+                    contenido);
             }
 
             RespuestaSeries? respuesta =
@@ -58,16 +59,21 @@ public class SerieService
             }
         }
 
-        return todasLasSeries
-            .GroupBy(serie => serie.Id)
-            .Select(grupo => grupo.First())
-            .ToList();
+        List<Serie> series =
+            todasLasSeries
+                .GroupBy(serie => serie.Id)
+                .Select(grupo => grupo.First())
+                .ToList();
+
+        AsignarPrecios(series);
+
+        return series;
     }
 
     public async Task<List<Serie>>
         ObtenerSeriesPorGeneroAsync(
             int generoId,
-            int cantidad = 10)
+            int cantidad = 20)
     {
         string url =
             $"https://api.themoviedb.org/3/discover/tv" +
@@ -89,7 +95,8 @@ public class SerieService
         if (!respuestaHttp.IsSuccessStatusCode)
         {
             throw new Exception(
-                $"Error TMDB {(int)respuestaHttp.StatusCode}: {contenido}");
+                $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
+                contenido);
         }
 
         RespuestaSeries? respuesta =
@@ -101,18 +108,71 @@ public class SerieService
             return new List<Serie>();
         }
 
-        return respuesta.Series
-            .GroupBy(serie => serie.Id)
-            .Select(grupo => grupo.First())
-            .Take(cantidad)
-            .ToList();
+        List<Serie> series =
+            respuesta.Series
+                .GroupBy(serie => serie.Id)
+                .Select(grupo => grupo.First())
+                .Take(cantidad)
+                .ToList();
+
+        AsignarPrecios(series);
+
+        return series;
+    }
+
+    private static void AsignarPrecios(
+        IEnumerable<Serie> series)
+    {
+        foreach (Serie serie in series)
+        {
+            serie.PrecioAlquilerUYU =
+                CalcularPrecioAlquiler(
+                    serie.Puntuacion);
+
+            serie.PrecioCompraUYU =
+                CalcularPrecioCompra(
+                    serie.Puntuacion);
+        }
+    }
+
+    private static double CalcularPrecioAlquiler(
+        double puntuacion)
+    {
+        if (puntuacion >= 8)
+        {
+            return 420;
+        }
+
+        if (puntuacion >= 7)
+        {
+            return 350;
+        }
+
+        return 280;
+    }
+
+    private static double CalcularPrecioCompra(
+        double puntuacion)
+    {
+        if (puntuacion >= 8)
+        {
+            return 1100;
+        }
+
+        if (puntuacion >= 7)
+        {
+            return 900;
+        }
+
+        return 700;
     }
 
     public async Task<Trailer?> ObtenerTrailerAsync(
         int serieId)
     {
         string urlEspanol =
-            $"https://api.themoviedb.org/3/tv/{serieId}/videos" +
+            $"https://api.themoviedb.org/3/tv/" +
+            $"{serieId}/videos" +
             $"?api_key={ApiKey}" +
             $"&language=es-ES";
 
@@ -122,7 +182,8 @@ public class SerieService
                     urlEspanol);
 
         Trailer? trailer =
-            ElegirTrailer(respuesta?.Trailers);
+            ElegirTrailer(
+                respuesta?.Trailers);
 
         if (trailer != null)
         {
@@ -130,7 +191,8 @@ public class SerieService
         }
 
         string urlIngles =
-            $"https://api.themoviedb.org/3/tv/{serieId}/videos" +
+            $"https://api.themoviedb.org/3/tv/" +
+            $"{serieId}/videos" +
             $"?api_key={ApiKey}" +
             $"&language=en-US";
 
@@ -139,7 +201,8 @@ public class SerieService
                 .GetFromJsonAsync<RespuestaTrailers>(
                     urlIngles);
 
-        return ElegirTrailer(respuesta?.Trailers);
+        return ElegirTrailer(
+            respuesta?.Trailers);
     }
 
     private static Trailer? ElegirTrailer(
@@ -150,29 +213,34 @@ public class SerieService
             return null;
         }
 
-        List<Trailer> videosYoutube = videos
-            .Where(video =>
-                !string.IsNullOrWhiteSpace(video.Sitio) &&
-                video.Sitio.Equals(
-                    "YouTube",
-                    StringComparison.OrdinalIgnoreCase))
-            .ToList();
+        List<Trailer> videosYoutube =
+            videos
+                .Where(video =>
+                    !string.IsNullOrWhiteSpace(
+                        video.Sitio) &&
+                    video.Sitio.Equals(
+                        "YouTube",
+                        StringComparison.OrdinalIgnoreCase))
+                .ToList();
 
         return videosYoutube.FirstOrDefault(video =>
-                   !string.IsNullOrWhiteSpace(video.Tipo) &&
+                   !string.IsNullOrWhiteSpace(
+                       video.Tipo) &&
                    video.Tipo.Equals(
                        "Trailer",
                        StringComparison.OrdinalIgnoreCase) &&
                    video.EsOficial)
 
                ?? videosYoutube.FirstOrDefault(video =>
-                   !string.IsNullOrWhiteSpace(video.Tipo) &&
+                   !string.IsNullOrWhiteSpace(
+                       video.Tipo) &&
                    video.Tipo.Equals(
                        "Trailer",
                        StringComparison.OrdinalIgnoreCase))
 
                ?? videosYoutube.FirstOrDefault(video =>
-                   !string.IsNullOrWhiteSpace(video.Tipo) &&
+                   !string.IsNullOrWhiteSpace(
+                       video.Tipo) &&
                    video.Tipo.Equals(
                        "Teaser",
                        StringComparison.OrdinalIgnoreCase));

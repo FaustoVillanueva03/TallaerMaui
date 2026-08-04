@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    x:Class="MAUINavegacion.CarritoPage"
+    Title="Carrito"
+    BackgroundColor="{StaticResource ColorFondo}">
+
+    <Grid
+        RowDefinitions="Auto,*,Auto"
+        Padding="24"
+        RowSpacing="18">
+
+        <!-- ENCABEZADO -->
+
+        <Grid
+            Grid.Row="0"
+            ColumnDefinitions="Auto,*,Auto"
+            ColumnSpacing="15">
+
+            <Button
+                Grid.Column="0"
+                Text="← Volver"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
+                CornerRadius="12"
+                Clicked="OnVolverClicked" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                Spacing="3"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="MI CARRITO"
+                    FontSize="28"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Label
+                    x:Name="CantidadLabel"
+                    FontSize="14"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+            </VerticalStackLayout>
+
+            <Button
+                x:Name="VaciarButton"
+                Grid.Column="2"
+                Text="Vaciar"
+                Padding="18,10"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorError}"
+                BorderColor="{StaticResource ColorError}"
+                BorderWidth="1"
+                CornerRadius="12"
+                Clicked="OnVaciarClicked" />
+
+        </Grid>
+
+        <!-- CONTENIDO -->
+
+        <Grid Grid.Row="1">
+
+            <CollectionView
+                x:Name="ListaCarrito"
+                SelectionMode="None"
+                VerticalScrollBarVisibility="Never">
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate>
+
+                        <Border
+                            Margin="0,0,0,14"
+                            Padding="14"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficie}">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="18" />
+                            </Border.StrokeShape>
+
+                            <Grid
+                                ColumnDefinitions="105,*,Auto"
+                                ColumnSpacing="16">
+
+                                <Border
+                                    Grid.Column="0"
+                                    HeightRequest="145"
+                                    WidthRequest="100"
+                                    Padding="0"
+                                    StrokeThickness="0">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="12" />
+                                    </Border.StrokeShape>
+
+                                    <Image
+                                        Source="{Binding Imagen}"
+                                        Aspect="AspectFill" />
+
+                                </Border>
+
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    Spacing="9"
+                                    VerticalOptions="Center">
+
+                                    <Label
+                                        Text="{Binding Titulo}"
+                                        FontSize="19"
+                                        FontAttributes="Bold"
+                                        MaxLines="2"
+                                        LineBreakMode="TailTruncation"
+                                        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                    <Label
+                                        Text="{Binding ModalidadTexto}"
+                                        FontSize="15"
+                                        TextColor="{StaticResource ColorTextoSecundario}" />
+
+                                    <Border
+                                        HorizontalOptions="Start"
+                                        Padding="10,5"
+                                        Stroke="{StaticResource ColorPrimario}"
+                                        StrokeThickness="1"
+                                        BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="10" />
+                                        </Border.StrokeShape>
+
+                                        <Label
+                                            Text="{Binding Moneda}"
+                                            FontSize="13"
+                                            FontAttributes="Bold"
+                                            TextColor="{StaticResource ColorPrimario}" />
+
+                                    </Border>
+
+                                    <Label
+                                        Text="{Binding PrecioTexto}"
+                                        FontSize="20"
+                                        FontAttributes="Bold"
+                                        TextColor="{StaticResource ColorPrimario}" />
+
+                                </VerticalStackLayout>
+
+                                <Button
+                                    Grid.Column="2"
+                                    Text="✕"
+                                    FontSize="18"
+                                    WidthRequest="45"
+                                    HeightRequest="45"
+                                    Padding="0"
+                                    VerticalOptions="Center"
+                                    BackgroundColor="{StaticResource ColorSuperficieClara}"
+                                    TextColor="{StaticResource ColorError}"
+                                    BorderColor="{StaticResource ColorError}"
+                                    BorderWidth="1"
+                                    CornerRadius="22"
+                                    Clicked="OnEliminarClicked" />
+
+                            </Grid>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- CARRITO VACÍO -->
+
+            <VerticalStackLayout
+                x:Name="CarritoVacioLayout"
+                IsVisible="False"
+                Spacing="15"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="🛒"
+                    FontSize="70"
+                    HorizontalTextAlignment="Center" />
+
+                <Label
+                    Text="Tu carrito está vacío"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Label
+                    Text="Agregá una película o serie para verla acá."
+                    FontSize="15"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                <Button
+                    Text="Ver películas"
+                    Margin="0,10,0,0"
+                    Padding="25,12"
+                    BackgroundColor="{StaticResource ColorPrimario}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    CornerRadius="14"
+                    Clicked="OnVerPeliculasClicked" />
+
+            </VerticalStackLayout>
+
+        </Grid>
+
+        <!-- TOTAL -->
+
+        <Border
+            x:Name="ResumenCarrito"
+            Grid.Row="2"
+            Padding="20"
+            Stroke="{StaticResource ColorPrimario}"
+            StrokeThickness="1"
+            BackgroundColor="{StaticResource ColorSuperficie}">
+
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="18" />
+            </Border.StrokeShape>
+
+            <Grid
+                RowDefinitions="Auto,Auto"
+                ColumnDefinitions="*,Auto"
+                RowSpacing="14">
+
+                <VerticalStackLayout
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Spacing="3">
+
+                    <Label
+                        Text="Total del carrito"
+                        FontSize="16"
+                        TextColor="{StaticResource ColorTextoSecundario}" />
+
+                    <Label
+                        Text="El total se calcula en pesos uruguayos"
+                        FontSize="12"
+                        TextColor="{StaticResource ColorTextoDeshabilitado}" />
+
+                </VerticalStackLayout>
+
+                <Label
+                    x:Name="TotalLabel"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    FontSize="27"
+                    FontAttributes="Bold"
+                    VerticalOptions="Center"
+                    TextColor="{StaticResource ColorPrimario}" />
+
+                <Button
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Text="Continuar con la compra"
+                    HeightRequest="52"
+                    FontAttributes="Bold"
+                    BackgroundColor="{StaticResource ColorPrimario}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    CornerRadius="14"
+                    Clicked="OnContinuarCompraClicked" />
+
+            </Grid>
+
+        </Border>
+
+    </Grid>
+
+</ContentPage>

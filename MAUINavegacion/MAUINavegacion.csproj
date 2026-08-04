@@ -66,6 +66,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="$(MauiVersion)" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Maui.Controls.Maps" Version="9.0.120" />
 		<PackageReference Include="Plugin.Fingerprint" Version="2.1.5" />
 		<PackageReference Include="sqlite-net-pcl" Version="1.11.285" />
 	</ItemGroup>
@@ -77,6 +78,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="CarritoPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="ClimaPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

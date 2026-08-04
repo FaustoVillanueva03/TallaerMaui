@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage
+<local:BasePage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MAUINavegacion"
     x:Class="MAUINavegacion.MainPage"
     Title="Inicio"
     BackgroundColor="{StaticResource ColorFondo}">
 
     <ContentPage.Resources>
-
-        <!-- Estilo de las tarjetas del menú -->
 
         <Style
             x:Key="TarjetaMenuStyle"
@@ -295,8 +294,6 @@
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
-                    <!-- CLIMA -->
-
                     <Border
                         Grid.Column="0"
                         Style="{StaticResource TarjetaMenuStyle}"
@@ -340,8 +337,6 @@
                         </VerticalStackLayout>
 
                     </Border>
-
-                    <!-- COTIZACIONES -->
 
                     <Border
                         Grid.Column="1"
@@ -395,8 +390,6 @@
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
-                    <!-- MAPA -->
-
                     <Border
                         Grid.Column="0"
                         Style="{StaticResource TarjetaMenuStyle}"
@@ -440,8 +433,6 @@
                         </VerticalStackLayout>
 
                     </Border>
-
-                    <!-- PERFIL -->
 
                     <Border
                         Grid.Column="1"
@@ -495,4 +486,4 @@
 
     </ScrollView>
 
-</ContentPage>
+</local:BasePage>

@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 
-<ContentPage
+<local:BasePage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:MAUINavegacion"
     xmlns:models="clr-namespace:MAUINavegacion.Models"
     x:Class="MAUINavegacion.PeliculasPage"
     Title="Películas"
@@ -114,22 +115,10 @@
 
     </ContentPage.Resources>
 
-    <ContentPage.ToolbarItems>
-
-        <ToolbarItem
-            Text="⚙"
-            Order="Primary"
-            Priority="0"
-            Clicked="OnPreferenciasClicked" />
-
-    </ContentPage.ToolbarItems>
-
     <Grid
         Padding="20"
         RowDefinitions="Auto,Auto,*"
         RowSpacing="20">
-
-        <!-- BOTÓN VOLVER -->
 
         <Button
             Grid.Row="0"
@@ -141,8 +130,6 @@
             BorderWidth="1"
             CornerRadius="12"
             Clicked="OnVolverClicked" />
-
-        <!-- ENCABEZADO -->
 
         <VerticalStackLayout
             Grid.Row="1"
@@ -168,8 +155,6 @@
 
         </VerticalStackLayout>
 
-        <!-- INDICADOR DE CARGA -->
-
         <ActivityIndicator
             x:Name="Cargando"
             Grid.Row="2"
@@ -180,8 +165,6 @@
             HeightRequest="50"
             HorizontalOptions="Center"
             VerticalOptions="Center" />
-
-        <!-- LISTA DE PELÍCULAS -->
 
         <CollectionView
             x:Name="ListaPeliculas"
@@ -206,7 +189,7 @@
                         Style="{StaticResource TarjetaContenidoStyle}"
                         Padding="12"
                         Margin="8,4">
-                        
+
                         <Border.StrokeShape>
                             <RoundRectangle CornerRadius="18" />
                         </Border.StrokeShape>
@@ -214,8 +197,6 @@
                         <Grid
                             ColumnDefinitions="110,*"
                             ColumnSpacing="16">
-
-                            <!-- IMAGEN -->
 
                             <Border
                                 Grid.Column="0"
@@ -234,8 +215,6 @@
 
                             </Border>
 
-                            <!-- INFORMACIÓN -->
-
                             <VerticalStackLayout
                                 Grid.Column="1"
                                 VerticalOptions="Center"
@@ -250,8 +229,6 @@
                                     MaxLines="2" />
 
                                 <HorizontalStackLayout Spacing="8">
-
-                                    <!-- PUNTUACIÓN -->
 
                                     <Border
                                         BackgroundColor="{StaticResource ColorPrimarioOscuro}"
@@ -269,8 +246,6 @@
                                             FontSize="13" />
 
                                     </Border>
-
-                                    <!-- FECHA -->
 
                                     <Border
                                         BackgroundColor="{StaticResource ColorSuperficieClara}"
@@ -317,4 +292,4 @@
 
     </Grid>
 
-</ContentPage>
+</local:BasePage>

@@ -1,40 +1,47 @@
 namespace MAUINavegacion;
 
-public partial class MainPage : ContentPage
+public partial class MainPage : BasePage
 {
     public MainPage()
     {
         InitializeComponent();
     }
 
-    private async void OnCineClicked(object sender, EventArgs e)
+    private async void OnCineClicked(
+        object sender,
+        EventArgs e)
     {
-        await Navigation.PushAsync(new PeliculasPage());
+        await Navigation.PushAsync(
+            new PeliculasPage());
     }
 
     private async void OnSeriesClicked(
-    object sender,
-    EventArgs e)
+        object sender,
+        EventArgs e)
     {
-        await Navigation.PushAsync(new SeriesPage());
+        await Navigation.PushAsync(
+            new SeriesPage());
     }
 
     private async void OnClimaClicked(
         object sender,
         EventArgs e)
     {
-        await Navigation.PushAsync(new ClimaPage());
+        await Navigation.PushAsync(
+            new ClimaPage());
     }
 
     private async void OnCotizacionesClicked(
-     object sender,
-     EventArgs e)
+        object sender,
+        EventArgs e)
     {
         await Navigation.PushAsync(
             new CotizacionesPage());
     }
 
-    private async void OnMapaClicked(object sender, EventArgs e)
+    private async void OnMapaClicked(
+        object sender,
+        EventArgs e)
     {
         await DisplayAlert(
             "Mapa",
@@ -42,7 +49,9 @@ public partial class MainPage : ContentPage
             "Aceptar");
     }
 
-    private async void OnPerfilClicked(object sender, EventArgs e)
+    private async void OnPerfilClicked(
+        object sender,
+        EventArgs e)
     {
         await DisplayAlert(
             "Perfil",

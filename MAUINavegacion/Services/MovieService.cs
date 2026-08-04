@@ -46,7 +46,8 @@ public class MovieService
             if (!respuestaHttp.IsSuccessStatusCode)
             {
                 throw new Exception(
-                    $"Error TMDB {(int)respuestaHttp.StatusCode}: {contenido}");
+                    $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
+                    contenido);
             }
 
             RespuestaPeliculas? respuesta =
@@ -60,16 +61,21 @@ public class MovieService
             }
         }
 
-        return todasLasPeliculas
-            .GroupBy(pelicula => pelicula.Id)
-            .Select(grupo => grupo.First())
-            .ToList();
+        List<Pelicula> peliculas =
+            todasLasPeliculas
+                .GroupBy(pelicula => pelicula.Id)
+                .Select(grupo => grupo.First())
+                .ToList();
+
+        AsignarPrecios(peliculas);
+
+        return peliculas;
     }
 
     public async Task<List<Pelicula>>
         ObtenerPeliculasPorGeneroAsync(
             int generoId,
-            int cantidad = 10)
+            int cantidad = 20)
     {
         string url =
             $"https://api.themoviedb.org/3/discover/movie" +
@@ -93,7 +99,8 @@ public class MovieService
         if (!respuestaHttp.IsSuccessStatusCode)
         {
             throw new Exception(
-                $"Error TMDB {(int)respuestaHttp.StatusCode}: {contenido}");
+                $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
+                contenido);
         }
 
         RespuestaPeliculas? respuesta =
@@ -105,18 +112,71 @@ public class MovieService
             return new List<Pelicula>();
         }
 
-        return respuesta.Peliculas
-            .GroupBy(pelicula => pelicula.Id)
-            .Select(grupo => grupo.First())
-            .Take(cantidad)
-            .ToList();
+        List<Pelicula> peliculas =
+            respuesta.Peliculas
+                .GroupBy(pelicula => pelicula.Id)
+                .Select(grupo => grupo.First())
+                .Take(cantidad)
+                .ToList();
+
+        AsignarPrecios(peliculas);
+
+        return peliculas;
+    }
+
+    private static void AsignarPrecios(
+        IEnumerable<Pelicula> peliculas)
+    {
+        foreach (Pelicula pelicula in peliculas)
+        {
+            pelicula.PrecioAlquilerUYU =
+                CalcularPrecioAlquiler(
+                    pelicula.Puntuacion);
+
+            pelicula.PrecioCompraUYU =
+                CalcularPrecioCompra(
+                    pelicula.Puntuacion);
+        }
+    }
+
+    private static double CalcularPrecioAlquiler(
+        double puntuacion)
+    {
+        if (puntuacion >= 8)
+        {
+            return 450;
+        }
+
+        if (puntuacion >= 7)
+        {
+            return 390;
+        }
+
+        return 320;
+    }
+
+    private static double CalcularPrecioCompra(
+        double puntuacion)
+    {
+        if (puntuacion >= 8)
+        {
+            return 1200;
+        }
+
+        if (puntuacion >= 7)
+        {
+            return 990;
+        }
+
+        return 790;
     }
 
     public async Task<Trailer?> ObtenerTrailerAsync(
         int peliculaId)
     {
         string urlEspanol =
-            $"https://api.themoviedb.org/3/movie/{peliculaId}/videos" +
+            $"https://api.themoviedb.org/3/movie/" +
+            $"{peliculaId}/videos" +
             $"?api_key={ApiKey}" +
             $"&language=es-ES";
 
@@ -126,7 +186,8 @@ public class MovieService
                     urlEspanol);
 
         Trailer? trailer =
-            ElegirTrailer(respuesta?.Trailers);
+            ElegirTrailer(
+                respuesta?.Trailers);
 
         if (trailer != null)
         {
@@ -134,7 +195,8 @@ public class MovieService
         }
 
         string urlIngles =
-            $"https://api.themoviedb.org/3/movie/{peliculaId}/videos" +
+            $"https://api.themoviedb.org/3/movie/" +
+            $"{peliculaId}/videos" +
             $"?api_key={ApiKey}" +
             $"&language=en-US";
 
@@ -143,7 +205,8 @@ public class MovieService
                 .GetFromJsonAsync<RespuestaTrailers>(
                     urlIngles);
 
-        return ElegirTrailer(respuesta?.Trailers);
+        return ElegirTrailer(
+            respuesta?.Trailers);
     }
 
     private static Trailer? ElegirTrailer(
@@ -154,29 +217,34 @@ public class MovieService
             return null;
         }
 
-        List<Trailer> videosYoutube = videos
-            .Where(video =>
-                !string.IsNullOrWhiteSpace(video.Sitio) &&
-                video.Sitio.Equals(
-                    "YouTube",
-                    StringComparison.OrdinalIgnoreCase))
-            .ToList();
+        List<Trailer> videosYoutube =
+            videos
+                .Where(video =>
+                    !string.IsNullOrWhiteSpace(
+                        video.Sitio) &&
+                    video.Sitio.Equals(
+                        "YouTube",
+                        StringComparison.OrdinalIgnoreCase))
+                .ToList();
 
         return videosYoutube.FirstOrDefault(video =>
-                   !string.IsNullOrWhiteSpace(video.Tipo) &&
+                   !string.IsNullOrWhiteSpace(
+                       video.Tipo) &&
                    video.Tipo.Equals(
                        "Trailer",
                        StringComparison.OrdinalIgnoreCase) &&
                    video.EsOficial)
 
                ?? videosYoutube.FirstOrDefault(video =>
-                   !string.IsNullOrWhiteSpace(video.Tipo) &&
+                   !string.IsNullOrWhiteSpace(
+                       video.Tipo) &&
                    video.Tipo.Equals(
                        "Trailer",
                        StringComparison.OrdinalIgnoreCase))
 
                ?? videosYoutube.FirstOrDefault(video =>
-                   !string.IsNullOrWhiteSpace(video.Tipo) &&
+                   !string.IsNullOrWhiteSpace(
+                       video.Tipo) &&
                    video.Tipo.Equals(
                        "Teaser",
                        StringComparison.OrdinalIgnoreCase));
