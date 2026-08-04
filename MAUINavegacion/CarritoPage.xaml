@@ -61,7 +61,7 @@
 
         </Grid>
 
-        <!-- CONTENIDO -->
+        <!-- CONTENIDO DEL CARRITO -->
 
         <Grid Grid.Row="1">
 
@@ -89,6 +89,8 @@
                                 ColumnDefinitions="105,*,Auto"
                                 ColumnSpacing="16">
 
+                                <!-- IMAGEN -->
+
                                 <Border
                                     Grid.Column="0"
                                     HeightRequest="145"
@@ -105,6 +107,8 @@
                                         Aspect="AspectFill" />
 
                                 </Border>
+
+                                <!-- INFORMACIÓN -->
 
                                 <VerticalStackLayout
                                     Grid.Column="1"
@@ -150,6 +154,8 @@
                                         TextColor="{StaticResource ColorPrimario}" />
 
                                 </VerticalStackLayout>
+
+                                <!-- ELIMINAR -->
 
                                 <Button
                                     Grid.Column="2"
@@ -216,7 +222,7 @@
 
         </Grid>
 
-        <!-- TOTAL -->
+        <!-- TOTALES POR MONEDA -->
 
         <Border
             x:Name="ResumenCarrito"
@@ -230,40 +236,160 @@
                 <RoundRectangle CornerRadius="18" />
             </Border.StrokeShape>
 
-            <Grid
-                RowDefinitions="Auto,Auto"
-                ColumnDefinitions="*,Auto"
-                RowSpacing="14">
-
-                <VerticalStackLayout
-                    Grid.Row="0"
-                    Grid.Column="0"
-                    Spacing="3">
-
-                    <Label
-                        Text="Total del carrito"
-                        FontSize="16"
-                        TextColor="{StaticResource ColorTextoSecundario}" />
-
-                    <Label
-                        Text="El total se calcula en pesos uruguayos"
-                        FontSize="12"
-                        TextColor="{StaticResource ColorTextoDeshabilitado}" />
-
-                </VerticalStackLayout>
+            <VerticalStackLayout Spacing="14">
 
                 <Label
-                    x:Name="TotalLabel"
-                    Grid.Row="0"
-                    Grid.Column="1"
-                    FontSize="27"
+                    Text="Totales del carrito"
+                    FontSize="20"
                     FontAttributes="Bold"
-                    VerticalOptions="Center"
-                    TextColor="{StaticResource ColorPrimario}" />
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Label
+                    Text="Total correspondiente a cada moneda seleccionada"
+                    FontSize="14"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                <Grid
+                    ColumnDefinitions="*,*"
+                    RowDefinitions="Auto,Auto"
+                    ColumnSpacing="10"
+                    RowSpacing="10">
+
+                    <!-- PESOS URUGUAYOS -->
+
+                    <Border
+                        x:Name="TotalUYUBorder"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Padding="15"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="5">
+
+                            <Label
+                                Text="Pesos uruguayos"
+                                FontSize="13"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            <Label
+                                x:Name="TotalUYULabel"
+                                FontSize="21"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorPrimario}" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- DÓLARES -->
+
+                    <Border
+                        x:Name="TotalUSDBorder"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Padding="15"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="5">
+
+                            <Label
+                                Text="Dólares"
+                                FontSize="13"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            <Label
+                                x:Name="TotalUSDLabel"
+                                FontSize="21"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorPrimario}" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- EUROS -->
+
+                    <Border
+                        x:Name="TotalEURBorder"
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Padding="15"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="5">
+
+                            <Label
+                                Text="Euros"
+                                FontSize="13"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            <Label
+                                x:Name="TotalEURLabel"
+                                FontSize="21"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorPrimario}" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                    <!-- REALES -->
+
+                    <Border
+                        x:Name="TotalBRLBorder"
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Padding="15"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <VerticalStackLayout Spacing="5">
+
+                            <Label
+                                Text="Reales"
+                                FontSize="13"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            <Label
+                                x:Name="TotalBRLLabel"
+                                FontSize="21"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorPrimario}" />
+
+                        </VerticalStackLayout>
+
+                    </Border>
+
+                </Grid>
 
                 <Button
-                    Grid.Row="1"
-                    Grid.ColumnSpan="2"
                     Text="Continuar con la compra"
                     HeightRequest="52"
                     FontAttributes="Bold"
@@ -272,7 +398,7 @@
                     CornerRadius="14"
                     Clicked="OnContinuarCompraClicked" />
 
-            </Grid>
+            </VerticalStackLayout>
 
         </Border>
 

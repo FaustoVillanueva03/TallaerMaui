@@ -34,6 +34,12 @@ public class CarritoService
             itemExistente.PrecioUYU =
                 nuevoItem.PrecioUYU;
 
+            itemExistente.Titulo =
+                nuevoItem.Titulo;
+
+            itemExistente.Imagen =
+                nuevoItem.Imagen;
+
             return false;
         }
 
@@ -67,9 +73,47 @@ public class CarritoService
         return _items.Count;
     }
 
-    public double ObtenerTotalUYU()
+    public double ObtenerTotalGeneralUYU()
     {
         return _items.Sum(item =>
             item.PrecioUYU);
+    }
+
+    public double ObtenerTotalPorMoneda(
+        string moneda)
+    {
+        return _items
+            .Where(item =>
+                item.Moneda.Equals(
+                    moneda,
+                    StringComparison.OrdinalIgnoreCase))
+            .Sum(item => item.Precio);
+    }
+
+    public double ObtenerTotalUYUSeleccionado()
+    {
+        return ObtenerTotalPorMoneda("UYU");
+    }
+
+    public double ObtenerTotalUSD()
+    {
+        return ObtenerTotalPorMoneda("USD");
+    }
+
+    public double ObtenerTotalEUR()
+    {
+        return ObtenerTotalPorMoneda("EUR");
+    }
+
+    public double ObtenerTotalBRL()
+    {
+        return ObtenerTotalPorMoneda("BRL");
+    }
+
+    // Se mantiene para evitar errores en otras partes
+    // que todavía utilicen el nombre anterior.
+    public double ObtenerTotalUYU()
+    {
+        return ObtenerTotalGeneralUYU();
     }
 }
