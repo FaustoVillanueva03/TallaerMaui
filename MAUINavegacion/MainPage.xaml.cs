@@ -39,16 +39,20 @@ public partial class MainPage : BasePage
             new CotizacionesPage());
     }
 
-    private async void OnMapaClicked(
-        object sender,
-        EventArgs e)
+    private async void OnMapaClicked(object sender, EventArgs e)
     {
-        await DisplayAlert(
-            "Mapa",
-            "La sección de mapa todavía no está creada.",
-            "Aceptar");
+        try
+        {
+            await Navigation.PushAsync(new MapaPage());
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert(
+                "Error",
+                ex.ToString(),
+                "Aceptar");
+        }
     }
-
     private async void OnPerfilClicked(
         object sender,
         EventArgs e)
