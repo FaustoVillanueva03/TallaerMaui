@@ -191,26 +191,36 @@ public partial class PerfilPage : BasePage
                     new()
                     {
                         UsuarioId = usuarioId,
+
                         Nombre = nombre,
+
                         Email =
                             EmailEntry.Text?.Trim() ??
                             string.Empty,
+
                         Telefono =
                             TelefonoEntry.Text?.Trim() ??
                             string.Empty,
+
                         Direccion =
                             DireccionEntry.Text?.Trim() ??
                             string.Empty,
+
                         RutaFoto =
                             _rutaFotoSeleccionada,
+
                         MostrarPeliculas =
                             MostrarPeliculasSwitch.IsToggled,
+
                         MostrarSeries =
                             MostrarSeriesSwitch.IsToggled,
+
                         MostrarClima =
                             MostrarClimaSwitch.IsToggled,
+
                         MostrarCotizaciones =
                             MostrarCotizacionesSwitch.IsToggled,
+
                         MostrarMapa =
                             MostrarMapaSwitch.IsToggled
                     };
@@ -256,6 +266,9 @@ public partial class PerfilPage : BasePage
                 await App.Database
                     .ActualizarPerfilAsync(
                         _perfilEditando);
+
+                ActualizarPreferenciasSiEsPerfilActivo(
+                    _perfilEditando);
             }
 
             FormularioFondo.IsVisible = false;
@@ -278,6 +291,23 @@ public partial class PerfilPage : BasePage
                     ? "Crear perfil"
                     : "Guardar cambios";
         }
+    }
+
+    private void ActualizarPreferenciasSiEsPerfilActivo(
+        Perfil perfil)
+    {
+        int perfilActivoId =
+            Preferences.Default.Get(
+                "PerfilActivoId",
+                0);
+
+        if (perfilActivoId != perfil.Id)
+        {
+            return;
+        }
+
+        GuardarPerfilActivoEnPreferences(
+            perfil);
     }
 
     private async void OnEliminarPerfilClicked(
@@ -314,8 +344,7 @@ public partial class PerfilPage : BasePage
 
             if (perfilActivoId == perfil.Id)
             {
-                Preferences.Default.Remove(
-                    "PerfilActivoId");
+                LimpiarPerfilActivo();
             }
 
             await CargarPerfilesAsync();
@@ -339,6 +368,20 @@ public partial class PerfilPage : BasePage
             return;
         }
 
+        GuardarPerfilActivoEnPreferences(
+            perfil);
+
+        await DisplayAlert(
+            "Perfil activo",
+            $"Ahora estás usando el perfil \"{perfil.Nombre}\".",
+            "Aceptar");
+
+        AbrirPaginaPrincipal();
+    }
+
+    private static void GuardarPerfilActivoEnPreferences(
+        Perfil perfil)
+    {
         Preferences.Default.Set(
             "PerfilActivoId",
             perfil.Id);
@@ -347,12 +390,66 @@ public partial class PerfilPage : BasePage
             "PerfilActivoNombre",
             perfil.Nombre);
 
-        await DisplayAlert(
-            "Perfil activo",
-            $"Ahora estás usando el perfil \"{perfil.Nombre}\".",
-            "Aceptar");
+        Preferences.Default.Set(
+            "MostrarPeliculas",
+            perfil.MostrarPeliculas);
 
-        await Navigation.PopAsync();
+        Preferences.Default.Set(
+            "MostrarSeries",
+            perfil.MostrarSeries);
+
+        Preferences.Default.Set(
+            "MostrarClima",
+            perfil.MostrarClima);
+
+        Preferences.Default.Set(
+            "MostrarCotizaciones",
+            perfil.MostrarCotizaciones);
+
+        Preferences.Default.Set(
+            "MostrarMapa",
+            perfil.MostrarMapa);
+    }
+
+    private static void LimpiarPerfilActivo()
+    {
+        Preferences.Default.Remove(
+            "PerfilActivoId");
+
+        Preferences.Default.Remove(
+            "PerfilActivoNombre");
+
+        Preferences.Default.Remove(
+            "MostrarPeliculas");
+
+        Preferences.Default.Remove(
+            "MostrarSeries");
+
+        Preferences.Default.Remove(
+            "MostrarClima");
+
+        Preferences.Default.Remove(
+            "MostrarCotizaciones");
+
+        Preferences.Default.Remove(
+            "MostrarMapa");
+    }
+
+    private void AbrirPaginaPrincipal()
+    {
+        if (Application.Current?.Windows.Count > 0)
+        {
+            Application.Current.Windows[0].Page =
+                new NavigationPage(
+                    new MainPage())
+                {
+                    BarBackgroundColor =
+                        Color.FromArgb("#151515"),
+
+                    BarTextColor =
+                        Colors.White
+                };
+        }
     }
 
     private async void OnElegirFotoClicked(
