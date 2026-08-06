@@ -25,14 +25,17 @@ public partial class RegistroPage : ContentPage
                 await MediaPicker.Default.PickPhotoAsync();
 
             if (foto == null)
+            {
                 return;
+            }
 
             string nombreArchivo =
                 $"{Guid.NewGuid()}{Path.GetExtension(foto.FileName)}";
 
-            string rutaDestino = Path.Combine(
-                FileSystem.AppDataDirectory,
-                nombreArchivo);
+            string rutaDestino =
+                Path.Combine(
+                    FileSystem.AppDataDirectory,
+                    nombreArchivo);
 
             await using Stream origen =
                 await foto.OpenReadAsync();
@@ -42,12 +45,14 @@ public partial class RegistroPage : ContentPage
 
             await origen.CopyToAsync(destino);
 
-            _rutaFoto = rutaDestino;
+            _rutaFoto =
+                rutaDestino;
 
             FotoPerfilImage.Source =
                 ImageSource.FromFile(_rutaFoto);
 
-            FotoPerfilImage.IsVisible = true;
+            FotoPerfilImage.IsVisible =
+                true;
         }
         catch (Exception)
         {
@@ -64,26 +69,32 @@ public partial class RegistroPage : ContentPage
         LimpiarErrores();
 
         string nombreUsuario =
-            UsuarioEntry.Text?.Trim() ?? string.Empty;
+            UsuarioEntry.Text?.Trim() ??
+            string.Empty;
 
         string contrasena =
-            ContrasenaEntry.Text ?? string.Empty;
+            ContrasenaEntry.Text ??
+            string.Empty;
 
         string nombreCompleto =
-            NombreCompletoEntry.Text?.Trim() ?? string.Empty;
+            NombreCompletoEntry.Text?.Trim() ??
+            string.Empty;
 
         string direccion =
-            DireccionEntry.Text?.Trim() ?? string.Empty;
+            DireccionEntry.Text?.Trim() ??
+            string.Empty;
 
         string telefono =
-            TelefonoEntry.Text?.Trim() ?? string.Empty;
+            TelefonoEntry.Text?.Trim() ??
+            string.Empty;
 
         string email =
-            EmailEntry.Text?.Trim() ?? string.Empty;
+            EmailEntry.Text?.Trim() ??
+            string.Empty;
 
         bool hayErrores = false;
 
-        // Validación del usuario
+        // VALIDACIÓN DEL USUARIO
 
         if (string.IsNullOrWhiteSpace(nombreUsuario))
         {
@@ -102,7 +113,7 @@ public partial class RegistroPage : ContentPage
             hayErrores = true;
         }
 
-        // Validación de la contraseña
+        // VALIDACIÓN DE LA CONTRASEÑA
 
         if (string.IsNullOrWhiteSpace(contrasena))
         {
@@ -121,7 +132,7 @@ public partial class RegistroPage : ContentPage
             hayErrores = true;
         }
 
-        // Validación del nombre
+        // VALIDACIÓN DEL NOMBRE
 
         if (string.IsNullOrWhiteSpace(nombreCompleto))
         {
@@ -132,7 +143,7 @@ public partial class RegistroPage : ContentPage
             hayErrores = true;
         }
 
-        // Validación de la dirección
+        // VALIDACIÓN DE LA DIRECCIÓN
 
         if (string.IsNullOrWhiteSpace(direccion))
         {
@@ -143,7 +154,7 @@ public partial class RegistroPage : ContentPage
             hayErrores = true;
         }
 
-        // Validación del teléfono
+        // VALIDACIÓN DEL TELÉFONO
 
         if (string.IsNullOrWhiteSpace(telefono))
         {
@@ -164,7 +175,7 @@ public partial class RegistroPage : ContentPage
             hayErrores = true;
         }
 
-        // Validación del email
+        // VALIDACIÓN DEL EMAIL
 
         if (string.IsNullOrWhiteSpace(email))
         {
@@ -186,11 +197,14 @@ public partial class RegistroPage : ContentPage
         }
 
         if (hayErrores)
+        {
             return;
+        }
 
         try
         {
-            await App.Database.InicializarAsync();
+            await App.Database
+                .InicializarAsync();
 
             Usuario? usuarioExistente =
                 await App.Database
@@ -206,22 +220,85 @@ public partial class RegistroPage : ContentPage
                 return;
             }
 
-            Usuario nuevoUsuario = new()
-            {
-                NombreUsuario = nombreUsuario,
-                Contrasena = contrasena,
-                NombreCompleto = nombreCompleto,
-                Direccion = direccion,
-                Telefono = telefono,
-                Email = email,
-                RutaFoto = _rutaFoto
-            };
+            Usuario nuevoUsuario =
+                new()
+                {
+                    NombreUsuario =
+                        nombreUsuario,
+
+                    Contrasena =
+                        contrasena,
+
+                    NombreCompleto =
+                        nombreCompleto,
+
+                    Direccion =
+                        direccion,
+
+                    Telefono =
+                        telefono,
+
+                    Email =
+                        email,
+
+                    RutaFoto =
+                        _rutaFoto
+                };
+
+            int usuarioId =
+                await App.Database
+                    .RegistrarUsuarioAsync(
+                        nuevoUsuario);
+
+            Perfil perfilPrincipal =
+                new()
+                {
+                    UsuarioId =
+                        usuarioId,
+
+                    Nombre =
+                        nuevoUsuario.NombreCompleto,
+
+                    Direccion =
+                        nuevoUsuario.Direccion,
+
+                    Telefono =
+                        nuevoUsuario.Telefono,
+
+                    Email =
+                        nuevoUsuario.Email,
+
+                    RutaFoto =
+                        nuevoUsuario.RutaFoto,
+
+                    Latitud =
+                        0,
+
+                    Longitud =
+                        0,
+
+                    MostrarPeliculas =
+                        true,
+
+                    MostrarSeries =
+                        true,
+
+                    MostrarClima =
+                        true,
+
+                    MostrarCotizaciones =
+                        true,
+
+                    MostrarMapa =
+                        true
+                };
 
             await App.Database
-                .RegistrarUsuarioAsync(nuevoUsuario);
+                .CrearPerfilAsync(
+                    perfilPrincipal);
 
             MostrarMensajeGeneral(
-                "Usuario registrado correctamente.",
+                "Cuenta y perfil principal creados correctamente.",
                 esError: false);
 
             await Task.Delay(1200);
@@ -257,44 +334,68 @@ public partial class RegistroPage : ContentPage
         Label etiqueta,
         string mensaje)
     {
-        etiqueta.Text = mensaje;
-        etiqueta.IsVisible = true;
+        etiqueta.Text =
+            mensaje;
+
+        etiqueta.IsVisible =
+            true;
     }
 
     private void LimpiarErrores()
     {
-        LimpiarEtiqueta(UsuarioErrorLabel);
-        LimpiarEtiqueta(ContrasenaErrorLabel);
-        LimpiarEtiqueta(NombreErrorLabel);
-        LimpiarEtiqueta(DireccionErrorLabel);
-        LimpiarEtiqueta(TelefonoErrorLabel);
-        LimpiarEtiqueta(EmailErrorLabel);
+        LimpiarEtiqueta(
+            UsuarioErrorLabel);
+
+        LimpiarEtiqueta(
+            ContrasenaErrorLabel);
+
+        LimpiarEtiqueta(
+            NombreErrorLabel);
+
+        LimpiarEtiqueta(
+            DireccionErrorLabel);
+
+        LimpiarEtiqueta(
+            TelefonoErrorLabel);
+
+        LimpiarEtiqueta(
+            EmailErrorLabel);
 
         LimpiarMensajeGeneral();
     }
 
-    private static void LimpiarEtiqueta(Label etiqueta)
+    private static void LimpiarEtiqueta(
+        Label etiqueta)
     {
-        etiqueta.Text = string.Empty;
-        etiqueta.IsVisible = false;
+        etiqueta.Text =
+            string.Empty;
+
+        etiqueta.IsVisible =
+            false;
     }
 
     private void LimpiarMensajeGeneral()
     {
-        MensajeLabel.Text = string.Empty;
-        MensajeLabel.IsVisible = false;
+        MensajeLabel.Text =
+            string.Empty;
+
+        MensajeLabel.IsVisible =
+            false;
     }
 
     private void MostrarMensajeGeneral(
         string mensaje,
         bool esError)
     {
-        MensajeLabel.Text = mensaje;
+        MensajeLabel.Text =
+            mensaje;
 
-        MensajeLabel.TextColor = esError
-            ? Color.FromArgb("#FF8A8A")
-            : Color.FromArgb("#4CAF50");
+        MensajeLabel.TextColor =
+            esError
+                ? Color.FromArgb("#FF8A8A")
+                : Color.FromArgb("#4CAF50");
 
-        MensajeLabel.IsVisible = true;
+        MensajeLabel.IsVisible =
+            true;
     }
 }

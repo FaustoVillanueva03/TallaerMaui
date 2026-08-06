@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:models="clr-namespace:MAUINavegacion.Models"
+    x:Class="MAUINavegacion.SeleccionPerfilPage"
+    Title="Elegir perfil"
+    BackgroundColor="{StaticResource ColorFondo}">
+
+    <Grid
+        RowDefinitions="Auto,*,Auto"
+        Padding="28"
+        RowSpacing="22">
+
+        <!-- ENCABEZADO -->
+
+        <VerticalStackLayout
+            Grid.Row="0"
+            Spacing="6">
+
+            <Label
+                Text="¿QUIÉN ESTÁ MIRANDO?"
+                FontSize="30"
+                FontAttributes="Bold"
+                HorizontalTextAlignment="Center"
+                TextColor="{StaticResource ColorTextoPrincipal}" />
+
+            <Label
+                x:Name="NombreUsuarioLabel"
+                FontSize="15"
+                HorizontalTextAlignment="Center"
+                TextColor="{StaticResource ColorTextoSecundario}" />
+
+        </VerticalStackLayout>
+
+        <!-- LISTA DE PERFILES -->
+
+        <Grid Grid.Row="1">
+
+            <CollectionView
+                x:Name="ListaPerfiles"
+                SelectionMode="None"
+                VerticalScrollBarVisibility="Never">
+
+                <CollectionView.ItemsLayout>
+
+                    <GridItemsLayout
+                        Orientation="Vertical"
+                        Span="2"
+                        HorizontalItemSpacing="16"
+                        VerticalItemSpacing="16" />
+
+                </CollectionView.ItemsLayout>
+
+                <CollectionView.ItemTemplate>
+
+                    <DataTemplate x:DataType="models:Perfil">
+
+                        <Border
+                            Padding="18"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficie}">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout
+                                Spacing="12"
+                                HorizontalOptions="Fill">
+
+                                <!-- FOTO -->
+
+                                <Border
+                                    HeightRequest="115"
+                                    WidthRequest="115"
+                                    Padding="0"
+                                    HorizontalOptions="Center"
+                                    Stroke="{StaticResource ColorPrimario}"
+                                    StrokeThickness="2">
+
+                                    <Border.StrokeShape>
+                                        <RoundRectangle CornerRadius="58" />
+                                    </Border.StrokeShape>
+
+                                    <Grid>
+
+                                        <Label
+                                            Text="👤"
+                                            FontSize="52"
+                                            HorizontalOptions="Center"
+                                            VerticalOptions="Center" />
+
+                                        <Image
+                                            Source="{Binding RutaFoto}"
+                                            Aspect="AspectFill" />
+
+                                    </Grid>
+
+                                </Border>
+
+                                <!-- NOMBRE -->
+
+                                <Label
+                                    Text="{Binding Nombre}"
+                                    FontSize="21"
+                                    FontAttributes="Bold"
+                                    HorizontalTextAlignment="Center"
+                                    MaxLines="1"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                <Button
+                                    Text="Entrar"
+                                    HeightRequest="46"
+                                    FontAttributes="Bold"
+                                    BackgroundColor="{StaticResource ColorPrimario}"
+                                    TextColor="{StaticResource ColorTextoPrincipal}"
+                                    CornerRadius="13"
+                                    Clicked="OnElegirPerfilClicked" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+            <!-- SIN PERFILES -->
+
+            <VerticalStackLayout
+                x:Name="SinPerfilesLayout"
+                IsVisible="False"
+                Spacing="16"
+                HorizontalOptions="Center"
+                VerticalOptions="Center">
+
+                <Label
+                    Text="👥"
+                    FontSize="75"
+                    HorizontalTextAlignment="Center" />
+
+                <Label
+                    Text="No hay perfiles creados"
+                    FontSize="25"
+                    FontAttributes="Bold"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Label
+                    Text="Creá el primer perfil para comenzar."
+                    FontSize="15"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                <Button
+                    Text="+ Crear primer perfil"
+                    Padding="25,13"
+                    BackgroundColor="{StaticResource ColorPrimario}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    FontAttributes="Bold"
+                    CornerRadius="14"
+                    Clicked="OnAdministrarPerfilesClicked" />
+
+            </VerticalStackLayout>
+
+            <!-- CARGANDO -->
+
+            <Border
+                x:Name="CargandoLayout"
+                IsVisible="False"
+                Padding="25"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                Stroke="{StaticResource ColorPrimario}"
+                StrokeThickness="1"
+                BackgroundColor="{StaticResource ColorSuperficie}">
+
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="18" />
+                </Border.StrokeShape>
+
+                <VerticalStackLayout Spacing="12">
+
+                    <ActivityIndicator
+                        x:Name="CargandoIndicator"
+                        IsRunning="False"
+                        Color="{StaticResource ColorPrimario}" />
+
+                    <Label
+                        Text="Cargando perfiles..."
+                        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+        </Grid>
+
+        <!-- BOTONES INFERIORES -->
+
+        <Grid
+            Grid.Row="2"
+            ColumnDefinitions="*,*"
+            ColumnSpacing="12">
+
+            <Button
+                Grid.Column="0"
+                Text="Administrar perfiles"
+                HeightRequest="50"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
+                CornerRadius="14"
+                Clicked="OnAdministrarPerfilesClicked" />
+
+            <Button
+                Grid.Column="1"
+                Text="Cerrar sesión"
+                HeightRequest="50"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                TextColor="{StaticResource ColorError}"
+                BorderColor="{StaticResource ColorError}"
+                BorderWidth="1"
+                CornerRadius="14"
+                Clicked="OnCerrarSesionClicked" />
+
+        </Grid>
+
+    </Grid>
+
+</ContentPage>

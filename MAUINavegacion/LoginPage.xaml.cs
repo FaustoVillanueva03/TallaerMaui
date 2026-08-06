@@ -37,7 +37,9 @@ public partial class LoginPage : ContentPage
     private async Task AutenticarConHuellaAsync()
     {
         if (_autenticando)
+        {
             return;
+        }
 
         _autenticando = true;
 
@@ -73,7 +75,7 @@ public partial class LoginPage : ContentPage
 
             if (resultado.Authenticated)
             {
-                EntrarAlaAplicacion();
+                EntrarAlaSeleccionDePerfiles();
                 return;
             }
 
@@ -101,10 +103,12 @@ public partial class LoginPage : ContentPage
         LimpiarErroresLogin();
 
         string nombreUsuario =
-            UsuarioEntry.Text?.Trim() ?? string.Empty;
+            UsuarioEntry.Text?.Trim() ??
+            string.Empty;
 
         string contrasena =
-            ContrasenaEntry.Text ?? string.Empty;
+            ContrasenaEntry.Text ??
+            string.Empty;
 
         bool hayErrores = false;
 
@@ -127,23 +131,29 @@ public partial class LoginPage : ContentPage
         }
 
         if (hayErrores)
+        {
             return;
+        }
 
         try
         {
-            await App.Database.InicializarAsync();
+            await App.Database
+                .InicializarAsync();
 
             var usuario =
-                await App.Database.ValidarLoginAsync(
-                    nombreUsuario,
-                    contrasena);
+                await App.Database
+                    .ValidarLoginAsync(
+                        nombreUsuario,
+                        contrasena);
 
             if (usuario == null)
             {
                 ContrasenaErrorLabel.Text =
                     "El usuario o la contraseña son incorrectos.";
 
-                ContrasenaErrorLabel.IsVisible = true;
+                ContrasenaErrorLabel.IsVisible =
+                    true;
+
                 return;
             }
 
@@ -159,48 +169,70 @@ public partial class LoginPage : ContentPage
                 "NombreCompleto",
                 usuario.NombreCompleto);
 
-            EntrarAlaAplicacion();
+            Preferences.Default.Remove(
+                "PerfilActivoId");
+
+            Preferences.Default.Remove(
+                "PerfilActivoNombre");
+
+            EntrarAlaSeleccionDePerfiles();
         }
         catch (Exception)
         {
             ContrasenaErrorLabel.Text =
                 "No se pudo iniciar sesión. Intentá nuevamente.";
 
-            ContrasenaErrorLabel.IsVisible = true;
+            ContrasenaErrorLabel.IsVisible =
+                true;
         }
     }
 
     private void LimpiarErroresLogin()
     {
-        UsuarioErrorLabel.Text = string.Empty;
-        UsuarioErrorLabel.IsVisible = false;
+        UsuarioErrorLabel.Text =
+            string.Empty;
 
-        ContrasenaErrorLabel.Text = string.Empty;
-        ContrasenaErrorLabel.IsVisible = false;
+        UsuarioErrorLabel.IsVisible =
+            false;
 
-        MensajeLabel.Text = string.Empty;
-        MensajeLabel.IsVisible = false;
+        ContrasenaErrorLabel.Text =
+            string.Empty;
+
+        ContrasenaErrorLabel.IsVisible =
+            false;
+
+        MensajeLabel.Text =
+            string.Empty;
+
+        MensajeLabel.IsVisible =
+            false;
     }
 
-    private void EntrarAlaAplicacion()
+    private void EntrarAlaSeleccionDePerfiles()
     {
         if (Application.Current?.Windows.Count > 0)
         {
             Application.Current.Windows[0].Page =
-                new NavigationPage(new MainPage())
+                new NavigationPage(
+                    new SeleccionPerfilPage())
                 {
                     BarBackgroundColor =
                         Color.FromArgb("#151515"),
 
-                    BarTextColor = Colors.White
+                    BarTextColor =
+                        Colors.White
                 };
         }
     }
 
-    private void MostrarMensaje(string mensaje)
+    private void MostrarMensaje(
+        string mensaje)
     {
-        MensajeLabel.Text = mensaje;
-        MensajeLabel.IsVisible = true;
+        MensajeLabel.Text =
+            mensaje;
+
+        MensajeLabel.IsVisible =
+            true;
     }
 
     private async void OnCrearCuentaClicked(

@@ -83,4 +83,15 @@ public class AppDatabase
 
         return await _database.DeleteAsync(perfil);
     }
+    public async Task<Usuario?> ObtenerUsuarioPorIdAsync(
+    int usuarioId)
+    {
+        await InicializarAsync();
+
+        return await _database
+            .Table<Usuario>()
+            .Where(usuario =>
+                usuario.Id == usuarioId)
+            .FirstOrDefaultAsync();
+    }
 }

@@ -122,7 +122,7 @@
 
             <Grid
                 Padding="28,35,28,30"
-                RowDefinitions="Auto,Auto,Auto"
+                RowDefinitions="Auto,Auto,Auto,Auto"
                 BackgroundColor="{StaticResource ColorSuperficie}">
 
                 <Label
@@ -148,6 +148,38 @@
                     TextColor="{StaticResource ColorTextoSecundario}"
                     FontSize="15" />
 
+                <Border
+                    Grid.Row="3"
+                    Margin="0,18,0,0"
+                    Padding="14,10"
+                    HorizontalOptions="Start"
+                    Stroke="{StaticResource ColorPrimario}"
+                    StrokeThickness="1"
+                    BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="12" />
+                    </Border.StrokeShape>
+
+                    <HorizontalStackLayout Spacing="8">
+
+                        <Label
+                            Text="👤"
+                            FontSize="17"
+                            VerticalOptions="Center" />
+
+                        <Label
+                            x:Name="PerfilActivoLabel"
+                            Text="Perfil activo"
+                            FontSize="14"
+                            FontAttributes="Bold"
+                            VerticalOptions="Center"
+                            TextColor="{StaticResource ColorPrimario}" />
+
+                    </HorizontalStackLayout>
+
+                </Border>
+
             </Grid>
 
             <!-- CONTENIDO -->
@@ -165,6 +197,7 @@
                 <!-- PELÍCULAS -->
 
                 <Border
+                    x:Name="PeliculasCard"
                     Style="{StaticResource TarjetaMenuStyle}"
                     Padding="0">
 
@@ -228,6 +261,7 @@
                 <!-- SERIES -->
 
                 <Border
+                    x:Name="SeriesCard"
                     Style="{StaticResource TarjetaMenuStyle}"
                     Padding="0">
 
@@ -291,10 +325,12 @@
                 <!-- CLIMA Y COTIZACIONES -->
 
                 <Grid
+                    x:Name="ClimaCotizacionesGrid"
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
                     <Border
+                        x:Name="ClimaCard"
                         Grid.Column="0"
                         Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
@@ -339,6 +375,7 @@
                     </Border>
 
                     <Border
+                        x:Name="CotizacionesCard"
                         Grid.Column="1"
                         Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
@@ -387,10 +424,12 @@
                 <!-- MAPA Y PERFIL -->
 
                 <Grid
+                    x:Name="MapaPerfilGrid"
                     ColumnDefinitions="*,*"
                     ColumnSpacing="14">
 
                     <Border
+                        x:Name="MapaCard"
                         Grid.Column="0"
                         Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
@@ -435,6 +474,7 @@
                     </Border>
 
                     <Border
+                        x:Name="PerfilCard"
                         Grid.Column="1"
                         Style="{StaticResource TarjetaMenuStyle}"
                         Padding="18">
