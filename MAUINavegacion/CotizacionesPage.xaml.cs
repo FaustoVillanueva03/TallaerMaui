@@ -1,3 +1,4 @@
+using System.Globalization;
 using MAUINavegacion.Models;
 using MAUINavegacion.Services;
 
@@ -44,10 +45,18 @@ public partial class CotizacionesPage : BasePage
             return;
         }
 
+        await CargarCotizacionesAsync();
+    }
+
+    private async Task CargarCotizacionesAsync()
+    {
         try
         {
             Cargando.IsVisible = true;
             Cargando.IsRunning = true;
+
+            FechaActualizacionLabel.Text =
+                "Actualizando cotizaciones...";
 
             RespuestaCotizacion? cotizacion =
                 await _exchangeRateService
@@ -55,6 +64,9 @@ public partial class CotizacionesPage : BasePage
 
             if (cotizacion == null)
             {
+                FechaActualizacionLabel.Text =
+                    "No se pudieron actualizar las cotizaciones.";
+
                 await DisplayAlert(
                     "Cotizaciones",
                     "No se pudieron obtener las cotizaciones.",
@@ -84,13 +96,19 @@ public partial class CotizacionesPage : BasePage
             RealLabel.Text =
                 $"1 BRL = {_real:0.00} UYU";
 
+            FechaActualizacionLabel.Text =
+                $"Última actualización: {DateTime.Now:dd/MM/yyyy HH:mm}";
+
             _cotizacionesCargadas = true;
         }
-        catch (Exception ex)
+        catch (Exception error)
         {
+            FechaActualizacionLabel.Text =
+                "Ocurrió un error al actualizar.";
+
             await DisplayAlert(
                 "Error",
-                ex.Message,
+                error.Message,
                 "Aceptar");
         }
         finally
@@ -116,14 +134,14 @@ public partial class CotizacionesPage : BasePage
             return;
         }
 
-        if (!double.TryParse(
+        if (!IntentarObtenerMonto(
                 MontoEntry.Text,
                 out double monto) ||
             monto < 0)
         {
             await DisplayAlert(
-                "Error",
-                "Ingresá un monto válido.",
+                "Monto incorrecto",
+                "Ingresá un número válido mayor o igual a cero.",
                 "Aceptar");
 
             return;
@@ -131,7 +149,18 @@ public partial class CotizacionesPage : BasePage
 
         string moneda =
             MonedaPicker.SelectedItem?
-                .ToString() ?? string.Empty;
+                .ToString() ??
+            string.Empty;
+
+        if (string.IsNullOrWhiteSpace(moneda))
+        {
+            await DisplayAlert(
+                "Moneda",
+                "Seleccioná una moneda.",
+                "Aceptar");
+
+            return;
+        }
 
         double uyu;
 
@@ -163,41 +192,78 @@ public partial class CotizacionesPage : BasePage
         double brl =
             uyu / _real;
 
-        ResultadoUYU.IsVisible = true;
-        ResultadoUSD.IsVisible = true;
-        ResultadoEUR.IsVisible = true;
-        ResultadoBRL.IsVisible = true;
-
-        switch (moneda)
-        {
-            case "Peso Uruguayo":
-                ResultadoUYU.IsVisible = false;
-                break;
-
-            case "Dólar":
-                ResultadoUSD.IsVisible = false;
-                break;
-
-            case "Euro":
-                ResultadoEUR.IsVisible = false;
-                break;
-
-            case "Real":
-                ResultadoBRL.IsVisible = false;
-                break;
-        }
-
         ResultadoUYU.Text =
-            $"UYU: {uyu:0.00}";
+            $"$ {uyu:0.00} UYU";
 
         ResultadoUSD.Text =
-            $"USD: {usd:0.00}";
+            $"USD {usd:0.00}";
 
         ResultadoEUR.Text =
-            $"EUR: {eur:0.00}";
+            $"EUR {eur:0.00}";
 
         ResultadoBRL.Text =
-            $"BRL: {brl:0.00}";
+            $"BRL {brl:0.00}";
+
+        MontoOriginalLabel.Text =
+            $"Conversión de {monto:0.00} {ObtenerCodigoMoneda(moneda)}";
+
+        ResultadoUYUBorder.IsVisible =
+            moneda != "Peso Uruguayo";
+
+        ResultadoUSDBorder.IsVisible =
+            moneda != "Dólar";
+
+        ResultadoEURBorder.IsVisible =
+            moneda != "Euro";
+
+        ResultadoBRLBorder.IsVisible =
+            moneda != "Real";
+
+        ResultadoBorder.IsVisible = true;
+    }
+
+    private static bool IntentarObtenerMonto(
+        string? texto,
+        out double monto)
+    {
+        monto = 0;
+
+        if (string.IsNullOrWhiteSpace(texto))
+        {
+            return false;
+        }
+
+        if (double.TryParse(
+                texto,
+                NumberStyles.Number,
+                CultureInfo.CurrentCulture,
+                out monto))
+        {
+            return true;
+        }
+
+        string textoNormalizado =
+            texto.Replace(
+                ',',
+                '.');
+
+        return double.TryParse(
+            textoNormalizado,
+            NumberStyles.Number,
+            CultureInfo.InvariantCulture,
+            out monto);
+    }
+
+    private static string ObtenerCodigoMoneda(
+        string moneda)
+    {
+        return moneda switch
+        {
+            "Dólar" => "USD",
+            "Euro" => "EUR",
+            "Real" => "BRL",
+            _ => "UYU"
+        };
     }
 
     private async void OnVolverClicked(

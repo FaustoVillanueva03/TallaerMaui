@@ -11,196 +11,569 @@
     <ScrollView>
 
         <VerticalStackLayout
-            Padding="20"
-            Spacing="20">
+            Padding="22"
+            Spacing="22"
+            MaximumWidthRequest="1100"
+            HorizontalOptions="Center">
 
-            <Button
-                Text="← Volver"
-                HorizontalOptions="Start"
-                BackgroundColor="{StaticResource ColorSuperficie}"
-                TextColor="{StaticResource ColorTextoPrincipal}"
-                BorderColor="{StaticResource ColorPrimario}"
-                BorderWidth="1"
-                CornerRadius="12"
-                Clicked="OnVolverClicked" />
+            <!-- ENCABEZADO -->
 
-            <Label
-                Text="COTIZACIONES"
-                FontSize="30"
-                FontAttributes="Bold"
-                TextColor="{StaticResource ColorTextoPrincipal}" />
+            <Grid
+                ColumnDefinitions="Auto,*"
+                ColumnSpacing="18">
 
-            <Label
-                Text="Valores actualizados respecto al peso uruguayo"
-                FontSize="16"
-                TextColor="{StaticResource ColorTextoSecundario}" />
+                <Button
+                    Grid.Column="0"
+                    Text="← Volver"
+                    Padding="18,10"
+                    VerticalOptions="Center"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    CornerRadius="12"
+                    Clicked="OnVolverClicked" />
 
-            <!-- DÓLAR -->
-
-            <Border
-                Padding="15"
-                Stroke="{StaticResource ColorPrimario}"
-                StrokeThickness="1"
-                BackgroundColor="{StaticResource ColorSuperficie}">
-
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
-
-                <VerticalStackLayout Spacing="8">
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="4"
+                    VerticalOptions="Center">
 
                     <Label
-                        Text="💵 Dólar"
-                        FontSize="20"
+                        Text="COTIZACIONES"
+                        FontSize="30"
                         FontAttributes="Bold"
                         TextColor="{StaticResource ColorTextoPrincipal}" />
 
                     <Label
-                        x:Name="DolarLabel"
-                        FontSize="24"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource ColorPrimario}" />
+                        Text="Valores de las monedas respecto al peso uruguayo"
+                        FontSize="15"
+                        TextColor="{StaticResource ColorTextoSecundario}" />
 
                 </VerticalStackLayout>
 
-            </Border>
+            </Grid>
 
-            <!-- EURO -->
+            <!-- INFORMACIÓN DE ACTUALIZACIÓN -->
 
             <Border
-                Padding="15"
-                Stroke="{StaticResource ColorPrimario}"
+                Padding="14,10"
+                Stroke="{StaticResource ColorBorde}"
                 StrokeThickness="1"
                 BackgroundColor="{StaticResource ColorSuperficie}">
 
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
+                    <RoundRectangle CornerRadius="12" />
                 </Border.StrokeShape>
 
-                <VerticalStackLayout Spacing="8">
+                <Grid ColumnDefinitions="Auto,*">
 
                     <Label
-                        Text="💶 Euro"
-                        FontSize="20"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource ColorTextoPrincipal}" />
+                        Grid.Column="0"
+                        Text="🕒"
+                        FontSize="17"
+                        VerticalOptions="Center" />
 
                     <Label
-                        x:Name="EuroLabel"
-                        FontSize="24"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource ColorPrimario}" />
+                        x:Name="FechaActualizacionLabel"
+                        Grid.Column="1"
+                        Margin="10,0,0,0"
+                        Text="Cargando cotizaciones..."
+                        FontSize="13"
+                        VerticalOptions="Center"
+                        TextColor="{StaticResource ColorTextoSecundario}" />
 
-                </VerticalStackLayout>
+                </Grid>
 
             </Border>
 
-            <!-- REAL -->
+            <!-- TARJETAS DE COTIZACIONES -->
 
-            <Border
-                Padding="15"
-                Stroke="{StaticResource ColorPrimario}"
-                StrokeThickness="1"
-                BackgroundColor="{StaticResource ColorSuperficie}">
+            <FlexLayout
+                Direction="Row"
+                Wrap="Wrap"
+                AlignItems="Stretch"
+                JustifyContent="SpaceBetween">
 
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
-                </Border.StrokeShape>
+                <!-- DÓLAR -->
 
-                <VerticalStackLayout Spacing="8">
+                <Border
+                    Margin="0,0,10,12"
+                    Padding="20"
+                    MinimumWidthRequest="260"
+                    FlexLayout.Basis="300"
+                    FlexLayout.Grow="1"
+                    Stroke="{StaticResource ColorPrimario}"
+                    StrokeThickness="1"
+                    BackgroundColor="{StaticResource ColorSuperficie}">
 
-                    <Label
-                        Text="🇧🇷 Real"
-                        FontSize="20"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource ColorTextoPrincipal}" />
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="18" />
+                    </Border.StrokeShape>
 
-                    <Label
-                        x:Name="RealLabel"
-                        FontSize="24"
-                        FontAttributes="Bold"
-                        TextColor="{StaticResource ColorPrimario}" />
+                    <VerticalStackLayout Spacing="12">
 
-                </VerticalStackLayout>
+                        <Grid ColumnDefinitions="Auto,*">
 
-            </Border>
+                            <Border
+                                Grid.Column="0"
+                                WidthRequest="48"
+                                HeightRequest="48"
+                                Padding="0"
+                                StrokeThickness="0"
+                                BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="24" />
+                                </Border.StrokeShape>
+
+                                <Label
+                                    Text="💵"
+                                    FontSize="25"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Margin="12,0,0,0"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="Dólar"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                <Label
+                                    Text="USD"
+                                    FontSize="12"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                        <Label
+                            x:Name="DolarLabel"
+                            Text="Cargando..."
+                            FontSize="23"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource ColorPrimario}" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- EURO -->
+
+                <Border
+                    Margin="0,0,10,12"
+                    Padding="20"
+                    MinimumWidthRequest="260"
+                    FlexLayout.Basis="300"
+                    FlexLayout.Grow="1"
+                    Stroke="{StaticResource ColorPrimario}"
+                    StrokeThickness="1"
+                    BackgroundColor="{StaticResource ColorSuperficie}">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="18" />
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="12">
+
+                        <Grid ColumnDefinitions="Auto,*">
+
+                            <Border
+                                Grid.Column="0"
+                                WidthRequest="48"
+                                HeightRequest="48"
+                                Padding="0"
+                                StrokeThickness="0"
+                                BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="24" />
+                                </Border.StrokeShape>
+
+                                <Label
+                                    Text="💶"
+                                    FontSize="25"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Margin="12,0,0,0"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="Euro"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                <Label
+                                    Text="EUR"
+                                    FontSize="12"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                        <Label
+                            x:Name="EuroLabel"
+                            Text="Cargando..."
+                            FontSize="23"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource ColorPrimario}" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+                <!-- REAL -->
+
+                <Border
+                    Margin="0,0,0,12"
+                    Padding="20"
+                    MinimumWidthRequest="260"
+                    FlexLayout.Basis="300"
+                    FlexLayout.Grow="1"
+                    Stroke="{StaticResource ColorPrimario}"
+                    StrokeThickness="1"
+                    BackgroundColor="{StaticResource ColorSuperficie}">
+
+                    <Border.StrokeShape>
+                        <RoundRectangle CornerRadius="18" />
+                    </Border.StrokeShape>
+
+                    <VerticalStackLayout Spacing="12">
+
+                        <Grid ColumnDefinitions="Auto,*">
+
+                            <Border
+                                Grid.Column="0"
+                                WidthRequest="48"
+                                HeightRequest="48"
+                                Padding="0"
+                                StrokeThickness="0"
+                                BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="24" />
+                                </Border.StrokeShape>
+
+                                <Label
+                                    Text="🇧🇷"
+                                    FontSize="25"
+                                    HorizontalOptions="Center"
+                                    VerticalOptions="Center" />
+
+                            </Border>
+
+                            <VerticalStackLayout
+                                Grid.Column="1"
+                                Margin="12,0,0,0"
+                                VerticalOptions="Center">
+
+                                <Label
+                                    Text="Real brasileño"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                <Label
+                                    Text="BRL"
+                                    FontSize="12"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            </VerticalStackLayout>
+
+                        </Grid>
+
+                        <Label
+                            x:Name="RealLabel"
+                            Text="Cargando..."
+                            FontSize="23"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource ColorPrimario}" />
+
+                    </VerticalStackLayout>
+
+                </Border>
+
+            </FlexLayout>
 
             <ActivityIndicator
                 x:Name="Cargando"
                 IsVisible="False"
                 IsRunning="False"
+                WidthRequest="45"
+                HeightRequest="45"
                 Color="{StaticResource ColorPrimario}"
                 HorizontalOptions="Center" />
 
-            <BoxView
-                HeightRequest="1"
-                BackgroundColor="{StaticResource ColorBorde}"
-                Margin="0,10" />
-
             <!-- CONVERSOR -->
 
-            <Label
-                Text="Conversor de monedas"
-                FontSize="24"
-                FontAttributes="Bold"
-                TextColor="{StaticResource ColorTextoPrincipal}" />
+            <Border
+                Padding="22"
+                Stroke="{StaticResource ColorBorde}"
+                StrokeThickness="1"
+                BackgroundColor="{StaticResource ColorSuperficie}">
 
-            <Entry
-                x:Name="MontoEntry"
-                Placeholder="Ingresá un monto"
-                Keyboard="Numeric"
-                BackgroundColor="{StaticResource ColorSuperficie}"
-                TextColor="{StaticResource ColorTextoPrincipal}"
-                PlaceholderColor="{StaticResource ColorTextoDeshabilitado}" />
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="20" />
+                </Border.StrokeShape>
 
-            <Picker
-                x:Name="MonedaPicker"
-                Title="Seleccioná la moneda"
-                BackgroundColor="{StaticResource ColorSuperficie}"
-                TextColor="{StaticResource ColorTextoPrincipal}"
-                TitleColor="{StaticResource ColorTextoDeshabilitado}" />
+                <VerticalStackLayout Spacing="17">
 
-            <Button
-                Text="Convertir"
-                HeightRequest="50"
-                BackgroundColor="{StaticResource ColorPrimario}"
-                TextColor="{StaticResource ColorTextoPrincipal}"
-                FontAttributes="Bold"
-                CornerRadius="12"
-                Clicked="OnConvertirClicked" />
+                    <VerticalStackLayout Spacing="4">
+
+                        <Label
+                            Text="Conversor de monedas"
+                            FontSize="24"
+                            FontAttributes="Bold"
+                            TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                        <Label
+                            Text="Ingresá un importe y seleccioná su moneda de origen"
+                            FontSize="14"
+                            TextColor="{StaticResource ColorTextoSecundario}" />
+
+                    </VerticalStackLayout>
+
+                    <Label
+                        Text="Monto"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                    <Border
+                        Padding="14,3"
+                        Stroke="{StaticResource ColorBorde}"
+                        StrokeThickness="1"
+                        BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Entry
+                            x:Name="MontoEntry"
+                            Placeholder="Ejemplo: 1000"
+                            Keyboard="Numeric"
+                            BackgroundColor="Transparent"
+                            TextColor="{StaticResource ColorTextoPrincipal}"
+                            PlaceholderColor="{StaticResource ColorTextoDeshabilitado}" />
+
+                    </Border>
+
+                    <Label
+                        Text="Moneda de origen"
+                        FontSize="14"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                    <Border
+    HeightRequest="58"
+    Padding="12,0"
+    Stroke="{StaticResource ColorBorde}"
+    StrokeThickness="1"
+    BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="12" />
+                        </Border.StrokeShape>
+
+                        <Picker
+        x:Name="MonedaPicker"
+        HeightRequest="56"
+        Margin="0"
+        VerticalOptions="Center"
+        VerticalTextAlignment="Center"
+        BackgroundColor="Transparent"
+        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                    </Border>
+
+                    <Button
+                        Text="Convertir"
+                        HeightRequest="52"
+                        Margin="0,5,0,0"
+                        BackgroundColor="{StaticResource ColorPrimario}"
+                        TextColor="{StaticResource ColorTextoPrincipal}"
+                        FontAttributes="Bold"
+                        CornerRadius="14"
+                        Clicked="OnConvertirClicked" />
+
+                </VerticalStackLayout>
+
+            </Border>
+
+            <!-- RESULTADOS -->
 
             <Border
-                Padding="15"
-                Margin="0,10,0,0"
+                x:Name="ResultadoBorder"
+                IsVisible="False"
+                Padding="22"
                 Stroke="{StaticResource ColorPrimario}"
                 StrokeThickness="1"
                 BackgroundColor="{StaticResource ColorSuperficie}">
 
                 <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="16" />
+                    <RoundRectangle CornerRadius="20" />
                 </Border.StrokeShape>
 
-                <VerticalStackLayout Spacing="8">
+                <VerticalStackLayout Spacing="14">
 
                     <Label
-                        x:Name="ResultadoUYU"
-                        FontSize="18"
+                        Text="Resultado de la conversión"
+                        FontSize="20"
+                        FontAttributes="Bold"
                         TextColor="{StaticResource ColorTextoPrincipal}" />
 
                     <Label
-                        x:Name="ResultadoUSD"
-                        FontSize="18"
-                        TextColor="{StaticResource ColorTextoPrincipal}" />
+                        x:Name="MontoOriginalLabel"
+                        FontSize="14"
+                        TextColor="{StaticResource ColorTextoSecundario}" />
 
-                    <Label
-                        x:Name="ResultadoEUR"
-                        FontSize="18"
-                        TextColor="{StaticResource ColorTextoPrincipal}" />
+                    <BoxView
+                        HeightRequest="1"
+                        BackgroundColor="{StaticResource ColorBorde}" />
 
-                    <Label
-                        x:Name="ResultadoBRL"
-                        FontSize="18"
-                        TextColor="{StaticResource ColorTextoPrincipal}" />
+                    <Grid
+                        ColumnDefinitions="*,*"
+                        RowDefinitions="Auto,Auto"
+                        ColumnSpacing="12"
+                        RowSpacing="12">
+
+                        <Border
+                            x:Name="ResultadoUYUBorder"
+                            Grid.Row="0"
+                            Grid.Column="0"
+                            Padding="14"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout Spacing="4">
+
+                                <Label
+                                    Text="Pesos uruguayos"
+                                    FontSize="12"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                                <Label
+                                    x:Name="ResultadoUYU"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource ColorPrimario}" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                        <Border
+                            x:Name="ResultadoUSDBorder"
+                            Grid.Row="0"
+                            Grid.Column="1"
+                            Padding="14"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout Spacing="4">
+
+                                <Label
+                                    Text="Dólares"
+                                    FontSize="12"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                                <Label
+                                    x:Name="ResultadoUSD"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource ColorPrimario}" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                        <Border
+                            x:Name="ResultadoEURBorder"
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            Padding="14"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout Spacing="4">
+
+                                <Label
+                                    Text="Euros"
+                                    FontSize="12"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                                <Label
+                                    x:Name="ResultadoEUR"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource ColorPrimario}" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                        <Border
+                            x:Name="ResultadoBRLBorder"
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Padding="14"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="12" />
+                            </Border.StrokeShape>
+
+                            <VerticalStackLayout Spacing="4">
+
+                                <Label
+                                    Text="Reales"
+                                    FontSize="12"
+                                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+                                <Label
+                                    x:Name="ResultadoBRL"
+                                    FontSize="19"
+                                    FontAttributes="Bold"
+                                    TextColor="{StaticResource ColorPrimario}" />
+
+                            </VerticalStackLayout>
+
+                        </Border>
+
+                    </Grid>
 
                 </VerticalStackLayout>
 
