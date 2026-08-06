@@ -4,21 +4,81 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     x:Class="MAUINavegacion.MapaPage"
-    Title="Mapa">
+    Title="Mapa"
+    BackgroundColor="{StaticResource ColorFondo}">
 
-    <VerticalStackLayout
-        VerticalOptions="Center"
-        HorizontalOptions="Center">
+    <Grid RowDefinitions="Auto,*">
 
-        <Label
-            Text="MAPA FUNCIONANDO"
-            FontSize="30"
-            HorizontalOptions="Center"/>
+        <Grid
+            Grid.Row="0"
+            Padding="20,15"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="15"
+            BackgroundColor="{StaticResource ColorSuperficie}">
 
-        <Button
-            Text="Volver"
-            Clicked="OnVolverClicked"/>
+            <Button
+                Grid.Column="0"
+                Text="← Volver"
+                BackgroundColor="{StaticResource ColorSuperficieClara}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
+                CornerRadius="12"
+                Clicked="OnVolverClicked" />
 
-    </VerticalStackLayout>
+            <VerticalStackLayout
+                Grid.Column="1"
+                VerticalOptions="Center"
+                Spacing="2">
+
+                <Label
+                    Text="MAPA"
+                    FontSize="24"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Label
+                    Text="Ubicación y perfiles"
+                    FontSize="13"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+            </VerticalStackLayout>
+
+        </Grid>
+
+        <VerticalStackLayout
+            Grid.Row="1"
+            Padding="30"
+            Spacing="18"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <Label
+                Text="🗺️"
+                FontSize="75"
+                HorizontalTextAlignment="Center" />
+
+            <Label
+                Text="Mapa preparado"
+                FontSize="26"
+                FontAttributes="Bold"
+                HorizontalTextAlignment="Center"
+                TextColor="{StaticResource ColorTextoPrincipal}" />
+
+            <Label
+                Text="El mapa real se mostrará cuando la aplicación se ejecute en Android."
+                FontSize="16"
+                HorizontalTextAlignment="Center"
+                TextColor="{StaticResource ColorTextoSecundario}" />
+
+            <Label
+                Text="Desde Windows podés seguir trabajando y comprobando el resto de la aplicación."
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                TextColor="{StaticResource ColorTextoDeshabilitado}" />
+
+        </VerticalStackLayout>
+
+    </Grid>
 
 </ContentPage>

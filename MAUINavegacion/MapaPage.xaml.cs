@@ -7,7 +7,9 @@ public partial class MapaPage : ContentPage
         InitializeComponent();
     }
 
-    private async void OnVolverClicked(object sender, EventArgs e)
+    private async void OnVolverClicked(
+        object sender,
+        EventArgs e)
     {
         await Navigation.PopAsync();
     }

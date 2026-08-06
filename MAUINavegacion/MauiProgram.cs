@@ -11,19 +11,22 @@ public static class MauiProgram
     {
         var builder = MauiApp.CreateBuilder();
 
-        builder
-            .UseMauiApp<App>()
-            .UseMauiMaps()
-            .ConfigureFonts(fonts =>
-            {
-                fonts.AddFont(
-                    "OpenSans-Regular.ttf",
-                    "OpenSansRegular");
+        builder.UseMauiApp<App>();
 
-                fonts.AddFont(
-                    "OpenSans-Semibold.ttf",
-                    "OpenSansSemibold");
-            });
+#if !WINDOWS
+        builder.UseMauiMaps();
+#endif
+
+        builder.ConfigureFonts(fonts =>
+        {
+            fonts.AddFont(
+                "OpenSans-Regular.ttf",
+                "OpenSansRegular");
+
+            fonts.AddFont(
+                "OpenSans-Semibold.ttf",
+                "OpenSansSemibold");
+        });
 
         string dbPath = Path.Combine(
             FileSystem.AppDataDirectory,
