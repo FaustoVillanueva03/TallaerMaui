@@ -5,7 +5,13 @@ namespace MAUINavegacion;
 public partial class PerfilPage : BasePage
 {
     private Perfil? _perfilEditando;
-    private string _rutaFotoSeleccionada = string.Empty;
+
+    private string _rutaFotoSeleccionada =
+        string.Empty;
+
+    private double _latitudSeleccionada;
+
+    private double _longitudSeleccionada;
 
     public PerfilPage()
     {
@@ -121,6 +127,14 @@ public partial class PerfilPage : BasePage
         DireccionEntry.Text =
             perfil.Direccion;
 
+        _latitudSeleccionada =
+    perfil.Latitud;
+
+        _longitudSeleccionada =
+            perfil.Longitud;
+
+        MostrarTextoUbicacion();
+
         MostrarPeliculasSwitch.IsToggled =
             perfil.MostrarPeliculas;
 
@@ -206,6 +220,12 @@ public partial class PerfilPage : BasePage
                             DireccionEntry.Text?.Trim() ??
                             string.Empty,
 
+                        Latitud =
+    _latitudSeleccionada,
+
+                        Longitud =
+    _longitudSeleccionada,
+
                         RutaFoto =
                             _rutaFotoSeleccionada,
 
@@ -244,6 +264,12 @@ public partial class PerfilPage : BasePage
                 _perfilEditando.Direccion =
                     DireccionEntry.Text?.Trim() ??
                     string.Empty;
+
+                _perfilEditando.Latitud =
+    _latitudSeleccionada;
+
+                _perfilEditando.Longitud =
+                    _longitudSeleccionada;
 
                 _perfilEditando.RutaFoto =
                     _rutaFotoSeleccionada;
@@ -557,6 +583,12 @@ public partial class PerfilPage : BasePage
             string.Empty;
 
         MostrarFotoSeleccionada();
+
+        _latitudSeleccionada = 0;
+
+        _longitudSeleccionada = 0;
+
+        MostrarTextoUbicacion();
     }
 
     private void OnCerrarFormularioClicked(
@@ -583,5 +615,47 @@ public partial class PerfilPage : BasePage
         EventArgs e)
     {
         await Navigation.PopAsync();
+    }
+
+    private async void OnElegirUbicacionClicked(
+    object sender,
+    EventArgs e)
+    {
+        SeleccionarUbicacionPage pagina =
+            new SeleccionarUbicacionPage(
+                _latitudSeleccionada,
+                _longitudSeleccionada);
+
+        await Navigation.PushAsync(pagina);
+
+        if (pagina.UbicacionGuardada)
+        {
+            _latitudSeleccionada =
+                pagina.LatitudSeleccionada;
+
+            _longitudSeleccionada =
+                pagina.LongitudSeleccionada;
+
+            MostrarTextoUbicacion();
+        }
+
+
+    }
+
+    private void MostrarTextoUbicacion()
+    {
+        if (_latitudSeleccionada == 0 &&
+            _longitudSeleccionada == 0)
+        {
+            UbicacionSeleccionadaLabel.Text =
+                "No se seleccionó una ubicación.";
+
+            return;
+        }
+
+        UbicacionSeleccionadaLabel.Text =
+            $"Ubicación seleccionada: " +
+            $"{_latitudSeleccionada:F6}, " +
+            $"{_longitudSeleccionada:F6}";
     }
 }

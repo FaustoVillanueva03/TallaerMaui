@@ -391,6 +391,23 @@
 
                             <!-- PREFERENCIAS -->
 
+                            <Button
+    x:Name="ElegirUbicacionButton"
+    Text="📍 Elegir ubicación en el mapa"
+    HeightRequest="48"
+    BackgroundColor="{StaticResource ColorSuperficieClara}"
+    TextColor="{StaticResource ColorTextoPrincipal}"
+    BorderColor="{StaticResource ColorPrimario}"
+    BorderWidth="1"
+    CornerRadius="12"
+    Clicked="OnElegirUbicacionClicked" />
+
+                            <Label
+    x:Name="UbicacionSeleccionadaLabel"
+    Text="No se seleccionó una ubicación."
+    FontSize="12"
+    TextColor="{StaticResource ColorTextoSecundario}" />
+
                             <Label
                                 Text="Secciones visibles"
                                 Margin="0,8,0,0"

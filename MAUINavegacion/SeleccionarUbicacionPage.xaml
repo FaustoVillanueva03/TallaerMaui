@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<ContentPage
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
+    x:Class="MAUINavegacion.SeleccionarUbicacionPage"
+    Title="Seleccionar ubicación"
+    BackgroundColor="{StaticResource ColorFondo}">
+
+    <Grid RowDefinitions="Auto,*,Auto">
+
+        <!-- ENCABEZADO -->
+
+        <Grid
+            Grid.Row="0"
+            Padding="20,15"
+            ColumnDefinitions="Auto,*"
+            ColumnSpacing="15"
+            BackgroundColor="{StaticResource ColorSuperficie}">
+
+            <Button
+                Grid.Column="0"
+                Text="← Volver"
+                BackgroundColor="{StaticResource ColorSuperficieClara}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                BorderColor="{StaticResource ColorPrimario}"
+                BorderWidth="1"
+                CornerRadius="12"
+                Clicked="OnVolverClicked" />
+
+            <VerticalStackLayout
+                Grid.Column="1"
+                VerticalOptions="Center"
+                Spacing="2">
+
+                <Label
+                    Text="SELECCIONAR UBICACIÓN"
+                    FontSize="22"
+                    FontAttributes="Bold"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                <Label
+                    Text="Tocá en el mapa donde vive el perfil"
+                    FontSize="13"
+                    TextColor="{StaticResource ColorTextoSecundario}" />
+
+            </VerticalStackLayout>
+
+        </Grid>
+
+
+        <!-- MAPA -->
+
+        <maps:Map
+            x:Name="Mapa"
+            Grid.Row="1"
+            IsShowingUser="True"
+            MapType="Street"
+            MapClicked="OnMapaClicked" />
+
+
+        <!-- INFORMACIÓN Y BOTÓN -->
+
+        <VerticalStackLayout
+            Grid.Row="2"
+            Padding="20"
+            Spacing="12"
+            BackgroundColor="{StaticResource ColorSuperficie}">
+
+            <Label
+                x:Name="UbicacionLabel"
+                Text="Tocá un punto del mapa para seleccionar la ubicación."
+                FontSize="14"
+                HorizontalTextAlignment="Center"
+                TextColor="{StaticResource ColorTextoSecundario}" />
+
+            <Button
+                x:Name="GuardarUbicacionButton"
+                Text="📍 Guardar ubicación"
+                HeightRequest="52"
+                BackgroundColor="{StaticResource ColorPrimario}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                FontAttributes="Bold"
+                CornerRadius="14"
+                IsEnabled="False"
+                Clicked="OnGuardarUbicacionClicked" />
+
+        </VerticalStackLayout>
+
+    </Grid>
+
+</ContentPage>
