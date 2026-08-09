@@ -3,11 +3,14 @@
 <ContentPage
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:maps="http://schemas.microsoft.com/dotnet/2021/maui/maps"
     x:Class="MAUINavegacion.MapaPage"
     Title="Mapa"
     BackgroundColor="{StaticResource ColorFondo}">
 
     <Grid RowDefinitions="Auto,*">
+
+        
 
         <Grid
             Grid.Row="0"
@@ -46,38 +49,14 @@
 
         </Grid>
 
-        <VerticalStackLayout
+
+        
+
+        <maps:Map
+            x:Name="Mapa"
             Grid.Row="1"
-            Padding="30"
-            Spacing="18"
-            HorizontalOptions="Center"
-            VerticalOptions="Center">
-
-            <Label
-                Text="🗺️"
-                FontSize="75"
-                HorizontalTextAlignment="Center" />
-
-            <Label
-                Text="Mapa preparado"
-                FontSize="26"
-                FontAttributes="Bold"
-                HorizontalTextAlignment="Center"
-                TextColor="{StaticResource ColorTextoPrincipal}" />
-
-            <Label
-                Text="El mapa real se mostrará cuando la aplicación se ejecute en Android."
-                FontSize="16"
-                HorizontalTextAlignment="Center"
-                TextColor="{StaticResource ColorTextoSecundario}" />
-
-            <Label
-                Text="Desde Windows podés seguir trabajando y comprobando el resto de la aplicación."
-                FontSize="14"
-                HorizontalTextAlignment="Center"
-                TextColor="{StaticResource ColorTextoDeshabilitado}" />
-
-        </VerticalStackLayout>
+            IsShowingUser="True"
+            MapType="Street" />
 
     </Grid>
 

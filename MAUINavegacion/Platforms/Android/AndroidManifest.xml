@@ -6,6 +6,11 @@
         android:allowBackup="true"
         android:icon="@mipmap/appicon"
         android:supportsRtl="true">
+
+		<meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB17t-DUymdDdoGcIrUGKwR0qwzxgiNo4A" />
+
 	</application>
 
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
