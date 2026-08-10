@@ -12,47 +12,53 @@
 
     <Grid
         RowDefinitions="Auto,*"
-        Padding="24"
+        Padding="20"
         RowSpacing="18">
 
         <!-- ENCABEZADO -->
 
-        <Grid
+        <VerticalStackLayout
             Grid.Row="0"
-            ColumnDefinitions="Auto,*,Auto"
-            ColumnSpacing="15">
+            Spacing="14">
+
+            <Grid
+                ColumnDefinitions="Auto,*"
+                ColumnSpacing="15">
+
+                <Button
+                    Grid.Column="0"
+                    Text="← Volver"
+                    BackgroundColor="{StaticResource ColorSuperficie}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    BorderColor="{StaticResource ColorPrimario}"
+                    BorderWidth="1"
+                    CornerRadius="12"
+                    Clicked="OnVolverClicked" />
+
+                <VerticalStackLayout
+                    Grid.Column="1"
+                    Spacing="3"
+                    VerticalOptions="Center">
+
+                    <Label
+                        Text="PERFILES"
+                        FontSize="28"
+                        FontAttributes="Bold"
+                        TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                    <Label
+                        Text="Administrá los perfiles de tu cuenta"
+                        FontSize="14"
+                        LineBreakMode="WordWrap"
+                        TextColor="{StaticResource ColorTextoSecundario}" />
+
+                </VerticalStackLayout>
+
+            </Grid>
 
             <Button
-                Grid.Column="0"
-                Text="← Volver"
-                BackgroundColor="{StaticResource ColorSuperficie}"
-                TextColor="{StaticResource ColorTextoPrincipal}"
-                BorderColor="{StaticResource ColorPrimario}"
-                BorderWidth="1"
-                CornerRadius="12"
-                Clicked="OnVolverClicked" />
-
-            <VerticalStackLayout
-                Grid.Column="1"
-                Spacing="3"
-                VerticalOptions="Center">
-
-                <Label
-                    Text="PERFILES"
-                    FontSize="28"
-                    FontAttributes="Bold"
-                    TextColor="{StaticResource ColorTextoPrincipal}" />
-
-                <Label
-                    Text="Administrá los perfiles de tu cuenta"
-                    FontSize="14"
-                    TextColor="{StaticResource ColorTextoSecundario}" />
-
-            </VerticalStackLayout>
-
-            <Button
-                Grid.Column="2"
                 Text="+ Nuevo perfil"
+                HorizontalOptions="Start"
                 Padding="18,10"
                 BackgroundColor="{StaticResource ColorPrimario}"
                 TextColor="{StaticResource ColorTextoPrincipal}"
@@ -60,7 +66,7 @@
                 CornerRadius="12"
                 Clicked="OnNuevoPerfilClicked" />
 
-        </Grid>
+        </VerticalStackLayout>
 
         <!-- CONTENIDO -->
 
@@ -79,7 +85,7 @@
 
                         <Border
                             Margin="0,0,0,14"
-                            Padding="18"
+                            Padding="16"
                             Stroke="{StaticResource ColorBorde}"
                             StrokeThickness="1"
                             BackgroundColor="{StaticResource ColorSuperficie}">
@@ -88,69 +94,68 @@
                                 <RoundRectangle CornerRadius="18" />
                             </Border.StrokeShape>
 
-                            <Grid
-                                ColumnDefinitions="90,*,Auto"
-                                ColumnSpacing="18">
+                            <VerticalStackLayout Spacing="16">
 
-                                <!-- FOTO -->
+                                <!-- FOTO + DATOS -->
 
-                                <Border
-                                    Grid.Column="0"
-                                    HeightRequest="82"
-                                    WidthRequest="82"
-                                    Padding="0"
-                                    Stroke="{StaticResource ColorPrimario}"
-                                    StrokeThickness="1">
+                                <Grid
+                                    ColumnDefinitions="Auto,*"
+                                    ColumnSpacing="16">
 
-                                    <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="41" />
-                                    </Border.StrokeShape>
+                                    <Border
+                                        Grid.Column="0"
+                                        HeightRequest="76"
+                                        WidthRequest="76"
+                                        Padding="0"
+                                        Stroke="{StaticResource ColorPrimario}"
+                                        StrokeThickness="1">
 
-                                    <Grid>
+                                        <Border.StrokeShape>
+                                            <RoundRectangle CornerRadius="38" />
+                                        </Border.StrokeShape>
 
-                                        <Image
-                                            Source="{Binding RutaFoto}"
-                                            Aspect="AspectFill" />
+                                        <Grid>
+
+                                            <Image
+                                                Source="{Binding RutaFoto}"
+                                                Aspect="AspectFill" />
+
+                                            <Label
+                                                Text="👤"
+                                                FontSize="34"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HorizontalTextAlignment="Center" />
+
+                                        </Grid>
+
+                                    </Border>
+
+                                    <VerticalStackLayout
+                                        Grid.Column="1"
+                                        Spacing="6"
+                                        VerticalOptions="Center">
 
                                         <Label
-                                            Text="👤"
-                                            FontSize="38"
-                                            HorizontalOptions="Center"
-                                            VerticalOptions="Center"
-                                            HorizontalTextAlignment="Center" />
+                                            Text="{Binding Nombre}"
+                                            FontSize="20"
+                                            FontAttributes="Bold"
+                                            LineBreakMode="TailTruncation"
+                                            TextColor="{StaticResource ColorTextoPrincipal}" />
 
-                                    </Grid>
+                                        <Label
+                                            Text="{Binding Email}"
+                                            FontSize="14"
+                                            LineBreakMode="TailTruncation"
+                                            TextColor="{StaticResource ColorTextoSecundario}" />
 
-                                </Border>
-
-                                <!-- DATOS -->
-
-                                <VerticalStackLayout
-                                    Grid.Column="1"
-                                    Spacing="7"
-                                    VerticalOptions="Center">
-
-                                    <Label
-                                        Text="{Binding Nombre}"
-                                        FontSize="21"
-                                        FontAttributes="Bold"
-                                        TextColor="{StaticResource ColorTextoPrincipal}" />
-
-                                    <Label
-                                        Text="{Binding Email}"
-                                        FontSize="14"
-                                        TextColor="{StaticResource ColorTextoSecundario}" />
-
-                                    <Label
-                                        Text="{Binding Telefono}"
-                                        FontSize="14"
-                                        TextColor="{StaticResource ColorTextoSecundario}" />
-
-                                    <HorizontalStackLayout
-                                        Spacing="7"
-                                        Margin="0,4,0,0">
+                                        <Label
+                                            Text="{Binding Telefono}"
+                                            FontSize="14"
+                                            TextColor="{StaticResource ColorTextoSecundario}" />
 
                                         <Border
+                                            HorizontalOptions="Start"
                                             Padding="9,4"
                                             Stroke="{StaticResource ColorPrimario}"
                                             StrokeThickness="1"
@@ -167,28 +172,29 @@
 
                                         </Border>
 
-                                    </HorizontalStackLayout>
+                                    </VerticalStackLayout>
 
-                                </VerticalStackLayout>
+                                </Grid>
 
                                 <!-- BOTONES -->
 
-                                <VerticalStackLayout
-                                    Grid.Column="2"
-                                    Spacing="9"
-                                    VerticalOptions="Center">
+                                <Grid
+                                    ColumnDefinitions="*,*,*"
+                                    ColumnSpacing="8">
 
                                     <Button
-                                        Text="Usar perfil"
-                                        Padding="15,9"
+                                        Grid.Column="0"
+                                        Text="Usar"
+                                        Padding="10,9"
                                         BackgroundColor="{StaticResource ColorPrimario}"
                                         TextColor="{StaticResource ColorTextoPrincipal}"
                                         CornerRadius="10"
                                         Clicked="OnUsarPerfilClicked" />
 
                                     <Button
+                                        Grid.Column="1"
                                         Text="Editar"
-                                        Padding="15,9"
+                                        Padding="10,9"
                                         BackgroundColor="{StaticResource ColorSuperficieClara}"
                                         TextColor="{StaticResource ColorTextoPrincipal}"
                                         BorderColor="{StaticResource ColorPrimario}"
@@ -197,8 +203,9 @@
                                         Clicked="OnEditarPerfilClicked" />
 
                                     <Button
+                                        Grid.Column="2"
                                         Text="Eliminar"
-                                        Padding="15,9"
+                                        Padding="10,9"
                                         BackgroundColor="{StaticResource ColorSuperficieClara}"
                                         TextColor="{StaticResource ColorError}"
                                         BorderColor="{StaticResource ColorError}"
@@ -206,9 +213,9 @@
                                         CornerRadius="10"
                                         Clicked="OnEliminarPerfilClicked" />
 
-                                </VerticalStackLayout>
+                                </Grid>
 
-                            </Grid>
+                            </VerticalStackLayout>
 
                         </Border>
 
@@ -225,7 +232,8 @@
                 IsVisible="False"
                 Spacing="15"
                 HorizontalOptions="Center"
-                VerticalOptions="Center">
+                VerticalOptions="Center"
+                Padding="20">
 
                 <Label
                     Text="👤"
@@ -243,6 +251,7 @@
                     Text="Creá un perfil para elegir qué secciones puede ver."
                     FontSize="15"
                     HorizontalTextAlignment="Center"
+                    LineBreakMode="WordWrap"
                     TextColor="{StaticResource ColorTextoSecundario}" />
 
                 <Button
@@ -261,13 +270,14 @@
             <Grid
                 x:Name="FormularioFondo"
                 IsVisible="False"
+                Padding="16"
                 BackgroundColor="#AA000000">
 
                 <Border
-                    WidthRequest="650"
+                    MaximumWidthRequest="650"
                     MaximumHeightRequest="780"
-                    Padding="24"
-                    HorizontalOptions="Center"
+                    Padding="20"
+                    HorizontalOptions="Fill"
                     VerticalOptions="Center"
                     Stroke="{StaticResource ColorPrimario}"
                     StrokeThickness="1"
@@ -291,6 +301,7 @@
                                     Text="Nuevo perfil"
                                     FontSize="24"
                                     FontAttributes="Bold"
+                                    VerticalOptions="Center"
                                     TextColor="{StaticResource ColorTextoPrincipal}" />
 
                                 <Button
@@ -308,19 +319,20 @@
 
                             <!-- FOTO -->
 
-                            <HorizontalStackLayout
-                                Spacing="15"
-                                VerticalOptions="Center">
+                            <Grid
+                                ColumnDefinitions="Auto,*"
+                                ColumnSpacing="15">
 
                                 <Border
-                                    HeightRequest="90"
-                                    WidthRequest="90"
+                                    Grid.Column="0"
+                                    HeightRequest="82"
+                                    WidthRequest="82"
                                     Padding="0"
                                     Stroke="{StaticResource ColorPrimario}"
                                     StrokeThickness="1">
 
                                     <Border.StrokeShape>
-                                        <RoundRectangle CornerRadius="45" />
+                                        <RoundRectangle CornerRadius="41" />
                                     </Border.StrokeShape>
 
                                     <Grid>
@@ -332,7 +344,7 @@
                                         <Label
                                             x:Name="FotoVaciaLabel"
                                             Text="👤"
-                                            FontSize="40"
+                                            FontSize="38"
                                             HorizontalOptions="Center"
                                             VerticalOptions="Center" />
 
@@ -341,7 +353,9 @@
                                 </Border>
 
                                 <Button
+                                    Grid.Column="1"
                                     Text="Elegir foto"
+                                    VerticalOptions="Center"
                                     BackgroundColor="{StaticResource ColorSuperficieClara}"
                                     TextColor="{StaticResource ColorTextoPrincipal}"
                                     BorderColor="{StaticResource ColorPrimario}"
@@ -349,7 +363,7 @@
                                     CornerRadius="12"
                                     Clicked="OnElegirFotoClicked" />
 
-                            </HorizontalStackLayout>
+                            </Grid>
 
                             <!-- DATOS -->
 
@@ -389,24 +403,27 @@
                                 PlaceholderColor="{StaticResource ColorTextoDeshabilitado}"
                                 BackgroundColor="{StaticResource ColorSuperficieClara}" />
 
-                            <!-- PREFERENCIAS -->
+                            <!-- UBICACIÓN -->
 
                             <Button
-    x:Name="ElegirUbicacionButton"
-    Text="📍 Elegir ubicación en el mapa"
-    HeightRequest="48"
-    BackgroundColor="{StaticResource ColorSuperficieClara}"
-    TextColor="{StaticResource ColorTextoPrincipal}"
-    BorderColor="{StaticResource ColorPrimario}"
-    BorderWidth="1"
-    CornerRadius="12"
-    Clicked="OnElegirUbicacionClicked" />
+                                x:Name="ElegirUbicacionButton"
+                                Text="📍 Elegir ubicación en el mapa"
+                                HeightRequest="48"
+                                BackgroundColor="{StaticResource ColorSuperficieClara}"
+                                TextColor="{StaticResource ColorTextoPrincipal}"
+                                BorderColor="{StaticResource ColorPrimario}"
+                                BorderWidth="1"
+                                CornerRadius="12"
+                                Clicked="OnElegirUbicacionClicked" />
 
                             <Label
-    x:Name="UbicacionSeleccionadaLabel"
-    Text="No se seleccionó una ubicación."
-    FontSize="12"
-    TextColor="{StaticResource ColorTextoSecundario}" />
+                                x:Name="UbicacionSeleccionadaLabel"
+                                Text="No se seleccionó una ubicación."
+                                FontSize="12"
+                                LineBreakMode="WordWrap"
+                                TextColor="{StaticResource ColorTextoSecundario}" />
+
+                            <!-- PREFERENCIAS -->
 
                             <Label
                                 Text="Secciones visibles"

@@ -12,7 +12,10 @@
 
         <VerticalStackLayout
             Padding="24"
-            Spacing="22">
+            Spacing="22"
+            HorizontalOptions="Fill">
+
+            <!-- VOLVER -->
 
             <Button
                 Text="← Volver"
@@ -24,51 +27,62 @@
                 CornerRadius="12"
                 Clicked="OnVolverClicked" />
 
+            <!-- TÍTULO -->
+
             <Label
                 Text="CLIMA"
                 FontSize="30"
                 FontAttributes="Bold"
+                HorizontalOptions="Start"
                 TextColor="{StaticResource ColorTextoPrincipal}" />
 
             <Label
                 x:Name="CiudadLabel"
                 FontSize="18"
+                HorizontalOptions="Start"
                 TextColor="{StaticResource ColorTextoSecundario}" />
 
-            <Image
-                x:Name="IconoImage"
-                WidthRequest="120"
-                HeightRequest="120"
-                HorizontalOptions="Center" />
+            <!-- CLIMA ACTUAL -->
 
-            <Label
-                x:Name="TemperaturaLabel"
-                FontSize="50"
-                FontAttributes="Bold"
+            <VerticalStackLayout
+                Spacing="8"
                 HorizontalOptions="Center"
-                TextColor="{StaticResource ColorPrimario}" />
+                Margin="0,10,0,15">
 
-            <Label
-                x:Name="DescripcionLabel"
-                FontSize="20"
-                HorizontalOptions="Center"
-                TextColor="{StaticResource ColorTextoPrincipal}" />
+                <Image
+                    x:Name="IconoImage"
+                    WidthRequest="120"
+                    HeightRequest="120"
+                    HorizontalOptions="Center" />
 
-            <HorizontalStackLayout
-                HorizontalOptions="Center"
-                Spacing="30">
+                <Label
+                    x:Name="TemperaturaLabel"
+                    FontSize="50"
+                    FontAttributes="Bold"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{StaticResource ColorPrimario}" />
+
+                <Label
+                    x:Name="DescripcionLabel"
+                    FontSize="20"
+                    HorizontalOptions="Center"
+                    HorizontalTextAlignment="Center"
+                    TextColor="{StaticResource ColorTextoPrincipal}" />
 
                 <Label
                     x:Name="SensacionLabel"
                     FontSize="16"
+                    HorizontalTextAlignment="Center"
                     TextColor="{StaticResource ColorTextoSecundario}" />
 
                 <Label
                     x:Name="HumedadLabel"
                     FontSize="16"
+                    HorizontalTextAlignment="Center"
                     TextColor="{StaticResource ColorTextoSecundario}" />
 
-            </HorizontalStackLayout>
+            </VerticalStackLayout>
 
             <ActivityIndicator
                 x:Name="Cargando"
@@ -77,25 +91,35 @@
                 Color="{StaticResource ColorPrimario}"
                 HorizontalOptions="Center" />
 
+            <!-- PRONÓSTICO -->
+
             <Label
                 Text="Pronóstico de los próximos 5 días"
                 FontSize="22"
                 FontAttributes="Bold"
+                HorizontalOptions="Start"
                 TextColor="{StaticResource ColorTextoPrincipal}"
-                Margin="0,20,0,0" />
+                Margin="0,15,0,0" />
+
+            <Label
+                Text="Deslizá hacia los costados para ver todos los días →"
+                FontSize="13"
+                HorizontalOptions="Start"
+                TextColor="{StaticResource ColorTextoSecundario}"
+                Margin="0,-8,0,0" />
 
             <CollectionView
-                x:Name="ListaPronostico"
-                HeightRequest="265"
-                SelectionMode="None">
+    x:Name="ListaPronostico"
+    HeightRequest="270"
+    SelectionMode="None"
+    HorizontalOptions="Center"
+    HorizontalScrollBarVisibility="Never">
 
                 <CollectionView.ItemsLayout>
 
-                    <GridItemsLayout
-                        Orientation="Vertical"
-                        Span="5"
-                        HorizontalItemSpacing="14"
-                        VerticalItemSpacing="0" />
+                    <LinearItemsLayout
+            Orientation="Horizontal"
+            ItemSpacing="14" />
 
                 </CollectionView.ItemsLayout>
 
@@ -104,47 +128,55 @@
                     <DataTemplate>
 
                         <Border
-                            Margin="2"
-                            Padding="18"
-                            Stroke="{StaticResource ColorBorde}"
-                            StrokeThickness="1"
-                            BackgroundColor="{StaticResource ColorSuperficie}">
+                Margin="2"
+                Padding="16"
+                Stroke="{StaticResource ColorBorde}"
+                StrokeThickness="1"
+                BackgroundColor="{StaticResource ColorSuperficie}">
+
+                            <Border.WidthRequest>
+                                <OnIdiom
+                        x:TypeArguments="x:Double"
+                        Phone="155"
+                        Tablet="190"
+                        Desktop="300" />
+                            </Border.WidthRequest>
 
                             <Border.StrokeShape>
                                 <RoundRectangle CornerRadius="18" />
                             </Border.StrokeShape>
 
                             <VerticalStackLayout
-                                Spacing="10"
-                                VerticalOptions="Center">
+                    Spacing="9"
+                    VerticalOptions="Center">
 
                                 <Label
-                                    Text="{Binding Dia}"
-                                    FontSize="17"
-                                    FontAttributes="Bold"
-                                    HorizontalTextAlignment="Center"
-                                    TextColor="{StaticResource ColorTextoPrincipal}" />
+                        Text="{Binding Dia}"
+                        FontSize="16"
+                        FontAttributes="Bold"
+                        HorizontalTextAlignment="Center"
+                        TextColor="{StaticResource ColorTextoPrincipal}" />
 
                                 <Image
-                                    WidthRequest="70"
-                                    HeightRequest="70"
-                                    HorizontalOptions="Center"
-                                    Source="{Binding IconoCompleto}" />
+                        Source="{Binding IconoCompleto}"
+                        WidthRequest="68"
+                        HeightRequest="68"
+                        HorizontalOptions="Center" />
 
                                 <Label
-                                    Text="{Binding TemperaturaTexto}"
-                                    FontSize="24"
-                                    FontAttributes="Bold"
-                                    HorizontalTextAlignment="Center"
-                                    TextColor="{StaticResource ColorPrimario}" />
+                        Text="{Binding TemperaturaTexto}"
+                        FontSize="23"
+                        FontAttributes="Bold"
+                        HorizontalTextAlignment="Center"
+                        TextColor="{StaticResource ColorPrimario}" />
 
                                 <Label
-                                    Text="{Binding Descripcion}"
-                                    FontSize="14"
-                                    MaxLines="2"
-                                    HorizontalTextAlignment="Center"
-                                    LineBreakMode="TailTruncation"
-                                    TextColor="{StaticResource ColorTextoSecundario}" />
+                        Text="{Binding Descripcion}"
+                        FontSize="13"
+                        HorizontalTextAlignment="Center"
+                        MaxLines="2"
+                        LineBreakMode="TailTruncation"
+                        TextColor="{StaticResource ColorTextoSecundario}" />
 
                             </VerticalStackLayout>
 
@@ -156,35 +188,44 @@
 
             </CollectionView>
 
+            <!-- RECOMENDACIÓN -->
+
             <Label
                 Text="Recomendado para este clima"
                 FontSize="26"
                 FontAttributes="Bold"
+                HorizontalOptions="Start"
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 Margin="0,15,0,0" />
 
             <Label
                 x:Name="MotivoRecomendacionLabel"
                 FontSize="16"
+                HorizontalOptions="Fill"
                 LineBreakMode="WordWrap"
                 TextColor="{StaticResource ColorTextoSecundario}" />
 
+            <!-- PELÍCULAS -->
+
             <Grid
                 ColumnDefinitions="*,Auto"
-                Margin="0,15,0,0">
+                ColumnSpacing="10"
+                Margin="0,15,0,0"
+                HorizontalOptions="Fill">
 
                 <Label
                     Grid.Column="0"
                     Text="Películas recomendadas según el clima"
-                    FontSize="22"
+                    FontSize="20"
                     FontAttributes="Bold"
                     VerticalOptions="Center"
+                    LineBreakMode="WordWrap"
                     TextColor="{StaticResource ColorTextoPrincipal}" />
 
                 <Button
                     Grid.Column="1"
                     Text="Ver todas →"
-                    Padding="15,8"
+                    Padding="12,8"
                     CornerRadius="12"
                     BackgroundColor="{StaticResource ColorSuperficie}"
                     TextColor="{StaticResource ColorPrimario}"
@@ -194,116 +235,97 @@
 
             </Grid>
 
-            <Grid
-                ColumnDefinitions="55,*,55"
-                ColumnSpacing="12">
+            <Label
+                Text="Deslizá para ver más →"
+                FontSize="13"
+                HorizontalOptions="Start"
+                TextColor="{StaticResource ColorTextoSecundario}" />
 
-                <Button
-                    Grid.Column="0"
-                    Text="←"
-                    FontSize="24"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Padding="0"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    BackgroundColor="{StaticResource ColorSuperficie}"
-                    TextColor="{StaticResource ColorPrimario}"
-                    BorderColor="{StaticResource ColorPrimario}"
-                    BorderWidth="1"
-                    CornerRadius="25"
-                    Clicked="OnPeliculasAnteriorClicked" />
+            <CollectionView
+                x:Name="ListaPeliculasClima"
+                HeightRequest="330"
+                HorizontalOptions="Fill"
+                SelectionMode="Single"
+                SelectionChanged="OnPeliculaSeleccionada"
+                HorizontalScrollBarVisibility="Never">
 
-                <CollectionView
-                    x:Name="ListaPeliculasClima"
-                    Grid.Column="1"
-                    HeightRequest="340"
-                    SelectionMode="Single"
-                    SelectionChanged="OnPeliculaSeleccionada"
-                    HorizontalScrollBarVisibility="Never">
+                <CollectionView.ItemsLayout>
 
-                    <CollectionView.ItemsLayout>
+                    <LinearItemsLayout
+                        Orientation="Horizontal"
+                        ItemSpacing="12" />
 
-                        <LinearItemsLayout
-                            Orientation="Horizontal"
-                            ItemSpacing="14" />
+                </CollectionView.ItemsLayout>
 
-                    </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
 
-                    <CollectionView.ItemTemplate>
+                    <DataTemplate>
 
-                        <DataTemplate>
+                        <Border
+                            Padding="8"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficie}">
 
-                            <Border
-                                WidthRequest="210"
-                                Padding="10"
-                                Stroke="{StaticResource ColorBorde}"
-                                StrokeThickness="1"
-                                BackgroundColor="{StaticResource ColorSuperficie}">
+                            <Border.WidthRequest>
+                                <OnIdiom
+                                    x:TypeArguments="x:Double"
+                                    Phone="165"
+                                    Tablet="180"
+                                    Desktop="190" />
+                            </Border.WidthRequest>
 
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="18" />
-                                </Border.StrokeShape>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
 
-                                <VerticalStackLayout Spacing="9">
+                            <VerticalStackLayout Spacing="8">
 
-                                    <Image
-                                        Source="{Binding ImagenCompleta}"
-                                        HeightRequest="245"
-                                        Aspect="AspectFill" />
+                                <Image
+                                    Source="{Binding ImagenCompleta}"
+                                    HeightRequest="225"
+                                    Aspect="AspectFill"
+                                    HorizontalOptions="Fill" />
 
-                                    <Label
-                                        Text="{Binding Titulo}"
-                                        FontSize="16"
-                                        FontAttributes="Bold"
-                                        MaxLines="2"
-                                        LineBreakMode="TailTruncation"
-                                        TextColor="{StaticResource ColorTextoPrincipal}" />
+                                <Label
+                                    Text="{Binding Titulo}"
+                                    FontSize="15"
+                                    FontAttributes="Bold"
+                                    MaxLines="2"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource ColorTextoPrincipal}" />
 
-                                </VerticalStackLayout>
+                            </VerticalStackLayout>
 
-                            </Border>
+                        </Border>
 
-                        </DataTemplate>
+                    </DataTemplate>
 
-                    </CollectionView.ItemTemplate>
+                </CollectionView.ItemTemplate>
 
-                </CollectionView>
+            </CollectionView>
 
-                <Button
-                    Grid.Column="2"
-                    Text="→"
-                    FontSize="24"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Padding="0"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    BackgroundColor="{StaticResource ColorSuperficie}"
-                    TextColor="{StaticResource ColorPrimario}"
-                    BorderColor="{StaticResource ColorPrimario}"
-                    BorderWidth="1"
-                    CornerRadius="25"
-                    Clicked="OnPeliculasSiguienteClicked" />
-
-            </Grid>
+            <!-- SERIES -->
 
             <Grid
                 ColumnDefinitions="*,Auto"
-                Margin="0,15,0,0">
+                ColumnSpacing="10"
+                Margin="0,15,0,0"
+                HorizontalOptions="Fill">
 
                 <Label
                     Grid.Column="0"
                     Text="Series recomendadas según el clima"
-                    FontSize="22"
+                    FontSize="20"
                     FontAttributes="Bold"
                     VerticalOptions="Center"
+                    LineBreakMode="WordWrap"
                     TextColor="{StaticResource ColorTextoPrincipal}" />
 
                 <Button
                     Grid.Column="1"
                     Text="Ver todas →"
-                    Padding="15,8"
+                    Padding="12,8"
                     CornerRadius="12"
                     BackgroundColor="{StaticResource ColorSuperficie}"
                     TextColor="{StaticResource ColorPrimario}"
@@ -313,99 +335,75 @@
 
             </Grid>
 
-            <Grid
-                ColumnDefinitions="55,*,55"
-                ColumnSpacing="12">
+            <Label
+                Text="Deslizá para ver más →"
+                FontSize="13"
+                HorizontalOptions="Start"
+                TextColor="{StaticResource ColorTextoSecundario}" />
 
-                <Button
-                    Grid.Column="0"
-                    Text="←"
-                    FontSize="24"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Padding="0"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    BackgroundColor="{StaticResource ColorSuperficie}"
-                    TextColor="{StaticResource ColorPrimario}"
-                    BorderColor="{StaticResource ColorPrimario}"
-                    BorderWidth="1"
-                    CornerRadius="25"
-                    Clicked="OnSeriesAnteriorClicked" />
+            <CollectionView
+                x:Name="ListaSeriesClima"
+                HeightRequest="330"
+                HorizontalOptions="Fill"
+                SelectionMode="Single"
+                SelectionChanged="OnSerieSeleccionada"
+                HorizontalScrollBarVisibility="Never">
 
-                <CollectionView
-                    x:Name="ListaSeriesClima"
-                    Grid.Column="1"
-                    HeightRequest="340"
-                    SelectionMode="Single"
-                    SelectionChanged="OnSerieSeleccionada"
-                    HorizontalScrollBarVisibility="Never">
+                <CollectionView.ItemsLayout>
 
-                    <CollectionView.ItemsLayout>
+                    <LinearItemsLayout
+                        Orientation="Horizontal"
+                        ItemSpacing="12" />
 
-                        <LinearItemsLayout
-                            Orientation="Horizontal"
-                            ItemSpacing="14" />
+                </CollectionView.ItemsLayout>
 
-                    </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
 
-                    <CollectionView.ItemTemplate>
+                    <DataTemplate>
 
-                        <DataTemplate>
+                        <Border
+                            Padding="8"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
+                            BackgroundColor="{StaticResource ColorSuperficie}">
 
-                            <Border
-                                WidthRequest="210"
-                                Padding="10"
-                                Stroke="{StaticResource ColorBorde}"
-                                StrokeThickness="1"
-                                BackgroundColor="{StaticResource ColorSuperficie}">
+                            <Border.WidthRequest>
+                                <OnIdiom
+                                    x:TypeArguments="x:Double"
+                                    Phone="165"
+                                    Tablet="180"
+                                    Desktop="190" />
+                            </Border.WidthRequest>
 
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="18" />
-                                </Border.StrokeShape>
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="16" />
+                            </Border.StrokeShape>
 
-                                <VerticalStackLayout Spacing="9">
+                            <VerticalStackLayout Spacing="8">
 
-                                    <Image
-                                        Source="{Binding ImagenCompleta}"
-                                        HeightRequest="245"
-                                        Aspect="AspectFill" />
+                                <Image
+                                    Source="{Binding ImagenCompleta}"
+                                    HeightRequest="225"
+                                    Aspect="AspectFill"
+                                    HorizontalOptions="Fill" />
 
-                                    <Label
-                                        Text="{Binding Nombre}"
-                                        FontSize="16"
-                                        FontAttributes="Bold"
-                                        MaxLines="2"
-                                        LineBreakMode="TailTruncation"
-                                        TextColor="{StaticResource ColorTextoPrincipal}" />
+                                <Label
+                                    Text="{Binding Nombre}"
+                                    FontSize="15"
+                                    FontAttributes="Bold"
+                                    MaxLines="2"
+                                    LineBreakMode="TailTruncation"
+                                    TextColor="{StaticResource ColorTextoPrincipal}" />
 
-                                </VerticalStackLayout>
+                            </VerticalStackLayout>
 
-                            </Border>
+                        </Border>
 
-                        </DataTemplate>
+                    </DataTemplate>
 
-                    </CollectionView.ItemTemplate>
+                </CollectionView.ItemTemplate>
 
-                </CollectionView>
-
-                <Button
-                    Grid.Column="2"
-                    Text="→"
-                    FontSize="24"
-                    WidthRequest="50"
-                    HeightRequest="50"
-                    Padding="0"
-                    HorizontalOptions="Center"
-                    VerticalOptions="Center"
-                    BackgroundColor="{StaticResource ColorSuperficie}"
-                    TextColor="{StaticResource ColorPrimario}"
-                    BorderColor="{StaticResource ColorPrimario}"
-                    BorderWidth="1"
-                    CornerRadius="25"
-                    Clicked="OnSeriesSiguienteClicked" />
-
-            </Grid>
+            </CollectionView>
 
         </VerticalStackLayout>
 

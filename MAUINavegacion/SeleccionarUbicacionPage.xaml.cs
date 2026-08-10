@@ -7,44 +7,128 @@ public partial class SeleccionarUbicacionPage : ContentPage
 {
     private Location? _ubicacionSeleccionada;
 
-    public double LatitudSeleccionada { get; private set; }
+    private readonly Action<double, double> _alGuardarUbicacion;
 
-    public double LongitudSeleccionada { get; private set; }
-
-    public bool UbicacionGuardada { get; private set; }
+    private readonly double _latitudInicial;
+    private readonly double _longitudInicial;
 
     public SeleccionarUbicacionPage(
-        double latitudInicial = 0,
-        double longitudInicial = 0)
+        double latitudInicial,
+        double longitudInicial,
+        Action<double, double> alGuardarUbicacion)
     {
         InitializeComponent();
 
-        MostrarMapaInicial(
-            latitudInicial,
-            longitudInicial);
+        _latitudInicial = latitudInicial;
+        _longitudInicial = longitudInicial;
+
+        _alGuardarUbicacion = alGuardarUbicacion;
     }
 
-    private void MostrarMapaInicial(
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (_latitudInicial != 0 ||
+            _longitudInicial != 0)
+        {
+            MostrarUbicacionExistente(
+                _latitudInicial,
+                _longitudInicial);
+
+            return;
+        }
+
+        await MostrarUbicacionActualAsync();
+    }
+
+    private void MostrarUbicacionExistente(
         double latitud,
         double longitud)
     {
-        Location ubicacion;
+        Location ubicacion =
+            new Location(
+                latitud,
+                longitud);
 
-        if (latitud != 0 && longitud != 0)
+        _ubicacionSeleccionada =
+            ubicacion;
+
+        Mapa.Pins.Clear();
+
+        Pin pin =
+            new Pin
+            {
+                Label = "Ubicación del perfil",
+                Address = "Ubicación guardada",
+                Location = ubicacion,
+                Type = PinType.Place
+            };
+
+        Mapa.Pins.Add(pin);
+
+        Mapa.MoveToRegion(
+            MapSpan.FromCenterAndRadius(
+                ubicacion,
+                Distance.FromKilometers(2)));
+
+        UbicacionLabel.Text =
+            $"Ubicación actual del perfil\n" +
+            $"Latitud: {latitud:F6}\n" +
+            $"Longitud: {longitud:F6}";
+
+        GuardarUbicacionButton.IsEnabled = true;
+    }
+
+    private async Task MostrarUbicacionActualAsync()
+    {
+        try
         {
-            ubicacion =
-                new Location(
-                    latitud,
-                    longitud);
+            PermissionStatus permiso =
+                await Permissions.RequestAsync<
+                    Permissions.LocationWhenInUse>();
+
+            if (permiso != PermissionStatus.Granted)
+            {
+                MostrarPuntaDelEste();
+                return;
+            }
+
+            Location? ubicacion =
+                await Geolocation.Default
+                    .GetLocationAsync(
+                        new GeolocationRequest
+                        {
+                            DesiredAccuracy =
+                                GeolocationAccuracy.Medium,
+
+                            Timeout =
+                                TimeSpan.FromSeconds(10)
+                        });
+
+            if (ubicacion == null)
+            {
+                MostrarPuntaDelEste();
+                return;
+            }
+
+            Mapa.MoveToRegion(
+                MapSpan.FromCenterAndRadius(
+                    ubicacion,
+                    Distance.FromKilometers(3)));
         }
-        else
+        catch
         {
-            // Punta del Este
-            ubicacion =
-                new Location(
-                    -34.9475,
-                    -54.9338);
+            MostrarPuntaDelEste();
         }
+    }
+
+    private void MostrarPuntaDelEste()
+    {
+        Location ubicacion =
+            new Location(
+                -34.9475,
+                -54.9338);
 
         Mapa.MoveToRegion(
             MapSpan.FromCenterAndRadius(
@@ -59,18 +143,13 @@ public partial class SeleccionarUbicacionPage : ContentPage
         _ubicacionSeleccionada =
             e.Location;
 
-        LatitudSeleccionada =
-            e.Location.Latitude;
-
-        LongitudSeleccionada =
-            e.Location.Longitude;
-
         Mapa.Pins.Clear();
 
         Pin pin =
             new Pin
             {
                 Label = "Ubicación del perfil",
+                Address = "Punto seleccionado",
                 Location = e.Location,
                 Type = PinType.Place
             };
@@ -79,8 +158,8 @@ public partial class SeleccionarUbicacionPage : ContentPage
 
         UbicacionLabel.Text =
             $"Ubicación seleccionada\n" +
-            $"Latitud: {LatitudSeleccionada:F6}\n" +
-            $"Longitud: {LongitudSeleccionada:F6}";
+            $"Latitud: {e.Location.Latitude:F6}\n" +
+            $"Longitud: {e.Location.Longitude:F6}";
 
         GuardarUbicacionButton.IsEnabled = true;
     }
@@ -99,7 +178,9 @@ public partial class SeleccionarUbicacionPage : ContentPage
             return;
         }
 
-        UbicacionGuardada = true;
+        _alGuardarUbicacion(
+            _ubicacionSeleccionada.Latitude,
+            _ubicacionSeleccionada.Longitude);
 
         await Navigation.PopAsync();
     }

@@ -624,22 +624,16 @@ public partial class PerfilPage : BasePage
         SeleccionarUbicacionPage pagina =
             new SeleccionarUbicacionPage(
                 _latitudSeleccionada,
-                _longitudSeleccionada);
+                _longitudSeleccionada,
+                (latitud, longitud) =>
+                {
+                    _latitudSeleccionada = latitud;
+                    _longitudSeleccionada = longitud;
+
+                    MostrarTextoUbicacion();
+                });
 
         await Navigation.PushAsync(pagina);
-
-        if (pagina.UbicacionGuardada)
-        {
-            _latitudSeleccionada =
-                pagina.LatitudSeleccionada;
-
-            _longitudSeleccionada =
-                pagina.LongitudSeleccionada;
-
-            MostrarTextoUbicacion();
-        }
-
-
     }
 
     private void MostrarTextoUbicacion()
