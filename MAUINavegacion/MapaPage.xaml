@@ -10,7 +10,7 @@
 
     <Grid RowDefinitions="Auto,*">
 
-        
+        <!-- ENCABEZADO -->
 
         <Grid
             Grid.Row="0"
@@ -35,13 +35,13 @@
                 Spacing="2">
 
                 <Label
-                    Text="MAPA"
-                    FontSize="24"
+                    Text="MAPA GENERAL"
+                    FontSize="22"
                     FontAttributes="Bold"
                     TextColor="{StaticResource ColorTextoPrincipal}" />
 
                 <Label
-                    Text="Ubicación y perfiles"
+                    Text="Perfiles y ubicación actual"
                     FontSize="13"
                     TextColor="{StaticResource ColorTextoSecundario}" />
 
@@ -50,7 +50,7 @@
         </Grid>
 
 
-        
+        <!-- MAPA -->
 
         <maps:Map
             x:Name="Mapa"
