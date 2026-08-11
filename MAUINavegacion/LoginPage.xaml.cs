@@ -87,8 +87,8 @@ public partial class LoginPage : ContentPage
         }
         catch (Exception)
         {
-            MostrarMensaje(
-                "La autenticación con huella no está disponible en esta plataforma.");
+          
+               
         }
         finally
         {

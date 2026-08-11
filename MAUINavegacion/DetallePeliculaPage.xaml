@@ -264,6 +264,8 @@
                     BackgroundColor="{StaticResource ColorBorde}"
                     Margin="0,5" />
 
+                <!-- TRÁILER -->
+
                 <VerticalStackLayout
                     x:Name="SeccionTrailer"
                     IsVisible="False"
@@ -285,9 +287,10 @@
                             <RoundRectangle CornerRadius="15" />
                         </Border.StrokeShape>
 
-                        <WebView
+                        <local:YoutubeWebView
                             x:Name="TrailerWebView"
-                            HeightRequest="230" />
+                            HeightRequest="300"
+                            HorizontalOptions="Fill" />
 
                     </Border>
 

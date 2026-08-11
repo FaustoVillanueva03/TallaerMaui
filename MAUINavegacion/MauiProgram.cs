@@ -9,7 +9,8 @@ public static class MauiProgram
 {
     public static MauiApp CreateMauiApp()
     {
-        var builder = MauiApp.CreateBuilder();
+        var builder =
+            MauiApp.CreateBuilder();
 
         builder.UseMauiApp<App>();
 
@@ -17,20 +18,42 @@ public static class MauiProgram
         builder.UseMauiMaps();
 #endif
 
-        builder.ConfigureFonts(fonts =>
-        {
-            fonts.AddFont(
-                "OpenSans-Regular.ttf",
-                "OpenSansRegular");
+#if ANDROID
+        builder.ConfigureMauiHandlers(
+            handlers =>
+            {
+                handlers.AddHandler(
+                    typeof(YoutubeWebView),
+                    typeof(YoutubeWebViewHandler));
+            });
+#endif
 
-            fonts.AddFont(
-                "OpenSans-Semibold.ttf",
-                "OpenSansSemibold");
-        });
+#if WINDOWS
+        builder.ConfigureMauiHandlers(
+            handlers =>
+            {
+                handlers.AddHandler(
+                    typeof(YoutubeWebView),
+                    typeof(YoutubeWebViewHandlerWindows));
+            });
+#endif
 
-        string dbPath = Path.Combine(
-            FileSystem.AppDataDirectory,
-            "redflix.db3");
+        builder.ConfigureFonts(
+            fonts =>
+            {
+                fonts.AddFont(
+                    "OpenSans-Regular.ttf",
+                    "OpenSansRegular");
+
+                fonts.AddFont(
+                    "OpenSans-Semibold.ttf",
+                    "OpenSansSemibold");
+            });
+
+        string dbPath =
+            Path.Combine(
+                FileSystem.AppDataDirectory,
+                "redflix.db3");
 
         builder.Services.AddSingleton(
             new AppDatabase(dbPath));

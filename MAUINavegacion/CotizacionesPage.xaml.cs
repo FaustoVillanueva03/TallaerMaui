@@ -6,7 +6,8 @@ namespace MAUINavegacion;
 
 public partial class CotizacionesPage : BasePage
 {
-    private readonly ExchangeRateService _exchangeRateService;
+    private readonly ExchangeRateService
+        _exchangeRateService;
 
     private double _dolar;
     private double _euro;
@@ -56,7 +57,7 @@ public partial class CotizacionesPage : BasePage
             Cargando.IsRunning = true;
 
             FechaActualizacionLabel.Text =
-                "Actualizando cotizaciones...";
+                "Comprobando cotizaciones...";
 
             RespuestaCotizacion? cotizacion =
                 await _exchangeRateService
@@ -65,7 +66,7 @@ public partial class CotizacionesPage : BasePage
             if (cotizacion == null)
             {
                 FechaActualizacionLabel.Text =
-                    "No se pudieron actualizar las cotizaciones.";
+                    "No se pudieron obtener las cotizaciones.";
 
                 await DisplayAlert(
                     "Cotizaciones",
@@ -96,8 +97,7 @@ public partial class CotizacionesPage : BasePage
             RealLabel.Text =
                 $"1 BRL = {_real:0.00} UYU";
 
-            FechaActualizacionLabel.Text =
-                $"Última actualización: {DateTime.Now:dd/MM/yyyy HH:mm}";
+            MostrarFechaActualizacion();
 
             _cotizacionesCargadas = true;
         }
@@ -116,6 +116,31 @@ public partial class CotizacionesPage : BasePage
             Cargando.IsRunning = false;
             Cargando.IsVisible = false;
         }
+    }
+
+    private void MostrarFechaActualizacion()
+    {
+        DateTime? ultimaActualizacion =
+            _exchangeRateService
+                .ObtenerUltimaActualizacion();
+
+        DateTime proximaActualizacion =
+            _exchangeRateService
+                .ObtenerProximaActualizacion();
+
+        if (ultimaActualizacion == null)
+        {
+            FechaActualizacionLabel.Text =
+                "Todavía no hay una actualización registrada.";
+
+            return;
+        }
+
+        FechaActualizacionLabel.Text =
+            $"Última actualización: " +
+            $"{ultimaActualizacion.Value:dd/MM/yyyy HH:mm}\n" +
+            $"Próxima actualización: " +
+            $"{proximaActualizacion:dd/MM/yyyy HH:mm}";
     }
 
     private async void OnConvertirClicked(
@@ -152,7 +177,8 @@ public partial class CotizacionesPage : BasePage
                 .ToString() ??
             string.Empty;
 
-        if (string.IsNullOrWhiteSpace(moneda))
+        if (string.IsNullOrWhiteSpace(
+                moneda))
         {
             await DisplayAlert(
                 "Moneda",
@@ -167,19 +193,23 @@ public partial class CotizacionesPage : BasePage
         switch (moneda)
         {
             case "Dólar":
-                uyu = monto * _dolar;
+                uyu =
+                    monto * _dolar;
                 break;
 
             case "Euro":
-                uyu = monto * _euro;
+                uyu =
+                    monto * _euro;
                 break;
 
             case "Real":
-                uyu = monto * _real;
+                uyu =
+                    monto * _real;
                 break;
 
             default:
-                uyu = monto;
+                uyu =
+                    monto;
                 break;
         }
 
@@ -205,7 +235,9 @@ public partial class CotizacionesPage : BasePage
             $"BRL {brl:0.00}";
 
         MontoOriginalLabel.Text =
-            $"Conversión de {monto:0.00} {ObtenerCodigoMoneda(moneda)}";
+            $"Conversión de " +
+            $"{monto:0.00} " +
+            $"{ObtenerCodigoMoneda(moneda)}";
 
         ResultadoUYUBorder.IsVisible =
             moneda != "Peso Uruguayo";
@@ -228,7 +260,8 @@ public partial class CotizacionesPage : BasePage
     {
         monto = 0;
 
-        if (string.IsNullOrWhiteSpace(texto))
+        if (string.IsNullOrWhiteSpace(
+                texto))
         {
             return false;
         }

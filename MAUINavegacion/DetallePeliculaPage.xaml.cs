@@ -449,49 +449,46 @@ public partial class DetallePeliculaPage : BasePage
                 return;
             }
 
-            string html = $@"
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name=""viewport""
-          content=""width=device-width, initial-scale=1.0"">
-
-    <style>
-        html, body {{
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            overflow: hidden;
-        }}
-
-        iframe {{
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }}
-    </style>
-</head>
-
-<body>
-    <iframe
-        src=""https://www.youtube-nocookie.com/embed/{trailer.Key}?playsinline=1&rel=0""
-        title=""YouTube video player""
-        allow=""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share""
-        allowfullscreen>
-    </iframe>
-</body>
-</html>";
-
-            TrailerWebView.Source =
-                new HtmlWebViewSource
-                {
-                    Html = html
-                };
+            string url =
+                $"https://www.youtube.com/embed/" +
+                $"{trailer.Key}" +
+                "?playsinline=1&rel=0";
 
             MensajeSinTrailer.IsVisible = false;
             SeccionTrailer.IsVisible = true;
+
+            // Esperamos un poco para asegurarnos
+            // de que el WebView ya esté creado.
+            await Task.Delay(300);
+
+#if ANDROID
+
+            if (TrailerWebView.Handler?.PlatformView
+                is Android.Webkit.WebView webView)
+            {
+                Dictionary<string, string> headers =
+                    new()
+                    {
+                        {
+                            "Referer",
+                            "https://com.fausto.movieapp"
+                        }
+                    };
+
+                webView.LoadUrl(
+                    url,
+                    headers);
+            }
+            else
+            {
+                TrailerWebView.Source = url;
+            }
+
+#else
+
+            TrailerWebView.Source = url;
+
+#endif
         }
         catch (Exception error)
         {

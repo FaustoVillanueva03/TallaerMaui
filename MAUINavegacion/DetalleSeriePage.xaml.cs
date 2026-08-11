@@ -1,7 +1,6 @@
 ﻿using MAUINavegacion.Models;
 using MAUINavegacion.Services;
 
-
 namespace MAUINavegacion;
 
 public partial class DetalleSeriePage : BasePage
@@ -11,6 +10,7 @@ public partial class DetalleSeriePage : BasePage
     private readonly CarritoService _carritoService;
 
     private Serie? _serie;
+
     private bool _datosCargados;
     private bool _esCompra;
 
@@ -361,9 +361,12 @@ public partial class DetalleSeriePage : BasePage
             Titulo = _serie.Nombre,
             Imagen = _serie.ImagenCompleta,
             TipoContenido = "Serie",
-            Modalidad = _esCompra
-                ? "Compra"
-                : "Alquiler",
+
+            Modalidad =
+                _esCompra
+                    ? "Compra"
+                    : "Alquiler",
+
             Moneda = _monedaSeleccionada,
             Precio = precioSeleccionado,
             PrecioUYU = precioUYU
@@ -449,49 +452,44 @@ public partial class DetalleSeriePage : BasePage
                 return;
             }
 
-            string html = $@"
-<!DOCTYPE html>
-<html>
-<head>
-    <meta name=""viewport""
-          content=""width=device-width, initial-scale=1.0"">
-
-    <style>
-        html, body {{
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            background-color: black;
-            overflow: hidden;
-        }}
-
-        iframe {{
-            width: 100%;
-            height: 100%;
-            border: 0;
-        }}
-    </style>
-</head>
-
-<body>
-    <iframe
-        src=""https://www.youtube-nocookie.com/embed/{trailer.Key}?playsinline=1&rel=0""
-        title=""YouTube video player""
-        allow=""accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share""
-        allowfullscreen>
-    </iframe>
-</body>
-</html>";
-
-            TrailerWebView.Source =
-                new HtmlWebViewSource
-                {
-                    Html = html
-                };
+            string url =
+                $"https://www.youtube.com/embed/" +
+                $"{trailer.Key}" +
+                "?playsinline=1&rel=0";
 
             MensajeSinTrailer.IsVisible = false;
             SeccionTrailer.IsVisible = true;
+
+            await Task.Delay(300);
+
+#if ANDROID
+
+            if (TrailerWebView.Handler?.PlatformView
+                is Android.Webkit.WebView webView)
+            {
+                Dictionary<string, string> headers =
+                    new()
+                    {
+                        {
+                            "Referer",
+                            "https://com.fausto.movieapp"
+                        }
+                    };
+
+                webView.LoadUrl(
+                    url,
+                    headers);
+            }
+            else
+            {
+                TrailerWebView.Source = url;
+            }
+
+#else
+
+            TrailerWebView.Source = url;
+
+#endif
         }
         catch (Exception error)
         {

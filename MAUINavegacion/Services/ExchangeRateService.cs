@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System.Globalization;
+using System.Net.Http.Json;
 using MAUINavegacion.Models;
 
 namespace MAUINavegacion.Services;
@@ -12,6 +13,9 @@ public class ExchangeRateService
 
     private const string ClaveFecha =
         "FechaCotizaciones";
+
+    private const string ClaveUltimaActualizacion =
+        "UltimaActualizacionCotizaciones";
 
     private const string ClaveDolar =
         "CotizacionDolar";
@@ -36,7 +40,8 @@ public class ExchangeRateService
                 string.Empty);
 
         string fechaActual =
-            DateTime.Today.ToString("yyyy-MM-dd");
+            DateTime.Today.ToString(
+                "yyyy-MM-dd");
 
         bool existenCotizaciones =
             Preferences.Default.ContainsKey(
@@ -46,8 +51,14 @@ public class ExchangeRateService
             Preferences.Default.ContainsKey(
                 ClaveReal);
 
+        DateTime? ultimaActualizacion =
+            ObtenerUltimaActualizacion();
+
+        // Si ya se actualizaron hoy,
+        // usamos las cotizaciones guardadas.
         if (fechaGuardada == fechaActual &&
-            existenCotizaciones)
+            existenCotizaciones &&
+            ultimaActualizacion != null)
         {
             double dolarUYU =
                 Preferences.Default.Get(
@@ -74,6 +85,9 @@ public class ExchangeRateService
                     realUYU);
             }
         }
+
+        // Si es un nuevo día,
+        // consulta nuevamente la API.
 
         string url =
             $"https://v6.exchangerate-api.com/v6/" +
@@ -116,9 +130,16 @@ public class ExchangeRateService
         double real =
             1 / respuesta.ConversionRates.Real;
 
+        DateTime ahora =
+            DateTime.Now;
+
         Preferences.Default.Set(
             ClaveFecha,
             fechaActual);
+
+        Preferences.Default.Set(
+            ClaveUltimaActualizacion,
+            ahora.ToString("O"));
 
         Preferences.Default.Set(
             ClaveDolar,
@@ -133,6 +154,45 @@ public class ExchangeRateService
             real);
 
         return respuesta;
+    }
+
+    public DateTime? ObtenerUltimaActualizacion()
+    {
+        string fechaTexto =
+            Preferences.Default.Get(
+                ClaveUltimaActualizacion,
+                string.Empty);
+
+        if (string.IsNullOrWhiteSpace(
+                fechaTexto))
+        {
+            return null;
+        }
+
+        if (DateTime.TryParse(
+                fechaTexto,
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.RoundtripKind,
+                out DateTime fecha))
+        {
+            return fecha;
+        }
+
+        return null;
+    }
+
+    public DateTime ObtenerProximaActualizacion()
+    {
+        DateTime? ultima =
+            ObtenerUltimaActualizacion();
+
+        if (ultima == null)
+        {
+            return DateTime.Today;
+        }
+
+        return ultima.Value.Date
+            .AddDays(1);
     }
 
     public async Task<CotizacionesUYU>
@@ -179,9 +239,14 @@ public class ExchangeRateService
             ConversionRates =
                 new ConversionRates
                 {
-                    Dolar = 1 / dolarUYU,
-                    Euro = 1 / euroUYU,
-                    Real = 1 / realUYU
+                    Dolar =
+                        1 / dolarUYU,
+
+                    Euro =
+                        1 / euroUYU,
+
+                    Real =
+                        1 / realUYU
                 }
         };
     }

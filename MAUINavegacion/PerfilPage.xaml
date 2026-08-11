@@ -116,16 +116,44 @@
 
                                         <Grid>
 
-                                            <Image
-                                                Source="{Binding RutaFoto}"
-                                                Aspect="AspectFill" />
-
                                             <Label
-                                                Text="👤"
-                                                FontSize="34"
-                                                HorizontalOptions="Center"
-                                                VerticalOptions="Center"
-                                                HorizontalTextAlignment="Center" />
+        Text="👤"
+        FontSize="34"
+        HorizontalOptions="Center"
+        VerticalOptions="Center"
+        HorizontalTextAlignment="Center">
+
+                                                <Label.Triggers>
+
+                                                    <DataTrigger
+                TargetType="Label"
+                Binding="{Binding RutaFoto}"
+                Value="">
+
+                                                        <Setter
+                    Property="IsVisible"
+                    Value="True" />
+
+                                                    </DataTrigger>
+
+                                                    <DataTrigger
+                TargetType="Label"
+                Binding="{Binding RutaFoto}"
+                Value="{x:Null}">
+
+                                                        <Setter
+                    Property="IsVisible"
+                    Value="True" />
+
+                                                    </DataTrigger>
+
+                                                </Label.Triggers>
+
+                                            </Label>
+
+                                            <Image
+        Source="{Binding RutaFoto}"
+        Aspect="AspectFill" />
 
                                         </Grid>
 

@@ -479,14 +479,61 @@ public partial class PerfilPage : BasePage
     }
 
     private async void OnElegirFotoClicked(
-        object sender,
-        EventArgs e)
+     object sender,
+     EventArgs e)
     {
         try
         {
-            FileResult? resultado =
-                await MediaPicker.Default
-                    .PickPhotoAsync();
+            string accion =
+                await DisplayActionSheet(
+                    "Foto de perfil",
+                    "Cancelar",
+                    null,
+                    "📷 Sacar foto",
+                    "🖼️ Elegir de galería");
+
+            FileResult? resultado = null;
+
+            if (accion == "📷 Sacar foto")
+            {
+                PermissionStatus permiso =
+                    await Permissions.RequestAsync<
+                        Permissions.Camera>();
+
+                if (permiso != PermissionStatus.Granted)
+                {
+                    await DisplayAlert(
+                        "Cámara",
+                        "Tenés que permitir el acceso a la cámara.",
+                        "Aceptar");
+
+                    return;
+                }
+
+                if (!MediaPicker.Default.IsCaptureSupported)
+                {
+                    await DisplayAlert(
+                        "Cámara",
+                        "La cámara no está disponible en este dispositivo.",
+                        "Aceptar");
+
+                    return;
+                }
+
+                resultado =
+                    await MediaPicker.Default
+                        .CapturePhotoAsync();
+            }
+            else if (accion == "🖼️ Elegir de galería")
+            {
+                resultado =
+                    await MediaPicker.Default
+                        .PickPhotoAsync();
+            }
+            else
+            {
+                return;
+            }
 
             if (resultado == null)
             {
@@ -499,6 +546,11 @@ public partial class PerfilPage : BasePage
             string extension =
                 Path.GetExtension(
                     resultado.FileName);
+
+            if (string.IsNullOrWhiteSpace(extension))
+            {
+                extension = ".jpg";
+            }
 
             string nombreArchivo =
                 $"perfil_{Guid.NewGuid()}{extension}";
@@ -521,11 +573,11 @@ public partial class PerfilPage : BasePage
 
             MostrarFotoSeleccionada();
         }
-        catch (Exception)
+        catch (Exception error)
         {
             await DisplayAlert(
                 "Foto",
-                "No se pudo seleccionar la imagen.",
+                $"No se pudo obtener la imagen.\n{error.Message}",
                 "Aceptar");
         }
     }
