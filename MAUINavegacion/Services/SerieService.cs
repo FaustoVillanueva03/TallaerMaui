@@ -69,7 +69,58 @@ public class SerieService
 
         return series;
     }
+    public async Task<List<Serie>> BuscarSeriesAsync(
+    string texto)
+    {
+        if (string.IsNullOrWhiteSpace(texto))
+        {
+            return new List<Serie>();
+        }
 
+        string textoCodificado =
+            Uri.EscapeDataString(texto.Trim());
+
+        string url =
+            $"https://api.themoviedb.org/3/search/tv" +
+            $"?api_key={ApiKey}" +
+            $"&language=es-ES" +
+            $"&include_adult=false" +
+            $"&query={textoCodificado}" +
+            $"&page=1";
+
+        HttpResponseMessage respuestaHttp =
+            await _httpClient.GetAsync(url);
+
+        string contenido =
+            await respuestaHttp.Content
+                .ReadAsStringAsync();
+
+        if (!respuestaHttp.IsSuccessStatusCode)
+        {
+            throw new Exception(
+                $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
+                contenido);
+        }
+
+        RespuestaSeries? respuesta =
+            await respuestaHttp.Content
+                .ReadFromJsonAsync<RespuestaSeries>();
+
+        if (respuesta?.Series == null)
+        {
+            return new List<Serie>();
+        }
+
+        List<Serie> series =
+            respuesta.Series
+                .GroupBy(serie => serie.Id)
+                .Select(grupo => grupo.First())
+                .ToList();
+
+        AsignarPrecios(series);
+
+        return series;
+    }
     public async Task<List<Serie>>
         ObtenerSeriesPorGeneroAsync(
             int generoId,

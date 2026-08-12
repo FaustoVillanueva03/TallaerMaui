@@ -115,10 +115,12 @@
 
     </ContentPage.Resources>
 
+
     <Grid
         Padding="20"
-        RowDefinitions="Auto,Auto,*"
-        RowSpacing="20">
+        RowDefinitions="Auto,Auto,Auto,*"
+        RowSpacing="15">
+
 
         <!-- BOTÓN VOLVER -->
 
@@ -132,6 +134,7 @@
             BorderWidth="1"
             CornerRadius="12"
             Clicked="OnVolverClicked" />
+
 
         <!-- ENCABEZADO -->
 
@@ -147,164 +150,230 @@
                 CharacterSpacing="3" />
 
             <Label
-                Text="Series populares"
+                Text="Series"
                 TextColor="{StaticResource ColorTextoPrincipal}"
                 FontSize="30"
                 FontAttributes="Bold" />
 
             <Label
-                Text="Seleccioná una serie para ver sus detalles"
+                Text="Buscá una serie o explorá las populares"
                 TextColor="{StaticResource ColorTextoSecundario}"
                 FontSize="14" />
 
         </VerticalStackLayout>
 
-        <!-- INDICADOR DE CARGA -->
 
-        <ActivityIndicator
-            x:Name="Cargando"
+        <!-- BUSCADOR -->
+
+        <Grid
             Grid.Row="2"
-            IsVisible="False"
-            IsRunning="False"
-            Color="{StaticResource ColorPrimario}"
-            WidthRequest="50"
-            HeightRequest="50"
-            HorizontalOptions="Center"
-            VerticalOptions="Center" />
+            ColumnDefinitions="*,Auto"
+            ColumnSpacing="10">
 
-        <!-- LISTA DE SERIES -->
+            <Border
+                Grid.Column="0"
+                BackgroundColor="{StaticResource ColorSuperficie}"
+                Stroke="{StaticResource ColorBorde}"
+                StrokeThickness="1"
+                Padding="14,0"
+                HeightRequest="50">
 
-        <CollectionView
-            x:Name="ListaSeries"
-            Grid.Row="2"
-            SelectionMode="Single"
-            SelectionChanged="OnSerieSeleccionada"
-            EmptyView="No se encontraron series">
+                <Border.StrokeShape>
+                    <RoundRectangle CornerRadius="14" />
+                </Border.StrokeShape>
 
-            <CollectionView.ItemsLayout>
+                <Entry
+                    x:Name="BusquedaEntry"
+                    Placeholder="Buscar serie..."
+                    PlaceholderColor="{StaticResource ColorTextoSecundario}"
+                    TextColor="{StaticResource ColorTextoPrincipal}"
+                    FontSize="15"
+                    ReturnType="Search"
+                    Completed="OnBuscarCompleted" />
 
-                <LinearItemsLayout
-                    Orientation="Vertical"
-                    ItemSpacing="14" />
+            </Border>
 
-            </CollectionView.ItemsLayout>
 
-            <CollectionView.ItemTemplate>
+            <Button
+                Grid.Column="1"
+                Text="🔍"
+                WidthRequest="55"
+                HeightRequest="50"
+                BackgroundColor="{StaticResource ColorPrimario}"
+                TextColor="{StaticResource ColorTextoPrincipal}"
+                FontSize="20"
+                CornerRadius="14"
+                Clicked="OnBuscarClicked" />
 
-                <DataTemplate x:DataType="models:Serie">
+        </Grid>
 
-                    <Border
-                        Style="{StaticResource TarjetaContenidoStyle}"
-                        Padding="12"
-                        Margin="8,4">
 
-                        <Border.StrokeShape>
-                            <RoundRectangle CornerRadius="18" />
-                        </Border.StrokeShape>
+        <!-- CONTENIDO -->
 
-                        <Grid
-                            ColumnDefinitions="110,*"
-                            ColumnSpacing="16">
+        <Grid
+            Grid.Row="3">
 
-                            <!-- IMAGEN -->
+            <!-- INDICADOR DE CARGA -->
 
-                            <Border
-                                Grid.Column="0"
-                                WidthRequest="110"
-                                HeightRequest="165"
-                                StrokeThickness="0"
-                                Padding="0">
+            <ActivityIndicator
+                x:Name="Cargando"
+                IsVisible="False"
+                IsRunning="False"
+                Color="{StaticResource ColorPrimario}"
+                WidthRequest="50"
+                HeightRequest="50"
+                HorizontalOptions="Center"
+                VerticalOptions="Center" />
 
-                                <Border.StrokeShape>
-                                    <RoundRectangle CornerRadius="12" />
-                                </Border.StrokeShape>
 
-                                <Image
-                                    Source="{Binding ImagenCompleta}"
-                                    Aspect="AspectFill" />
+            <!-- LISTA DE SERIES -->
 
-                            </Border>
+            <CollectionView
+                x:Name="ListaSeries"
+                SelectionMode="Single"
+                SelectionChanged="OnSerieSeleccionada"
+                EmptyView="No se encontraron series">
 
-                            <!-- INFORMACIÓN -->
+                <CollectionView.ItemsLayout>
 
-                            <VerticalStackLayout
-                                Grid.Column="1"
-                                VerticalOptions="Center"
-                                Spacing="10">
+                    <LinearItemsLayout
+                        Orientation="Vertical"
+                        ItemSpacing="14" />
 
-                                <Label
-                                    Text="{Binding Nombre}"
-                                    TextColor="{StaticResource ColorTextoPrincipal}"
-                                    FontSize="21"
-                                    FontAttributes="Bold"
-                                    LineBreakMode="TailTruncation"
-                                    MaxLines="2" />
+                </CollectionView.ItemsLayout>
 
-                                <HorizontalStackLayout Spacing="8">
 
-                                    <!-- PUNTUACIÓN -->
+                <CollectionView.ItemTemplate>
 
-                                    <Border
-                                        BackgroundColor="{StaticResource ColorPrimarioOscuro}"
-                                        StrokeThickness="0"
-                                        Padding="10,5">
+                    <DataTemplate
+                        x:DataType="models:Serie">
 
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="10" />
-                                        </Border.StrokeShape>
+                        <Border
+                            Style="{StaticResource TarjetaContenidoStyle}"
+                            Padding="12"
+                            Margin="8,4">
 
-                                        <Label
-                                            Text="{Binding PuntuacionTexto}"
-                                            TextColor="{StaticResource ColorTextoPrincipal}"
-                                            FontAttributes="Bold"
-                                            FontSize="13" />
+                            <Border.StrokeShape>
+                                <RoundRectangle
+                                    CornerRadius="18" />
+                            </Border.StrokeShape>
 
-                                    </Border>
 
-                                    <!-- FECHA -->
+                            <Grid
+                                ColumnDefinitions="110,*"
+                                ColumnSpacing="16">
 
-                                    <Border
-                                        BackgroundColor="{StaticResource ColorSuperficieClara}"
-                                        StrokeThickness="0"
-                                        Padding="10,5">
 
-                                        <Border.StrokeShape>
-                                            <RoundRectangle CornerRadius="10" />
-                                        </Border.StrokeShape>
+                                <!-- IMAGEN -->
 
-                                        <Label
-                                            Text="{Binding FechaTexto}"
-                                            TextColor="{StaticResource ColorTextoSecundario}"
-                                            FontSize="13" />
+                                <Border
+                                    Grid.Column="0"
+                                    WidthRequest="110"
+                                    HeightRequest="165"
+                                    StrokeThickness="0"
+                                    Padding="0">
 
-                                    </Border>
+                                    <Border.StrokeShape>
+                                        <RoundRectangle
+                                            CornerRadius="12" />
+                                    </Border.StrokeShape>
 
-                                </HorizontalStackLayout>
+                                    <Image
+                                        Source="{Binding ImagenCompleta}"
+                                        Aspect="AspectFill" />
 
-                                <Label
-                                    Text="{Binding DescripcionCompleta}"
-                                    TextColor="{StaticResource ColorTextoSecundario}"
-                                    FontSize="14"
-                                    MaxLines="3"
-                                    LineBreakMode="TailTruncation" />
+                                </Border>
 
-                                <Label
-                                    Text="Ver detalles  →"
-                                    TextColor="{StaticResource ColorPrimario}"
-                                    FontSize="14"
-                                    FontAttributes="Bold" />
 
-                            </VerticalStackLayout>
+                                <!-- INFORMACIÓN -->
 
-                        </Grid>
+                                <VerticalStackLayout
+                                    Grid.Column="1"
+                                    VerticalOptions="Center"
+                                    Spacing="10">
 
-                    </Border>
+                                    <Label
+                                        Text="{Binding Nombre}"
+                                        TextColor="{StaticResource ColorTextoPrincipal}"
+                                        FontSize="21"
+                                        FontAttributes="Bold"
+                                        LineBreakMode="TailTruncation"
+                                        MaxLines="2" />
 
-                </DataTemplate>
 
-            </CollectionView.ItemTemplate>
+                                    <HorizontalStackLayout
+                                        Spacing="8">
 
-        </CollectionView>
+                                        <!-- PUNTUACIÓN -->
+
+                                        <Border
+                                            BackgroundColor="{StaticResource ColorPrimarioOscuro}"
+                                            StrokeThickness="0"
+                                            Padding="10,5">
+
+                                            <Border.StrokeShape>
+                                                <RoundRectangle
+                                                    CornerRadius="10" />
+                                            </Border.StrokeShape>
+
+                                            <Label
+                                                Text="{Binding PuntuacionTexto}"
+                                                TextColor="{StaticResource ColorTextoPrincipal}"
+                                                FontAttributes="Bold"
+                                                FontSize="13" />
+
+                                        </Border>
+
+
+                                        <!-- FECHA -->
+
+                                        <Border
+                                            BackgroundColor="{StaticResource ColorSuperficieClara}"
+                                            StrokeThickness="0"
+                                            Padding="10,5">
+
+                                            <Border.StrokeShape>
+                                                <RoundRectangle
+                                                    CornerRadius="10" />
+                                            </Border.StrokeShape>
+
+                                            <Label
+                                                Text="{Binding FechaTexto}"
+                                                TextColor="{StaticResource ColorTextoSecundario}"
+                                                FontSize="13" />
+
+                                        </Border>
+
+                                    </HorizontalStackLayout>
+
+
+                                    <Label
+                                        Text="{Binding DescripcionCompleta}"
+                                        TextColor="{StaticResource ColorTextoSecundario}"
+                                        FontSize="14"
+                                        MaxLines="3"
+                                        LineBreakMode="TailTruncation" />
+
+
+                                    <Label
+                                        Text="Ver detalles  →"
+                                        TextColor="{StaticResource ColorPrimario}"
+                                        FontSize="14"
+                                        FontAttributes="Bold" />
+
+                                </VerticalStackLayout>
+
+                            </Grid>
+
+                        </Border>
+
+                    </DataTemplate>
+
+                </CollectionView.ItemTemplate>
+
+            </CollectionView>
+
+        </Grid>
 
     </Grid>
 

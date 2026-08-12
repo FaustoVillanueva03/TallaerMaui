@@ -72,6 +72,60 @@ public class MovieService
         return peliculas;
     }
 
+    public async Task<List<Pelicula>> BuscarPeliculasAsync(
+    string texto)
+    {
+        if (string.IsNullOrWhiteSpace(texto))
+        {
+            return new List<Pelicula>();
+        }
+
+        string textoCodificado =
+            Uri.EscapeDataString(texto.Trim());
+
+        string url =
+            $"https://api.themoviedb.org/3/search/movie" +
+            $"?api_key={ApiKey}" +
+            $"&language=es-ES" +
+            $"&region=UY" +
+            $"&include_adult=false" +
+            $"&query={textoCodificado}" +
+            $"&page=1";
+
+        HttpResponseMessage respuestaHttp =
+            await _httpClient.GetAsync(url);
+
+        string contenido =
+            await respuestaHttp.Content
+                .ReadAsStringAsync();
+
+        if (!respuestaHttp.IsSuccessStatusCode)
+        {
+            throw new Exception(
+                $"Error TMDB {(int)respuestaHttp.StatusCode}: " +
+                contenido);
+        }
+
+        RespuestaPeliculas? respuesta =
+            await respuestaHttp.Content
+                .ReadFromJsonAsync<RespuestaPeliculas>();
+
+        if (respuesta?.Peliculas == null)
+        {
+            return new List<Pelicula>();
+        }
+
+        List<Pelicula> peliculas =
+            respuesta.Peliculas
+                .GroupBy(pelicula => pelicula.Id)
+                .Select(grupo => grupo.First())
+                .ToList();
+
+        AsignarPrecios(peliculas);
+
+        return peliculas;
+    }
+
     public async Task<List<Pelicula>>
         ObtenerPeliculasPorGeneroAsync(
             int generoId,
