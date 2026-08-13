@@ -1,3 +1,5 @@
+﻿using MAUINavegacion.Models;
+
 namespace MAUINavegacion;
 
 public partial class MainPage : BasePage
@@ -21,8 +23,15 @@ public partial class MainPage : BasePage
                 "PerfilActivoNombre",
                 "Perfil principal");
 
+        bool esMenor =
+            Preferences.Default.Get(
+                "EsMenor18",
+                false);
+
         PerfilActivoLabel.Text =
-            $"Perfil activo: {nombrePerfil}";
+            esMenor
+                ? $"👶 Perfil activo: {nombrePerfil}"
+                : $"Perfil activo: {nombrePerfil}";
 
         bool mostrarPeliculas =
             Preferences.Default.Get(
@@ -193,28 +202,141 @@ public partial class MainPage : BasePage
     }
 
     private async void OnMapaClicked(
-        object sender,
-        EventArgs e)
+    object sender,
+    EventArgs e)
     {
-        try
-        {
-            await Navigation.PushAsync(
-                new MapaPage());
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert(
-                "Error",
-                ex.ToString(),
-                "Aceptar");
-        }
+#if WINDOWS
+        await DisplayAlert(
+            "Mapa no disponible",
+            "El mapa está disponible únicamente en la versión móvil.",
+            "Aceptar");
+
+        return;
+#else
+    try
+    {
+        await Navigation.PushAsync(
+            new MapaPage());
+    }
+    catch (Exception ex)
+    {
+        await DisplayAlert(
+            "Error",
+            ex.Message,
+            "Aceptar");
+    }
+#endif
     }
 
     private async void OnPerfilClicked(
         object sender,
         EventArgs e)
     {
+        bool puedeEntrar =
+            await VerificarAccesoPerfilesAsync();
+
+        if (!puedeEntrar)
+        {
+            return;
+        }
+
         await Navigation.PushAsync(
             new PerfilPage());
+    }
+
+    private async Task<bool>
+        VerificarAccesoPerfilesAsync()
+    {
+        bool esMenor =
+            Preferences.Default.Get(
+                "EsMenor18",
+                false);
+
+        // Si no es un perfil infantil,
+        // entra normalmente.
+        if (!esMenor)
+        {
+            return true;
+        }
+
+        int usuarioId =
+            Preferences.Default.Get(
+                "UsuarioId",
+                0);
+
+        if (usuarioId == 0)
+        {
+            await DisplayAlert(
+                "Control parental",
+                "No se pudo identificar al usuario principal.",
+                "Aceptar");
+
+            return false;
+        }
+
+        string? contrasena =
+            await DisplayPromptAsync(
+                "🔒 Control parental",
+                "Ingresá la contraseña del usuario principal para salir del perfil infantil.",
+                "Confirmar",
+                "Cancelar",
+                "Contraseña",
+                maxLength: 100,
+                keyboard: Keyboard.Text);
+
+        if (contrasena == null)
+        {
+            return false;
+        }
+
+        if (string.IsNullOrWhiteSpace(
+                contrasena))
+        {
+            await DisplayAlert(
+                "Control parental",
+                "Ingresá la contraseña.",
+                "Aceptar");
+
+            return false;
+        }
+
+        try
+        {
+            Usuario? usuario =
+                await App.Database
+                    .ObtenerUsuarioPorIdAsync(
+                        usuarioId);
+
+            if (usuario == null)
+            {
+                await DisplayAlert(
+                    "Control parental",
+                    "No se encontró el usuario principal.",
+                    "Aceptar");
+
+                return false;
+            }
+
+            if (usuario.Contrasena != contrasena)
+            {
+                await DisplayAlert(
+                    "Contraseña incorrecta",
+                    "No podés salir del perfil infantil.",
+                    "Aceptar");
+
+                return false;
+            }
+
+            return true;
+        }
+        catch (Exception error)
+        {
+            await DisplayAlert(
+                "Error",
+                $"No se pudo validar la contraseña.\n\n{error.Message}",
+                "Aceptar");
+
+            return false;
+        }
     }
 }

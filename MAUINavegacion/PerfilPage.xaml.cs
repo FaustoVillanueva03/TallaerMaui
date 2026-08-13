@@ -128,7 +128,7 @@ public partial class PerfilPage : BasePage
             perfil.Direccion;
 
         _latitudSeleccionada =
-    perfil.Latitud;
+            perfil.Latitud;
 
         _longitudSeleccionada =
             perfil.Longitud;
@@ -150,12 +150,16 @@ public partial class PerfilPage : BasePage
         MostrarMapaSwitch.IsToggled =
             perfil.MostrarMapa;
 
+        EsMenor18Switch.IsToggled =
+            perfil.EsMenor18;
+
         _rutaFotoSeleccionada =
             perfil.RutaFoto;
 
         MostrarFotoSeleccionada();
 
         NombreErrorLabel.IsVisible = false;
+
         FormularioFondo.IsVisible = true;
     }
 
@@ -221,10 +225,10 @@ public partial class PerfilPage : BasePage
                             string.Empty,
 
                         Latitud =
-    _latitudSeleccionada,
+                            _latitudSeleccionada,
 
                         Longitud =
-    _longitudSeleccionada,
+                            _longitudSeleccionada,
 
                         RutaFoto =
                             _rutaFotoSeleccionada,
@@ -242,7 +246,10 @@ public partial class PerfilPage : BasePage
                             MostrarCotizacionesSwitch.IsToggled,
 
                         MostrarMapa =
-                            MostrarMapaSwitch.IsToggled
+                            MostrarMapaSwitch.IsToggled,
+
+                        EsMenor18 =
+                            EsMenor18Switch.IsToggled
                     };
 
                 await App.Database
@@ -266,7 +273,7 @@ public partial class PerfilPage : BasePage
                     string.Empty;
 
                 _perfilEditando.Latitud =
-    _latitudSeleccionada;
+                    _latitudSeleccionada;
 
                 _perfilEditando.Longitud =
                     _longitudSeleccionada;
@@ -288,6 +295,9 @@ public partial class PerfilPage : BasePage
 
                 _perfilEditando.MostrarMapa =
                     MostrarMapaSwitch.IsToggled;
+
+                _perfilEditando.EsMenor18 =
+                    EsMenor18Switch.IsToggled;
 
                 await App.Database
                     .ActualizarPerfilAsync(
@@ -397,9 +407,14 @@ public partial class PerfilPage : BasePage
         GuardarPerfilActivoEnPreferences(
             perfil);
 
+        string tipoPerfil =
+            perfil.EsMenor18
+                ? "\nPerfil para menores de 18 activado."
+                : string.Empty;
+
         await DisplayAlert(
             "Perfil activo",
-            $"Ahora estás usando el perfil \"{perfil.Nombre}\".",
+            $"Ahora estás usando el perfil \"{perfil.Nombre}\".{tipoPerfil}",
             "Aceptar");
 
         AbrirPaginaPrincipal();
@@ -435,6 +450,10 @@ public partial class PerfilPage : BasePage
         Preferences.Default.Set(
             "MostrarMapa",
             perfil.MostrarMapa);
+
+        Preferences.Default.Set(
+            "EsMenor18",
+            perfil.EsMenor18);
     }
 
     private static void LimpiarPerfilActivo()
@@ -459,6 +478,9 @@ public partial class PerfilPage : BasePage
 
         Preferences.Default.Remove(
             "MostrarMapa");
+
+        Preferences.Default.Remove(
+            "EsMenor18");
     }
 
     private void AbrirPaginaPrincipal()
@@ -479,8 +501,8 @@ public partial class PerfilPage : BasePage
     }
 
     private async void OnElegirFotoClicked(
-     object sender,
-     EventArgs e)
+        object sender,
+        EventArgs e)
     {
         try
         {
@@ -524,7 +546,8 @@ public partial class PerfilPage : BasePage
                     await MediaPicker.Default
                         .CapturePhotoAsync();
             }
-            else if (accion == "🖼️ Elegir de galería")
+            else if (accion ==
+                     "🖼️ Elegir de galería")
             {
                 resultado =
                     await MediaPicker.Default
@@ -605,10 +628,17 @@ public partial class PerfilPage : BasePage
 
     private void LimpiarFormulario()
     {
-        NombreEntry.Text = string.Empty;
-        EmailEntry.Text = string.Empty;
-        TelefonoEntry.Text = string.Empty;
-        DireccionEntry.Text = string.Empty;
+        NombreEntry.Text =
+            string.Empty;
+
+        EmailEntry.Text =
+            string.Empty;
+
+        TelefonoEntry.Text =
+            string.Empty;
+
+        DireccionEntry.Text =
+            string.Empty;
 
         NombreErrorLabel.Text =
             string.Empty;
@@ -630,6 +660,9 @@ public partial class PerfilPage : BasePage
 
         MostrarMapaSwitch.IsToggled =
             true;
+
+        EsMenor18Switch.IsToggled =
+            false;
 
         _rutaFotoSeleccionada =
             string.Empty;
@@ -670,22 +703,35 @@ public partial class PerfilPage : BasePage
     }
 
     private async void OnElegirUbicacionClicked(
-    object sender,
-    EventArgs e)
+     object sender,
+     EventArgs e)
     {
-        SeleccionarUbicacionPage pagina =
-            new SeleccionarUbicacionPage(
-                _latitudSeleccionada,
-                _longitudSeleccionada,
-                (latitud, longitud) =>
-                {
-                    _latitudSeleccionada = latitud;
-                    _longitudSeleccionada = longitud;
+#if WINDOWS
+        await DisplayAlert(
+            "Mapa no disponible",
+            "La selección de ubicación en el mapa está disponible únicamente en la versión móvil.",
+            "Aceptar");
 
-                    MostrarTextoUbicacion();
-                });
+        return;
+#else
+    SeleccionarUbicacionPage pagina =
+        new SeleccionarUbicacionPage(
+            _latitudSeleccionada,
+            _longitudSeleccionada,
+            (latitud, longitud) =>
+            {
+                _latitudSeleccionada =
+                    latitud;
 
-        await Navigation.PushAsync(pagina);
+                _longitudSeleccionada =
+                    longitud;
+
+                MostrarTextoUbicacion();
+            });
+
+    await Navigation.PushAsync(
+        pagina);
+#endif
     }
 
     private void MostrarTextoUbicacion()

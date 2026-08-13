@@ -25,12 +25,55 @@ public partial class SeriesPage : BasePage
     {
         base.OnAppearing();
 
+        AplicarPerfilMenor();
+
         if (_seriesCargadas)
         {
             return;
         }
 
         await CargarSeriesPopularesAsync();
+    }
+
+    private void AplicarPerfilMenor()
+    {
+        bool esMenor =
+            Preferences.Default.Get(
+                "EsMenor18",
+                false);
+
+        PerfilMenorLabel.IsVisible =
+            esMenor;
+
+        // Categorías que dejamos para el perfil infantil.
+        AnimacionButton.IsVisible = true;
+        ComediaButton.IsVisible = true;
+        FamiliaButton.IsVisible = true;
+
+        // Estas solamente aparecen en perfiles normales.
+        AccionAventuraButton.IsVisible =
+            !esMenor;
+
+        CrimenButton.IsVisible =
+            !esMenor;
+
+        DramaButton.IsVisible =
+            !esMenor;
+
+        MisterioButton.IsVisible =
+            !esMenor;
+
+        RealityButton.IsVisible =
+            !esMenor;
+
+        CienciaFiccionButton.IsVisible =
+            !esMenor;
+
+        GuerraPoliticaButton.IsVisible =
+            !esMenor;
+
+        WesternButton.IsVisible =
+            !esMenor;
     }
 
     private async Task CargarSeriesPopularesAsync()
@@ -113,6 +156,10 @@ public partial class SeriesPage : BasePage
             (Color)Application.Current!
                 .Resources["ColorTextoPrincipal"];
 
+        Color borde =
+            (Color)Application.Current!
+                .Resources["ColorBorde"];
+
         if (_categoriaSeleccionada != null)
         {
             _categoriaSeleccionada.BackgroundColor =
@@ -120,6 +167,9 @@ public partial class SeriesPage : BasePage
 
             _categoriaSeleccionada.TextColor =
                 primario;
+
+            _categoriaSeleccionada.BorderColor =
+                borde;
         }
 
         boton.BackgroundColor =
@@ -127,6 +177,9 @@ public partial class SeriesPage : BasePage
 
         boton.TextColor =
             texto;
+
+        boton.BorderColor =
+            primario;
 
         _categoriaSeleccionada =
             boton;

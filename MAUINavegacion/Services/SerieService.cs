@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 using MAUINavegacion.Models;
 
 namespace MAUINavegacion.Services;
@@ -12,18 +13,27 @@ public class SerieService
 
     public SerieService()
     {
-        _httpClient = new HttpClient();
+        _httpClient =
+            new HttpClient();
+    }
+
+    private bool EsPerfilMenor()
+    {
+        return Preferences.Default.Get(
+            "EsMenor18",
+            false);
     }
 
     public async Task<List<Serie>> ObtenerSeriesAsync()
     {
-        List<Serie> todasLasSeries = new();
+        List<Serie> todasLasSeries =
+            new();
 
         const int cantidadPaginas = 5;
 
         for (int pagina = 1;
-             pagina <= cantidadPaginas;
-             pagina++)
+     pagina <= cantidadPaginas;
+     pagina++)
         {
             string url =
                 $"https://api.themoviedb.org/3/discover/tv" +
@@ -65,12 +75,20 @@ public class SerieService
                 .Select(grupo => grupo.First())
                 .ToList();
 
+        if (EsPerfilMenor())
+        {
+            series =
+                await FiltrarSeriesAptasAsync(
+                    series);
+        }
+
         AsignarPrecios(series);
 
         return series;
     }
+
     public async Task<List<Serie>> BuscarSeriesAsync(
-    string texto)
+        string texto)
     {
         if (string.IsNullOrWhiteSpace(texto))
         {
@@ -78,7 +96,8 @@ public class SerieService
         }
 
         string textoCodificado =
-            Uri.EscapeDataString(texto.Trim());
+            Uri.EscapeDataString(
+                texto.Trim());
 
         string url =
             $"https://api.themoviedb.org/3/search/tv" +
@@ -117,10 +136,18 @@ public class SerieService
                 .Select(grupo => grupo.First())
                 .ToList();
 
+        if (EsPerfilMenor())
+        {
+            series =
+                await FiltrarSeriesAptasAsync(
+                    series);
+        }
+
         AsignarPrecios(series);
 
         return series;
     }
+
     public async Task<List<Serie>>
         ObtenerSeriesPorGeneroAsync(
             int generoId,
@@ -163,12 +190,126 @@ public class SerieService
             respuesta.Series
                 .GroupBy(serie => serie.Id)
                 .Select(grupo => grupo.First())
+                .ToList();
+
+        if (EsPerfilMenor())
+        {
+            series =
+                await FiltrarSeriesAptasAsync(
+                    series);
+        }
+
+        series =
+            series
                 .Take(cantidad)
                 .ToList();
 
         AsignarPrecios(series);
 
         return series;
+    }
+
+    private async Task<List<Serie>>
+        FiltrarSeriesAptasAsync(
+            List<Serie> series)
+    {
+        List<Serie> aptas =
+            new();
+
+        // Evitamos hacer demasiadas llamadas
+        // a TMDB de una sola vez.
+        List<Serie> candidatas =
+            series
+                .Take(40)
+                .ToList();
+
+        foreach (Serie serie in candidatas)
+        {
+            bool esApta =
+                await EsSerieAptaAsync(
+                    serie.Id);
+
+            if (esApta)
+            {
+                aptas.Add(
+                    serie);
+            }
+        }
+
+        return aptas;
+    }
+
+    private async Task<bool> EsSerieAptaAsync(
+        int serieId)
+    {
+        try
+        {
+            string url =
+                $"https://api.themoviedb.org/3/tv/" +
+                $"{serieId}/content_ratings" +
+                $"?api_key={ApiKey}";
+
+            string json =
+                await _httpClient
+                    .GetStringAsync(url);
+
+            using JsonDocument documento =
+                JsonDocument.Parse(json);
+
+            JsonElement raiz =
+                documento.RootElement;
+
+            if (!raiz.TryGetProperty(
+                    "results",
+                    out JsonElement resultados))
+            {
+                return false;
+            }
+
+            foreach (JsonElement resultado in resultados
+                         .EnumerateArray())
+            {
+                string pais =
+                    resultado.GetProperty(
+                            "iso_3166_1")
+                        .GetString() ??
+                    string.Empty;
+
+                if (pais != "US")
+                {
+                    continue;
+                }
+
+                string clasificacion =
+                    resultado.GetProperty(
+                            "rating")
+                        .GetString() ??
+                    string.Empty;
+
+                return EsClasificacionSerieApta(
+                    clasificacion);
+            }
+
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool EsClasificacionSerieApta(
+    string clasificacion)
+    {
+        string valor =
+            clasificacion
+                .Trim()
+                .ToUpperInvariant();
+
+        return valor == "TV-Y" ||
+               valor == "TV-Y7" ||
+               valor == "TV-G" ||
+               valor == "TV-PG";
     }
 
     private static void AsignarPrecios(

@@ -81,9 +81,18 @@
                 FontAttributes="Bold" />
 
             <Label
+                x:Name="DescripcionPaginaLabel"
                 Text="Buscá una película o explorá por categoría"
                 TextColor="{StaticResource ColorTextoSecundario}"
                 FontSize="14" />
+
+            <Label
+                x:Name="PerfilMenorLabel"
+                Text="👶 Perfil para menores"
+                IsVisible="False"
+                FontSize="13"
+                FontAttributes="Bold"
+                TextColor="{StaticResource ColorPrimario}" />
 
         </VerticalStackLayout>
 
@@ -158,78 +167,91 @@
                         Padding="18,8" />
 
                     <Button
+                        x:Name="AccionButton"
                         Text="Acción"
                         CommandParameter="28"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="AventuraButton"
                         Text="Aventura"
                         CommandParameter="12"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="AnimacionButton"
                         Text="Animación"
                         CommandParameter="16"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="ComediaButton"
                         Text="Comedia"
                         CommandParameter="35"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="CrimenButton"
                         Text="Crimen"
                         CommandParameter="80"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="DramaButton"
                         Text="Drama"
                         CommandParameter="18"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="FamiliaButton"
                         Text="Familia"
                         CommandParameter="10751"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="FantasiaButton"
                         Text="Fantasía"
                         CommandParameter="14"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="TerrorButton"
                         Text="Terror"
                         CommandParameter="27"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="MisterioButton"
                         Text="Misterio"
                         CommandParameter="9648"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="RomanceButton"
                         Text="Romance"
                         CommandParameter="10749"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="CienciaFiccionButton"
                         Text="Ciencia ficción"
                         CommandParameter="878"
                         Clicked="OnCategoriaClicked"
                         Style="{StaticResource CategoriaButtonStyle}" />
 
                     <Button
+                        x:Name="SuspensoButton"
                         Text="Suspenso"
                         CommandParameter="53"
                         Clicked="OnCategoriaClicked"

@@ -25,12 +25,57 @@ public partial class PeliculasPage : BasePage
     {
         base.OnAppearing();
 
+        AplicarPerfilMenor();
+
         if (_peliculasCargadas)
         {
             return;
         }
 
         await CargarPeliculasPopularesAsync();
+    }
+
+    private void AplicarPerfilMenor()
+    {
+        bool esMenor =
+            Preferences.Default.Get(
+                "EsMenor18",
+                false);
+
+        PerfilMenorLabel.IsVisible =
+            esMenor;
+
+        // Categorías que puede ver un perfil infantil.
+        AventuraButton.IsVisible = true;
+        AnimacionButton.IsVisible = true;
+        ComediaButton.IsVisible = true;
+        FamiliaButton.IsVisible = true;
+        FantasiaButton.IsVisible = true;
+
+        // En perfil normal aparecen todas.
+        AccionButton.IsVisible =
+            !esMenor;
+
+        CrimenButton.IsVisible =
+            !esMenor;
+
+        DramaButton.IsVisible =
+            !esMenor;
+
+        TerrorButton.IsVisible =
+            !esMenor;
+
+        MisterioButton.IsVisible =
+            !esMenor;
+
+        RomanceButton.IsVisible =
+            !esMenor;
+
+        CienciaFiccionButton.IsVisible =
+            !esMenor;
+
+        SuspensoButton.IsVisible =
+            !esMenor;
     }
 
     private async Task CargarPeliculasPopularesAsync()

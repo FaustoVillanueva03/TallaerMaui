@@ -1,4 +1,5 @@
 ﻿using System.Net.Http.Json;
+using System.Text.Json;
 using MAUINavegacion.Models;
 
 namespace MAUINavegacion.Services;
@@ -15,9 +16,20 @@ public class MovieService
         _httpClient = new HttpClient();
     }
 
+    private bool EsPerfilMenor()
+    {
+        return Preferences.Default.Get(
+            "EsMenor18",
+            false);
+    }
+
     public async Task<List<Pelicula>> ObtenerPeliculasAsync()
     {
-        List<Pelicula> todasLasPeliculas = new();
+        bool menor =
+            EsPerfilMenor();
+
+        List<Pelicula> todasLasPeliculas =
+            new();
 
         const int cantidadPaginas = 5;
 
@@ -25,6 +37,11 @@ public class MovieService
              pagina <= cantidadPaginas;
              pagina++)
         {
+            string filtroMenor =
+                menor
+                    ? "&certification_country=US&certification.lte=PG"
+                    : string.Empty;
+
             string url =
                 $"https://api.themoviedb.org/3/discover/movie" +
                 $"?api_key={ApiKey}" +
@@ -32,6 +49,7 @@ public class MovieService
                 $"&region=UY" +
                 $"&include_adult=false" +
                 $"&include_video=false" +
+                filtroMenor +
                 $"&sort_by=primary_release_date.desc" +
                 $"&vote_count.gte=10" +
                 $"&page={pagina}";
@@ -73,7 +91,7 @@ public class MovieService
     }
 
     public async Task<List<Pelicula>> BuscarPeliculasAsync(
-    string texto)
+        string texto)
     {
         if (string.IsNullOrWhiteSpace(texto))
         {
@@ -81,7 +99,8 @@ public class MovieService
         }
 
         string textoCodificado =
-            Uri.EscapeDataString(texto.Trim());
+            Uri.EscapeDataString(
+                texto.Trim());
 
         string url =
             $"https://api.themoviedb.org/3/search/movie" +
@@ -121,6 +140,13 @@ public class MovieService
                 .Select(grupo => grupo.First())
                 .ToList();
 
+        if (EsPerfilMenor())
+        {
+            peliculas =
+                await FiltrarPeliculasAptasAsync(
+                    peliculas);
+        }
+
         AsignarPrecios(peliculas);
 
         return peliculas;
@@ -131,6 +157,14 @@ public class MovieService
             int generoId,
             int cantidad = 20)
     {
+        bool menor =
+            EsPerfilMenor();
+
+        string filtroMenor =
+            menor
+                ? "&certification_country=US&certification.lte=PG"
+                : string.Empty;
+
         string url =
             $"https://api.themoviedb.org/3/discover/movie" +
             $"?api_key={ApiKey}" +
@@ -138,6 +172,7 @@ public class MovieService
             $"&region=UY" +
             $"&include_adult=false" +
             $"&include_video=false" +
+            filtroMenor +
             $"&sort_by=popularity.desc" +
             $"&vote_count.gte=50" +
             $"&with_genres={generoId}" +
@@ -176,6 +211,114 @@ public class MovieService
         AsignarPrecios(peliculas);
 
         return peliculas;
+    }
+
+    private async Task<List<Pelicula>>
+        FiltrarPeliculasAptasAsync(
+            List<Pelicula> peliculas)
+    {
+        List<Pelicula> aptas =
+            new();
+
+        foreach (Pelicula pelicula in peliculas)
+        {
+            bool esApta =
+                await EsPeliculaAptaAsync(
+                    pelicula.Id);
+
+            if (esApta)
+            {
+                aptas.Add(
+                    pelicula);
+            }
+        }
+
+        return aptas;
+    }
+
+    private async Task<bool> EsPeliculaAptaAsync(
+        int peliculaId)
+    {
+        try
+        {
+            string url =
+                $"https://api.themoviedb.org/3/movie/" +
+                $"{peliculaId}/release_dates" +
+                $"?api_key={ApiKey}";
+
+            string json =
+                await _httpClient
+                    .GetStringAsync(url);
+
+            using JsonDocument documento =
+                JsonDocument.Parse(json);
+
+            JsonElement raiz =
+                documento.RootElement;
+
+            if (!raiz.TryGetProperty(
+                    "results",
+                    out JsonElement resultados))
+            {
+                return false;
+            }
+
+            foreach (JsonElement pais in resultados
+                         .EnumerateArray())
+            {
+                string codigoPais =
+                    pais.GetProperty(
+                            "iso_3166_1")
+                        .GetString() ??
+                    string.Empty;
+
+                if (codigoPais != "US")
+                {
+                    continue;
+                }
+
+                if (!pais.TryGetProperty(
+                        "release_dates",
+                        out JsonElement fechas))
+                {
+                    continue;
+                }
+
+                foreach (JsonElement fecha in fechas
+                             .EnumerateArray())
+                {
+                    string certificacion =
+                        fecha.GetProperty(
+                                "certification")
+                            .GetString() ??
+                        string.Empty;
+
+                    if (EsCertificacionPeliculaApta(
+                            certificacion))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private static bool EsCertificacionPeliculaApta(
+    string certificacion)
+    {
+        string valor =
+            certificacion
+                .Trim()
+                .ToUpperInvariant();
+
+        return valor == "G" ||
+               valor == "PG";
     }
 
     private static void AsignarPrecios(

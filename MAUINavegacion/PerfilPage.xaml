@@ -117,33 +117,33 @@
                                         <Grid>
 
                                             <Label
-        Text="👤"
-        FontSize="34"
-        HorizontalOptions="Center"
-        VerticalOptions="Center"
-        HorizontalTextAlignment="Center">
+                                                Text="👤"
+                                                FontSize="34"
+                                                HorizontalOptions="Center"
+                                                VerticalOptions="Center"
+                                                HorizontalTextAlignment="Center">
 
                                                 <Label.Triggers>
 
                                                     <DataTrigger
-                TargetType="Label"
-                Binding="{Binding RutaFoto}"
-                Value="">
+                                                        TargetType="Label"
+                                                        Binding="{Binding RutaFoto}"
+                                                        Value="">
 
                                                         <Setter
-                    Property="IsVisible"
-                    Value="True" />
+                                                            Property="IsVisible"
+                                                            Value="True" />
 
                                                     </DataTrigger>
 
                                                     <DataTrigger
-                TargetType="Label"
-                Binding="{Binding RutaFoto}"
-                Value="{x:Null}">
+                                                        TargetType="Label"
+                                                        Binding="{Binding RutaFoto}"
+                                                        Value="{x:Null}">
 
                                                         <Setter
-                    Property="IsVisible"
-                    Value="True" />
+                                                            Property="IsVisible"
+                                                            Value="True" />
 
                                                     </DataTrigger>
 
@@ -152,8 +152,8 @@
                                             </Label>
 
                                             <Image
-        Source="{Binding RutaFoto}"
-        Aspect="AspectFill" />
+                                                Source="{Binding RutaFoto}"
+                                                Aspect="AspectFill" />
 
                                         </Grid>
 
@@ -451,7 +451,7 @@
                                 LineBreakMode="WordWrap"
                                 TextColor="{StaticResource ColorTextoSecundario}" />
 
-                            <!-- PREFERENCIAS -->
+                            <!-- SECCIONES VISIBLES -->
 
                             <Label
                                 Text="Secciones visibles"
@@ -521,6 +521,57 @@
                                     OnColor="{StaticResource ColorPrimario}" />
 
                             </Grid>
+
+                            <!-- CONTROL PARENTAL -->
+
+                            <Label
+                                Text="Contenido"
+                                Margin="0,8,0,0"
+                                FontSize="18"
+                                FontAttributes="Bold"
+                                TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                            <Border
+                                Padding="14"
+                                Stroke="{StaticResource ColorBorde}"
+                                StrokeThickness="1"
+                                BackgroundColor="{StaticResource ColorSuperficieClara}">
+
+                                <Border.StrokeShape>
+                                    <RoundRectangle CornerRadius="14" />
+                                </Border.StrokeShape>
+
+                                <Grid
+                                    ColumnDefinitions="*,Auto"
+                                    ColumnSpacing="15">
+
+                                    <VerticalStackLayout
+                                        Grid.Column="0"
+                                        Spacing="4">
+
+                                        <Label
+                                            Text="👶 Perfil para menores de 18"
+                                            FontSize="15"
+                                            FontAttributes="Bold"
+                                            TextColor="{StaticResource ColorTextoPrincipal}" />
+
+                                        <Label
+                                            Text="Mostrará contenido adecuado para menores."
+                                            FontSize="12"
+                                            LineBreakMode="WordWrap"
+                                            TextColor="{StaticResource ColorTextoSecundario}" />
+
+                                    </VerticalStackLayout>
+
+                                    <Switch
+                                        x:Name="EsMenor18Switch"
+                                        Grid.Column="1"
+                                        VerticalOptions="Center"
+                                        OnColor="{StaticResource ColorPrimario}" />
+
+                                </Grid>
+
+                            </Border>
 
                             <Button
                                 x:Name="GuardarPerfilButton"

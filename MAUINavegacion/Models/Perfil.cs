@@ -41,4 +41,8 @@ public class Perfil
     public bool MostrarCotizaciones { get; set; } = true;
 
     public bool MostrarMapa { get; set; } = true;
+
+    // Indica si este perfil debe mostrar
+    // contenido apto para menores de 18 años.
+    public bool EsMenor18 { get; set; } = false;
 }

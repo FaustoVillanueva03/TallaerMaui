@@ -9,20 +9,27 @@ public class AppDatabase
 
     public AppDatabase(string dbPath)
     {
-        _database = new SQLiteAsyncConnection(dbPath);
+        _database =
+            new SQLiteAsyncConnection(dbPath);
     }
 
     public async Task InicializarAsync()
     {
         await _database.CreateTableAsync<Usuario>();
+
+        // Si la tabla Perfiles ya existe,
+        // SQLite-net agrega las columnas nuevas
+        // que encuentre en el modelo.
         await _database.CreateTableAsync<Perfil>();
     }
 
-    public async Task<int> RegistrarUsuarioAsync(Usuario usuario)
+    public async Task<int> RegistrarUsuarioAsync(
+        Usuario usuario)
     {
         await InicializarAsync();
 
-        return await _database.InsertAsync(usuario);
+        return await _database
+            .InsertAsync(usuario);
     }
 
     public async Task<Usuario?> ObtenerUsuarioPorNombreAsync(
@@ -51,11 +58,13 @@ public class AppDatabase
             .FirstOrDefaultAsync();
     }
 
-    public async Task<int> CrearPerfilAsync(Perfil perfil)
+    public async Task<int> CrearPerfilAsync(
+        Perfil perfil)
     {
         await InicializarAsync();
 
-        return await _database.InsertAsync(perfil);
+        return await _database
+            .InsertAsync(perfil);
     }
 
     public async Task<List<Perfil>> ObtenerPerfilesAsync(
@@ -70,21 +79,26 @@ public class AppDatabase
             .ToListAsync();
     }
 
-    public async Task<int> ActualizarPerfilAsync(Perfil perfil)
+    public async Task<int> ActualizarPerfilAsync(
+        Perfil perfil)
     {
         await InicializarAsync();
 
-        return await _database.UpdateAsync(perfil);
+        return await _database
+            .UpdateAsync(perfil);
     }
 
-    public async Task<int> EliminarPerfilAsync(Perfil perfil)
+    public async Task<int> EliminarPerfilAsync(
+        Perfil perfil)
     {
         await InicializarAsync();
 
-        return await _database.DeleteAsync(perfil);
+        return await _database
+            .DeleteAsync(perfil);
     }
+
     public async Task<Usuario?> ObtenerUsuarioPorIdAsync(
-    int usuarioId)
+        int usuarioId)
     {
         await InicializarAsync();
 
