@@ -8,12 +8,17 @@ public partial class PeliculasPage : BasePage
     private readonly MovieService _movieService;
 
     private bool _peliculasCargadas;
+    private Button? _categoriaSeleccionada;
 
     public PeliculasPage()
     {
         InitializeComponent();
 
-        _movieService = new MovieService();
+        _movieService =
+            new MovieService();
+
+        _categoriaSeleccionada =
+            TodasButton;
     }
 
     protected override async void OnAppearing()
@@ -32,9 +37,7 @@ public partial class PeliculasPage : BasePage
     {
         try
         {
-            Cargando.IsVisible = true;
-            Cargando.IsRunning = true;
-            ListaPeliculas.IsVisible = false;
+            MostrarCargando(true);
 
             List<Pelicula> peliculas =
                 await _movieService
@@ -54,9 +57,114 @@ public partial class PeliculasPage : BasePage
         }
         finally
         {
-            Cargando.IsVisible = false;
-            Cargando.IsRunning = false;
-            ListaPeliculas.IsVisible = true;
+            MostrarCargando(false);
+        }
+    }
+
+    private async void OnCategoriaClicked(
+        object sender,
+        EventArgs e)
+    {
+        if (sender is not Button boton)
+        {
+            return;
+        }
+
+        SeleccionarBotonCategoria(
+            boton);
+
+        BusquedaEntry.Text =
+            string.Empty;
+
+        string parametro =
+            boton.CommandParameter?
+                .ToString() ??
+            "0";
+
+        if (!int.TryParse(
+                parametro,
+                out int generoId))
+        {
+            return;
+        }
+
+        if (generoId == 0)
+        {
+            await CargarPeliculasPopularesAsync();
+            return;
+        }
+
+        await CargarPeliculasPorCategoriaAsync(
+            generoId);
+    }
+
+    private void SeleccionarBotonCategoria(
+        Button boton)
+    {
+        Color colorPrimario =
+            (Color)Application.Current!
+                .Resources["ColorPrimario"];
+
+        Color colorSuperficie =
+            (Color)Application.Current!
+                .Resources["ColorSuperficie"];
+
+        Color colorTextoPrincipal =
+            (Color)Application.Current!
+                .Resources["ColorTextoPrincipal"];
+
+        if (_categoriaSeleccionada != null)
+        {
+            _categoriaSeleccionada.BackgroundColor =
+                colorSuperficie;
+
+            _categoriaSeleccionada.TextColor =
+                colorPrimario;
+
+            _categoriaSeleccionada.BorderColor =
+                (Color)Application.Current!
+                    .Resources["ColorBorde"];
+        }
+
+        boton.BackgroundColor =
+            colorPrimario;
+
+        boton.TextColor =
+            colorTextoPrincipal;
+
+        boton.BorderColor =
+            colorPrimario;
+
+        _categoriaSeleccionada =
+            boton;
+    }
+
+    private async Task CargarPeliculasPorCategoriaAsync(
+        int generoId)
+    {
+        try
+        {
+            MostrarCargando(true);
+
+            List<Pelicula> peliculas =
+                await _movieService
+                    .ObtenerPeliculasPorGeneroAsync(
+                        generoId,
+                        20);
+
+            ListaPeliculas.ItemsSource =
+                peliculas;
+        }
+        catch (Exception error)
+        {
+            await DisplayAlert(
+                "Error",
+                $"No se pudo cargar la categoría.\n\n{error.Message}",
+                "Aceptar");
+        }
+        finally
+        {
+            MostrarCargando(false);
         }
     }
 
@@ -80,21 +188,25 @@ public partial class PeliculasPage : BasePage
             BusquedaEntry.Text?.Trim() ??
             string.Empty;
 
-        if (string.IsNullOrWhiteSpace(texto))
+        if (string.IsNullOrWhiteSpace(
+                texto))
         {
+            SeleccionarBotonCategoria(
+                TodasButton);
+
             await CargarPeliculasPopularesAsync();
+
             return;
         }
 
         try
         {
-            Cargando.IsVisible = true;
-            Cargando.IsRunning = true;
-            ListaPeliculas.IsVisible = false;
+            MostrarCargando(true);
 
             List<Pelicula> resultados =
                 await _movieService
-                    .BuscarPeliculasAsync(texto);
+                    .BuscarPeliculasAsync(
+                        texto);
 
             ListaPeliculas.ItemsSource =
                 resultados;
@@ -108,21 +220,33 @@ public partial class PeliculasPage : BasePage
         }
         finally
         {
-            Cargando.IsVisible = false;
-            Cargando.IsRunning = false;
-            ListaPeliculas.IsVisible = true;
+            MostrarCargando(false);
         }
+    }
+
+    private void MostrarCargando(
+        bool mostrar)
+    {
+        Cargando.IsVisible =
+            mostrar;
+
+        Cargando.IsRunning =
+            mostrar;
+
+        ListaPeliculas.IsVisible =
+            !mostrar;
     }
 
     private async void OnPeliculaSeleccionada(
         object sender,
         SelectionChangedEventArgs e)
     {
-        Pelicula? peliculaSeleccionada =
+        Pelicula? pelicula =
             e.CurrentSelection
-                .FirstOrDefault() as Pelicula;
+                .FirstOrDefault()
+                as Pelicula;
 
-        if (peliculaSeleccionada == null)
+        if (pelicula == null)
         {
             return;
         }
@@ -134,7 +258,7 @@ public partial class PeliculasPage : BasePage
 
         await Navigation.PushAsync(
             new DetallePeliculaPage(
-                peliculaSeleccionada));
+                pelicula));
     }
 
     private async void OnVolverClicked(

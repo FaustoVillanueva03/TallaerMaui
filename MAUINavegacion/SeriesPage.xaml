@@ -9,120 +9,46 @@
     Title="Series"
     BackgroundColor="{StaticResource ColorFondo}">
 
-    <ContentPage.Resources>
+    <local:BasePage.Resources>
 
         <Style
-            x:Key="TarjetaContenidoStyle"
-            TargetType="Border">
+            x:Key="CategoriaButtonStyle"
+            TargetType="Button">
 
             <Setter
                 Property="BackgroundColor"
                 Value="{StaticResource ColorSuperficie}" />
 
             <Setter
-                Property="Stroke"
+                Property="TextColor"
+                Value="{StaticResource ColorPrimario}" />
+
+            <Setter
+                Property="BorderColor"
                 Value="{StaticResource ColorBorde}" />
 
             <Setter
-                Property="StrokeThickness"
+                Property="BorderWidth"
                 Value="1" />
 
             <Setter
-                Property="Scale"
-                Value="1" />
+                Property="CornerRadius"
+                Value="18" />
 
             <Setter
-                Property="Opacity"
-                Value="1" />
-
-            <Setter Property="VisualStateManager.VisualStateGroups">
-
-                <VisualStateGroupList>
-
-                    <VisualStateGroup x:Name="CommonStates">
-
-                        <VisualState x:Name="Normal">
-
-                            <VisualState.Setters>
-
-                                <Setter
-                                    Property="Scale"
-                                    Value="1" />
-
-                                <Setter
-                                    Property="Opacity"
-                                    Value="1" />
-
-                                <Setter
-                                    Property="BackgroundColor"
-                                    Value="{StaticResource ColorSuperficie}" />
-
-                                <Setter
-                                    Property="Stroke"
-                                    Value="{StaticResource ColorBorde}" />
-
-                            </VisualState.Setters>
-
-                        </VisualState>
-
-                        <VisualState x:Name="PointerOver">
-
-                            <VisualState.Setters>
-
-                                <Setter
-                                    Property="Scale"
-                                    Value="1" />
-
-                                <Setter
-                                    Property="BackgroundColor"
-                                    Value="{StaticResource ColorSuperficieClara}" />
-
-                                <Setter
-                                    Property="Stroke"
-                                    Value="{StaticResource ColorPrimario}" />
-
-                            </VisualState.Setters>
-
-                        </VisualState>
-
-                        <VisualState x:Name="Pressed">
-
-                            <VisualState.Setters>
-
-                                <Setter
-                                    Property="Scale"
-                                    Value="0.98" />
-
-                                <Setter
-                                    Property="Opacity"
-                                    Value="0.85" />
-
-                                <Setter
-                                    Property="Stroke"
-                                    Value="{StaticResource ColorPrimario}" />
-
-                            </VisualState.Setters>
-
-                        </VisualState>
-
-                    </VisualStateGroup>
-
-                </VisualStateGroupList>
-
-            </Setter>
+                Property="Padding"
+                Value="18,8" />
 
         </Style>
 
-    </ContentPage.Resources>
-
+    </local:BasePage.Resources>
 
     <Grid
         Padding="20"
-        RowDefinitions="Auto,Auto,Auto,*"
+        RowDefinitions="Auto,Auto,Auto,Auto,*"
         RowSpacing="15">
 
-
-        <!-- BOTÓN VOLVER -->
+        <!-- VOLVER -->
 
         <Button
             Grid.Row="0"
@@ -134,7 +60,6 @@
             BorderWidth="1"
             CornerRadius="12"
             Clicked="OnVolverClicked" />
-
 
         <!-- ENCABEZADO -->
 
@@ -156,77 +81,165 @@
                 FontAttributes="Bold" />
 
             <Label
-                Text="Buscá una serie o explorá las populares"
+                Text="Buscá una serie o explorá por categoría"
                 TextColor="{StaticResource ColorTextoSecundario}"
                 FontSize="14" />
 
         </VerticalStackLayout>
 
-
         <!-- BUSCADOR -->
 
-        <Grid
+        <Border
             Grid.Row="2"
-            ColumnDefinitions="*,Auto"
-            ColumnSpacing="10">
+            BackgroundColor="{StaticResource ColorSuperficie}"
+            Stroke="{StaticResource ColorBorde}"
+            StrokeThickness="1"
+            Padding="14,0"
+            HeightRequest="52">
 
-            <Border
-                Grid.Column="0"
-                BackgroundColor="{StaticResource ColorSuperficie}"
-                Stroke="{StaticResource ColorBorde}"
-                StrokeThickness="1"
-                Padding="14,0"
-                HeightRequest="50">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="14" />
+            </Border.StrokeShape>
 
-                <Border.StrokeShape>
-                    <RoundRectangle CornerRadius="14" />
-                </Border.StrokeShape>
+            <Grid
+                ColumnDefinitions="Auto,*"
+                ColumnSpacing="10">
+
+                <Label
+                    Grid.Column="0"
+                    Text="🔍"
+                    FontSize="18"
+                    VerticalOptions="Center"
+                    TextColor="{StaticResource ColorPrimario}" />
 
                 <Entry
                     x:Name="BusquedaEntry"
+                    Grid.Column="1"
                     Placeholder="Buscar serie..."
                     PlaceholderColor="{StaticResource ColorTextoSecundario}"
                     TextColor="{StaticResource ColorTextoPrincipal}"
-                    FontSize="15"
+                    BackgroundColor="Transparent"
+                    VerticalOptions="Center"
                     ReturnType="Search"
                     Completed="OnBuscarCompleted" />
 
-            </Border>
+            </Grid>
 
+        </Border>
 
-            <Button
-                Grid.Column="1"
-                Text="🔍"
-                WidthRequest="55"
-                HeightRequest="50"
-                BackgroundColor="{StaticResource ColorPrimario}"
-                TextColor="{StaticResource ColorTextoPrincipal}"
-                FontSize="20"
-                CornerRadius="14"
-                Clicked="OnBuscarClicked" />
+        <!-- CATEGORÍAS -->
 
-        </Grid>
+        <VerticalStackLayout
+            Grid.Row="3"
+            Spacing="8">
 
+            <Label
+                Text="Categorías"
+                FontSize="16"
+                FontAttributes="Bold"
+                TextColor="{StaticResource ColorTextoPrincipal}" />
 
-        <!-- CONTENIDO -->
+            <ScrollView
+                Orientation="Horizontal"
+                HorizontalScrollBarVisibility="Never">
 
-        <Grid
-            Grid.Row="3">
+                <HorizontalStackLayout Spacing="8">
 
-            <!-- INDICADOR DE CARGA -->
+                    <Button
+                        x:Name="TodasButton"
+                        Text="Todas"
+                        CommandParameter="0"
+                        Clicked="OnCategoriaClicked"
+                        BackgroundColor="{StaticResource ColorPrimario}"
+                        TextColor="{StaticResource ColorTextoPrincipal}"
+                        BorderColor="{StaticResource ColorPrimario}"
+                        BorderWidth="1"
+                        CornerRadius="18"
+                        Padding="18,8" />
+
+                    <Button
+                        Text="Acción y aventura"
+                        CommandParameter="10759"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Animación"
+                        CommandParameter="16"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Comedia"
+                        CommandParameter="35"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Crimen"
+                        CommandParameter="80"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Drama"
+                        CommandParameter="18"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Familia"
+                        CommandParameter="10751"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Misterio"
+                        CommandParameter="9648"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Reality"
+                        CommandParameter="10764"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Ciencia ficción"
+                        CommandParameter="10765"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Guerra y política"
+                        CommandParameter="10768"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                    <Button
+                        Text="Western"
+                        CommandParameter="37"
+                        Clicked="OnCategoriaClicked"
+                        Style="{StaticResource CategoriaButtonStyle}" />
+
+                </HorizontalStackLayout>
+
+            </ScrollView>
+
+        </VerticalStackLayout>
+
+        <!-- LISTADO -->
+
+        <Grid Grid.Row="4">
 
             <ActivityIndicator
                 x:Name="Cargando"
                 IsVisible="False"
                 IsRunning="False"
                 Color="{StaticResource ColorPrimario}"
-                WidthRequest="50"
-                HeightRequest="50"
                 HorizontalOptions="Center"
                 VerticalOptions="Center" />
-
-
-            <!-- LISTA DE SERIES -->
 
             <CollectionView
                 x:Name="ListaSeries"
@@ -242,50 +255,31 @@
 
                 </CollectionView.ItemsLayout>
 
-
                 <CollectionView.ItemTemplate>
 
-                    <DataTemplate
-                        x:DataType="models:Serie">
+                    <DataTemplate x:DataType="models:Serie">
 
                         <Border
-                            Style="{StaticResource TarjetaContenidoStyle}"
+                            BackgroundColor="{StaticResource ColorSuperficie}"
+                            Stroke="{StaticResource ColorBorde}"
+                            StrokeThickness="1"
                             Padding="12"
-                            Margin="8,4">
+                            Margin="0,4">
 
                             <Border.StrokeShape>
-                                <RoundRectangle
-                                    CornerRadius="18" />
+                                <RoundRectangle CornerRadius="18" />
                             </Border.StrokeShape>
-
 
                             <Grid
                                 ColumnDefinitions="110,*"
                                 ColumnSpacing="16">
 
-
-                                <!-- IMAGEN -->
-
-                                <Border
+                                <Image
                                     Grid.Column="0"
+                                    Source="{Binding ImagenCompleta}"
                                     WidthRequest="110"
                                     HeightRequest="165"
-                                    StrokeThickness="0"
-                                    Padding="0">
-
-                                    <Border.StrokeShape>
-                                        <RoundRectangle
-                                            CornerRadius="12" />
-                                    </Border.StrokeShape>
-
-                                    <Image
-                                        Source="{Binding ImagenCompleta}"
-                                        Aspect="AspectFill" />
-
-                                </Border>
-
-
-                                <!-- INFORMACIÓN -->
+                                    Aspect="AspectFill" />
 
                                 <VerticalStackLayout
                                     Grid.Column="1"
@@ -294,17 +288,13 @@
 
                                     <Label
                                         Text="{Binding Nombre}"
-                                        TextColor="{StaticResource ColorTextoPrincipal}"
                                         FontSize="21"
                                         FontAttributes="Bold"
-                                        LineBreakMode="TailTruncation"
-                                        MaxLines="2" />
+                                        TextColor="{StaticResource ColorTextoPrincipal}"
+                                        MaxLines="2"
+                                        LineBreakMode="TailTruncation" />
 
-
-                                    <HorizontalStackLayout
-                                        Spacing="8">
-
-                                        <!-- PUNTUACIÓN -->
+                                    <HorizontalStackLayout Spacing="8">
 
                                         <Border
                                             BackgroundColor="{StaticResource ColorPrimarioOscuro}"
@@ -312,8 +302,7 @@
                                             Padding="10,5">
 
                                             <Border.StrokeShape>
-                                                <RoundRectangle
-                                                    CornerRadius="10" />
+                                                <RoundRectangle CornerRadius="10" />
                                             </Border.StrokeShape>
 
                                             <Label
@@ -324,17 +313,13 @@
 
                                         </Border>
 
-
-                                        <!-- FECHA -->
-
                                         <Border
                                             BackgroundColor="{StaticResource ColorSuperficieClara}"
                                             StrokeThickness="0"
                                             Padding="10,5">
 
                                             <Border.StrokeShape>
-                                                <RoundRectangle
-                                                    CornerRadius="10" />
+                                                <RoundRectangle CornerRadius="10" />
                                             </Border.StrokeShape>
 
                                             <Label
@@ -346,7 +331,6 @@
 
                                     </HorizontalStackLayout>
 
-
                                     <Label
                                         Text="{Binding DescripcionCompleta}"
                                         TextColor="{StaticResource ColorTextoSecundario}"
@@ -354,11 +338,9 @@
                                         MaxLines="3"
                                         LineBreakMode="TailTruncation" />
 
-
                                     <Label
-                                        Text="Ver detalles  →"
+                                        Text="Ver detalles →"
                                         TextColor="{StaticResource ColorPrimario}"
-                                        FontSize="14"
                                         FontAttributes="Bold" />
 
                                 </VerticalStackLayout>
